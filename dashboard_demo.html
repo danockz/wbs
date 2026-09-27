@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hierarchical Group Dashboard - Demo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        /* Context Bar */
+        .context-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .context-bar .context-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+        
+        .context-bar .context-item strong {
+            color: #1e293b;
+        }
+        
+        .group-switcher {
+            margin-left: auto;
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        
+        /* Section Header */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 30px 0 20px 0;
+        }
+        
+        .section-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .section-header .widget-count {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .section-header .section-divider {
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+        
+        /* Widget Grid */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* Widget Card */
+        .widget-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .widget-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .widget-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .widget-header .cache-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .widget-header .permission-badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .widget-content {
+            font-size: 0.95rem;
+            color: #475569;
+        }
+        
+        .widget-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .widget-content li {
+            padding: 6px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .widget-content li:last-child {
+            border-bottom: none;
+        }
+        
+        .widget-content .hierarchy {
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.4;
+        }
+        
+        .widget-content .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .widget-content .stat {
+            padding: 8px 0;
+        }
+        
+        .widget-content .stat-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        
+        .widget-content .stat-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        /* Badges */
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .badge {
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        
+        .progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6 0%, #1e40af 100%);
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .footer .footer-item {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .footer .footer-item strong {
+            color: #1e293b;
+        }
+        
+        /* Legend */
+        .legend {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .legend h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+        
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        
+        .legend-item .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        
+        .legend-color.static { background: #dbeafe; }
+        .legend-color.summary { background: #dcfce7; }
+        .legend-color.list { background: #e0e7ff; }
+        .legend-color.realtime { background: #fef3c7; }
+        .legend-color.live { background: #fee2e2; }
+        .legend-color.permission { background: #fef3c7; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .widgets-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .context-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .group-switcher {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Print */
+        @media print {
+            .header, .context-bar, .footer, .legend {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏠 Hierarchical Group Dashboard</h1>
+            <div class="subtitle">Personalized overview of your groups and activities</div>
+        </div>
+        
+        <!-- Context Bar -->
+        <div class="context-bar">
+            <div class="context-item">
+                <strong>User:</strong> John Doe (john@example.com)
+            </div>
+            <div class="context-item">
+                <strong>Organization:</strong> Acme Org
+            </div>
+            <div class="context-item">
+                <strong>Current Group:</strong> Acme - North Region - Local Assembly
+            </div>
+            <div class="context-item">
+                <strong>Date:</strong> September 27, 2026
+            </div>
+            <div class="context-item">
+                <strong>Widgets:</strong> 47 registered, 37 visible
+            </div>
+            <div class="group-switcher">
+                📍 Acme - North Region - Local Assembly ▼
+            </div>
+        </div>
+        
+        <!-- People Section -->
+        <div class="section-header">
+            <h2>👥 People</h2>
+            <span class="widget-count">9 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Groups Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Groups</h3>
+                    <span class="permission-badge">Permission</span>
+                </div>
+                <div class="widget-content">
+                    <p>You are a member of <strong>3 groups</strong>:</p>
+                    <ul>
+                        <li>🏛️ Acme (National) - <strong>Leader</strong></li>
+                        <li>🌍 Acme - North Region - <strong>Leader</strong></li>
+                        <li>🏠 Acme - North Region - Local Assembly - <strong>Member</strong></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Group Hierarchy Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Group Hierarchy</h3>
+                    <span class="cache-badge">Static Cache</span>
+                </div>
+                <div class="widget-content">
+                    <pre class="hierarchy">Acme
+└── North Region
+    └── Area A
+        └── Local Assembly
+            ├── Fellowship 1
+            │   └── Senior Cell A
+            │       └── Cell 1
+            └── Fellowship 2</pre>
+                </div>
+            </div>
+            
+            <!-- Birthdays Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>🎂 Birthdays</h3>
+                    <span class="cache-badge">Realtime Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Upcoming birthdays in your groups:</p>
+                    <ul>
+                        <li>🎉 <strong>Today:</strong> Jane Smith (Leader, North Region)</li>
+                        <li>🎉 <strong>In 2 days:</strong> Mike Johnson (Member, Local Assembly)</li>
+                        <li>🎉 <strong>In 5 days:</strong> Sarah Williams (Member, Local Assembly)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- My Profile Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Profile</h3>
+                    <span class="cache-badge">Static Cache</span>
+                </div>
+                <div class="widget-content">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">Name</div>
+                            <div class="stat-value">John Doe</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Email</div>
+                            <div class="stat-value">john@example.com</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Phone</div>
+                            <div class="stat-value">+1 555-123-4567</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Member since</div>
+                            <div class="stat-value">January 15, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Memberships Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Memberships</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Your group memberships:</p>
+                    <ul>
+                        <li>🏛️ Acme - <span class="badge">Leader</span></li>
+                        <li>🌍 North Region - <span class="badge">Leader</span></li>
+                        <li>🏠 Local Assembly - <span class="badge">Member</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Recent Members Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>👋 Recent Members</h3>
+                    <span class="cache-badge">Realtime Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>New members in your groups:</p>
+                    <ul>
+                        <li>Alice Brown - Joined 2 days ago</li>
+                        <li>Bob Wilson - Joined 5 days ago</li>
+                        <li>Carol Davis - Joined 1 week ago</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gamification Section -->
+        <div class="section-header">
+            <h2>🎮 Gamification</h2>
+            <span class="widget-count">6 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Standing Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Standing</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">Level</div>
+                            <div class="stat-value">🏆 Gold</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Points</div>
+                            <div class="stat-value">1,250</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Rank</div>
+                            <div class="stat-value">#3 in Local Assembly</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Points Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Points Summary</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">This Week</div>
+                            <div class="stat-value">+50 pts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">This Month</div>
+                            <div class="stat-value">+200 pts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">This Year</div>
+                            <div class="stat-value">+1,250 pts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Badges Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Badges</h3>
+                    <span class="cache-badge">List Cache</span>
+                </div>
+                <div class="widget-content">
+                    <div class="badges">
+                        <span class="badge">🏆 Faithful Attender</span>
+                        <span class="badge">🏅 Perfect Attendance</span>
+                        <span class="badge">🎖️ First Giver</span>
+                        <span class="badge">📚 Bible Scholar</span>
+                        <span class="badge">🎤 Speaker</span>
+                        <span class="badge">🤝 Mentor</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Group Leaderboard Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Group Leaderboard</h3>
+                    <span class="cache-badge">Realtime Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Top contributors this month:</p>
+                    <ul>
+                        <li>1. Jane Smith - 450 pts <span class="badge">🥇</span></li>
+                        <li>2. Mike Johnson - 380 pts <span class="badge">🥈</span></li>
+                        <li>3. John Doe - 250 pts <span class="badge">🥉</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- My Streaks Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Streaks</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">Attendance</div>
+                            <div class="stat-value">12 weeks</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Giving</div>
+                            <div class="stat-value">8 months</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Achievements Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Achievements</h3>
+                    <span class="cache-badge">List Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Completed achievements:</p>
+                    <ul>
+                        <li>✅ Completed Foundation Course</li>
+                        <li>✅ Mentored 3 people</li>
+                        <li>✅ Perfect attendance for 1 year</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Journey Section -->
+        <div class="section-header">
+            <h2>🚀 Journey</h2>
+            <span class="widget-count">5 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Stage Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Current Stage</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">Stage</div>
+                            <div class="stat-value">Making Disciples</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Started</div>
+                            <div class="stat-value">June 1, 2025</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-text">
+                            <span>Progress</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Progress Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Journey Progress</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Current stage completion:</p>
+                    <ul>
+                        <li>✅ New Believer - 100%</li>
+                        <li>✅ Growing - 100%</li>
+                        <li>🔄 Making Disciples - 75%</li>
+                        <li>⏳ Multiplying - 0%</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- My Disciples Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Disciples</h3>
+                    <span class="cache-badge">List Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>You are discipling <strong>3 people</strong>:</p>
+                    <ul>
+                        <li>Alice Brown - New Believer (25%)</li>
+                        <li>Bob Wilson - Growing (50%)</li>
+                        <li>Carol Davis - Maturing (75%)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Events Section -->
+        <div class="section-header">
+            <h2>📅 Events</h2>
+            <span class="widget-count">8 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Upcoming Events Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Upcoming Events</h3>
+                    <span class="cache-badge">Realtime Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p><strong>Tomorrow:</strong></p>
+                    <ul>
+                        <li>🕖 Prayer Meeting - 7:00 PM - Local Assembly Hall</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>This Weekend:</strong></p>
+                    <ul>
+                        <li>🙏 Sunday Service - 10:00 AM - Main Sanctuary</li>
+                        <li>👥 Youth Fellowship - 2:00 PM - Youth Room</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Next Week:</strong></p>
+                    <ul>
+                        <li>📖 Bible Study - Wednesday 7:00 PM - Room 201</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Group Upcoming Events Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Group Upcoming Events</h3>
+                    <span class="cache-badge">Realtime Cache</span>
+                </div>
+                <div class="widget-content">
+                    <ul>
+                        <li>🎤 Regional Conference - Oct 5-7 - All North Region groups</li>
+                        <li>🎓 Leadership Training - Oct 15 - Local Assembly leaders</li>
+                        <li>🌍 Outreach Day - Oct 20 - All groups</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- My Registrations Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Event Registrations</h3>
+                    <span class="cache-badge">List Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>You are registered for:</p>
+                    <ul>
+                        <li>✅ Regional Conference - Confirmed</li>
+                        <li>✅ Leadership Training - Confirmed</li>
+                        <li>⏳ Outreach Day - Pending</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Giving Section -->
+        <div class="section-header">
+            <h2>💰 Giving</h2>
+            <span class="widget-count">5 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Giving Summary Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Giving Summary</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">This Year</div>
+                            <div class="stat-value">$2,500</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Last Month</div>
+                            <div class="stat-value">$250</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Average</div>
+                            <div class="stat-value">$208/month</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Commitments Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Commitments</h3>
+                    <span class="cache-badge">List Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Active commitments:</p>
+                    <ul>
+                        <li>💵 Tithes - $200/month <span class="badge">Active</span></li>
+                        <li>🌍 Missions - $50/month <span class="badge">Active</span></li>
+                        <li>🏗️ Building Fund - $25/month <span class="badge">Active</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Learning Section -->
+        <div class="section-header">
+            <h2>📚 Learning</h2>
+            <span class="widget-count">4 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Courses Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Courses</h3>
+                    <span class="cache-badge">List Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Enrolled courses:</p>
+                    <ul>
+                        <li>📖 Foundation Course - 85% complete</li>
+                        <li>🎓 Leadership 101 - 60% complete</li>
+                        <li>📜 Bible Survey - 30% complete</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Communications Section -->
+        <div class="section-header">
+            <h2>💬 Communications</h2>
+            <span class="widget-count">4 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Announcements Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Announcements</h3>
+                    <span class="cache-badge">Realtime Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p><strong>New:</strong></p>
+                    <ul>
+                        <li>📢 Regional Prayer Day - Sep 30 - All invited</li>
+                    </ul>
+                    <p style="margin-top: 10px;">Unread: <strong>1</strong></p>
+                </div>
+            </div>
+            
+            <!-- My Notifications Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Notifications</h3>
+                    <span class="cache-badge">Live - No Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>You have <strong>2 new notifications</strong>:</p>
+                    <ul>
+                        <li>✅ Event registration confirmed: Prayer Meeting</li>
+                        <li>💬 New message from: Sarah Williams</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Access Section -->
+        <div class="section-header">
+            <h2>🔐 Access</h2>
+            <span class="widget-count">2 widgets</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- My Requests Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>My Access Requests</h3>
+                    <span class="cache-badge">List Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p>Your access requests:</p>
+                    <ul>
+                        <li>📊 Regional Reports - <span class="badge">Pending approval</span></li>
+                        <li>💰 Financial Data - <span class="badge">Approved</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reports Section -->
+        <div class="section-header">
+            <h2>📊 Reports</h2>
+            <span class="widget-count">1 widget</span>
+            <div class="section-divider"></div>
+        </div>
+        <div class="widgets-grid">
+            <!-- Group Funnel Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Group Funnel</h3>
+                    <span class="cache-badge">Summary Cache</span>
+                </div>
+                <div class="widget-content">
+                    <p style="text-align: center; margin-bottom: 15px;">
+                        Prospects → First-time Visitors → Members
+                    </p>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>15</span>
+                        <span>8</span>
+                        <span>45</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-text">
+                            <span>Conversion Rate</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-item">
+                <strong>Viewing:</strong> Acme - North Region - Local Assembly
+            </div>
+            <div class="footer-item">
+                <strong>Last Updated:</strong> September 27, 2026 at 12:00:00
+            </div>
+            <div class="footer-item">
+                <strong>Cached:</strong> 37/47 widgets
+            </div>
+            <div class="footer-item">
+                <strong>User:</strong> John Doe
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <span class="legend-color static"></span>
+                    <span>Static Cache - Cached for 1 hour (rarely changes)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color summary"></span>
+                    <span>Summary Cache - Cached for 5 minutes (statistics)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color list"></span>
+                    <span>List Cache - Cached for 3 minutes (lists of items)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color realtime"></span>
+                    <span>Realtime Cache - Cached for 1 minute (near real-time)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color live"></span>
+                    <span>Live - No cache (always fresh data)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color permission"></span>
+                    <span>Permission - Requires specific permission bit</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; color: #64748b; font-size: 0.9rem;">
+            <p>This is a demo of the Hierarchical Group Dashboard. The actual dashboard is server-rendered at <code>/me/groups</code>.</p>
+            <p>47 total widgets across 14 modules | 37 visible for this user | Mobile-first responsive design</p>
+        </div>
+    </div>
+</body>
+</html>
