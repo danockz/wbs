@@ -44,3 +44,11 @@ return [
         'cancelledFlash' => 'Announcement cancelled.',
         'ackedFlash' => 'Acknowledged.',
 ];
+  'dashboard' => [
+    'myAnnouncements' => 'My Announcements',
+    'groupAnnouncements' => 'Group Announcements',
+    'noAnnouncements' => 'No announcements',
+    'noGroupAnnouncements' => 'No group announcements',
+    'noGroups' => 'No groups in scope',
+    'untitled' => 'Untitled announcement',
+  ],

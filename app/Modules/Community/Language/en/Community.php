@@ -77,3 +77,11 @@ return [
     ],
 
 ];
+  'dashboard' => [
+    'groupFeed' => 'Group Feed',
+    'recentPosts' => 'Recent Posts',
+    'noGroups' => 'No groups in scope',
+    'noPosts' => 'No posts',
+    'untitled' => 'Untitled post',
+    'anonymous' => 'Anonymous',
+  ],

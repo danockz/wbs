@@ -108,3 +108,15 @@ return [
     ],
 
 ];
+  'dashboard' => [
+    'myCourses' => 'My Courses',
+    'myProgress' => 'My Course Progress',
+    'groupCourses' => 'Group Courses',
+    'completionRates' => 'Completion Rates',
+    'noCourses' => 'No courses',
+    'noProgress' => 'No course progress',
+    'noGroupCourses' => 'No group courses',
+    'noData' => 'No data available',
+    'noGroupsInScope' => 'No groups in scope',
+    'untitledCourse' => 'Untitled course',
+  ],

@@ -89,3 +89,11 @@ return [
     ],
 
 ];
+  'dashboard' => [
+    'myMeetings' => 'My Meetings',
+    'groupSchedule' => 'Group Schedule',
+    'noMeetings' => 'No meetings',
+    'noSchedule' => 'No schedule',
+    'noGroups' => 'No groups in scope',
+    'untitled' => 'Untitled meeting',
+  ],

@@ -566,3 +566,11 @@ return [
             ],
         ],
 ];
+  'dashboard' => [
+    'myRequests' => 'My Access Requests',
+    'pendingApprovals' => 'Pending Approvals',
+    'noRequests' => 'No access requests',
+    'noPending' => 'No pending approvals',
+    'noGroups' => 'No groups in scope',
+    'anonymous' => 'Anonymous',
+  ],

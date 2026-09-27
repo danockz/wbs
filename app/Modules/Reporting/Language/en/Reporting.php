@@ -158,3 +158,11 @@ return [
         ],
     ],
 ];
+  'dashboard' => [
+    'groupFunnel' => 'Group Funnel',
+    'noGroups' => 'No groups in scope',
+    'members' => 'Members',
+    'prospects' => 'Prospects',
+    'enrollments' => 'Enrollments',
+    'completions' => 'Completions',
+  ],

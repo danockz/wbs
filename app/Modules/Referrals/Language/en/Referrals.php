@@ -374,3 +374,11 @@ return [
     'decisionNotePh' => 'e.g. at the outreach',
     'decisionHint' => 'Optional. Assisted decisions confirm immediately; guest or visitor declarations await the mentor\'s confirmation.',
 ];
+  'dashboard' => [
+    'myReferrals' => 'My Referrals',
+    'groupOutreach' => 'Group Outreach',
+    'noReferrals' => 'No referrals',
+    'noData' => 'No data available',
+    'noGroups' => 'No groups in scope',
+    'anonymous' => 'Anonymous',
+  ],

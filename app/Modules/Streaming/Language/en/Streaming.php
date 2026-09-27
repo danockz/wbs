@@ -236,3 +236,9 @@ return [
         'visibilityFlash' => 'Overlay visibility updated.',
     ],
 ];
+  'dashboard' => [
+    'liveStreams' => 'Live Streams',
+    'noStreams' => 'No live streams',
+    'noGroups' => 'No groups in scope',
+    'untitled' => 'Untitled stream',
+  ],

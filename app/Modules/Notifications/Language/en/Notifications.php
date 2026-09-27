@@ -202,3 +202,12 @@ return [
         'templateRetiredFlash' => 'Template retired.',
     ],
 ];
+  'dashboard' => [
+    'myNotifications' => 'My Notifications',
+    'campaignStatus' => 'Campaign Status',
+    'noNotifications' => 'No notifications',
+    'noCampaigns' => 'No campaigns',
+    'noGroups' => 'No groups in scope',
+    'untitled' => 'Untitled notification',
+    'unnamed' => 'Unnamed campaign',
+  ],
