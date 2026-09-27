@@ -1,0 +1,192 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static-analysis:
+    name: Lint & static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, mbstring, sodium, mysqli, redis
+          coverage: none
+          tools: composer
+
+      - name: Validate composer files
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: PHP lint (syntax) — all sources
+        run: |
+          find app -name '*.php' -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+
+      - name: Standalone test suite (framework-free)
+        # Much of the coverage lives in self-contained *_test.php scripts (i18n,
+        # menu anti-drift/floor/signed-word, service-key collisions, catalog
+        # parity). They are NOT PHPUnit TestCases, so `vendor/bin/phpunit` never
+        # runs them — this runner discovers and runs all of them, aggregates the
+        # per-file "N passed, M failed" summaries, and exits non-zero on ANY
+        # failure. No DB/Redis needed: these are pure, in-process checks.
+        run: php tests/run-standalone.php
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress
+
+      - name: Generate OpenAPI spec (drift guard)
+        # The spec is DERIVED from the route table, so it must never be edited by
+        # hand and must never lag behind Routes.php. Regenerate to a temp file and
+        # compare NORMALIZED content (json_decode -> canonical re-encode) against
+        # the committed spec — this ignores pretty-print/whitespace differences
+        # and fails only on real drift, i.e. routes changed without running
+        # `php spark openapi:generate`.
+        run: |
+          php spark openapi:generate --out=/tmp/openapi.new.json
+          php -r '
+            $a = json_decode((string) @file_get_contents("public/openapi.json"), true);
+            $b = json_decode((string) file_get_contents("/tmp/openapi.new.json"), true);
+            if (json_encode($a) === json_encode($b)) { exit(0); }
+            fwrite(STDERR, "::error::public/openapi.json is stale. Run \"php spark openapi:generate\" and commit the result.\n");
+            exit(1);
+          '
+
+      - name: Menu coverage (drift guard)
+        # The menu is derived from the route table too: every page-like GET route
+        # must be either linked in the catalog (CoreMenuProvider) or recorded as an
+        # intentional exclusion (MenuCoverage::EXCLUSIONS). This fails the build when
+        # a new page-like route is added without triaging it for the menu — so nav
+        # never silently falls behind Routes.php. To fix locally, run
+        # `php spark menu:scaffold` for paste-ready MenuItem stubs.
+        run: php spark menu:scaffold --check
+
+      - name: Validate OpenAPI spec (schema lint)
+        # Catch a malformed spec even if it happens to match the committed file:
+        # assert the freshly generated document is a valid OpenAPI 3.1 spec.
+        # openapi-spec-validator supports 3.1 natively; python3 is preinstalled on
+        # the runner, so no Node toolchain is needed in this PHP job.
+        run: |
+          python3 -m pip install --quiet --disable-pip-version-check openapi-spec-validator
+          python3 - <<'PY'
+          import sys
+          from openapi_spec_validator import validate
+          from openapi_spec_validator.readers import read_from_filename
+          spec, _ = read_from_filename('/tmp/openapi.new.json')
+          try:
+              validate(spec)
+              print('OpenAPI 3.1 spec is valid.')
+          except Exception as e:
+              print('::error::Generated OpenAPI spec is invalid — fix OpenApiGenerator.')
+              print(str(e)[:3000])
+              sys.exit(1)
+          PY
+
+  tests:
+    name: PHPUnit (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3']
+
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_DATABASE: wbs_platform_test
+          MARIADB_USER: wbs
+          MARIADB_PASSWORD: wbs_ci_pw
+          MARIADB_ROOT_PASSWORD: root_ci_pw
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping" --health-interval=10s
+          --health-timeout=5s --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl, mbstring, sodium, mysqli, redis
+          coverage: none
+          tools: composer
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Prepare test environment
+        run: |
+          cp .env.example .env
+          php -r "file_put_contents('.env', str_replace('hex2bin:REPLACE_WITH_32_BYTE_HEX_KEY', 'hex2bin:'.bin2hex(sodium_crypto_secretbox_keygen()), file_get_contents('.env')));"
+          {
+            echo "database.tests.hostname = 127.0.0.1"
+            echo "database.tests.database = wbs_platform_test"
+            echo "database.tests.username = wbs"
+            echo "database.tests.password = wbs_ci_pw"
+            echo "database.tests.DBDriver = MySQLi"
+            echo "database.tests.port = 3306"
+            echo "redis.host = 127.0.0.1"
+            echo "redis.port = 6379"
+          } >> .env
+
+      - name: Wait for MariaDB
+        run: |
+          for i in $(seq 1 30); do
+            if mysqladmin ping -h127.0.0.1 -uwbs -pwbs_ci_pw --silent; then break; fi
+            sleep 2
+          done
+
+      - name: Run migrations (test DB)
+        run: php spark migrate --all
+        env:
+          CI_ENVIRONMENT: testing
+
+      - name: Seed baseline (RBAC + adapters)
+        run: |
+          php spark db:seed 'WBS\AccessControl\Database\Seeds\RbacBootstrapSeeder'
+          php spark db:seed 'WBS\Integrations\Database\Seeds\AdapterCatalogSeeder'
+        env:
+          CI_ENVIRONMENT: testing
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit --no-coverage
+        env:
+          CI_ENVIRONMENT: testing
