@@ -333,7 +333,7 @@ $service->registerProvider(new StreamingDashboardWidgetProvider());
 - **Meetings**: 2 widgets
 - **Streaming**: 1 widget
 
-**Total: 42 widgets across 14 modules**
+**Total: 47 widgets across 14 modules**
 
 ## Section Organization
 
