@@ -1113,6 +1113,10 @@ $routes->group('reports', ['filter' => 'auth'], static function ($routes): void 
 // user — no admin/report permission, only auth. Serves HTML or JSON.
 $routes->get('me/dashboard', '\WBS\Reporting\Controllers\DashboardController::me', ['filter' => 'auth']);
 
+// Hierarchical group dashboard — dynamic widgets from all modules, scoped to
+// the user's groups. Auth-only; widgets are fail-closed on permissions/config.
+$routes->get('me/groups', '\WBS\Groups\Controllers\GroupDashboardController::index', ['filter' => 'auth']);
+
 // ---------------------------------------------------------------------------
 // Admin — platform settings, feature flags, group config (SRS FR-GRP-006/FR-ACL-007)
 // ---------------------------------------------------------------------------

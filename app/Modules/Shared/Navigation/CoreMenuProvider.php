@@ -41,6 +41,7 @@ final class CoreMenuProvider
             new MenuItem('overview.sessions', $C::OVERVIEW, 'My sessions', 'me/sessions', icon: 'shield', order: 30),
             new MenuItem('overview.profile', $C::OVERVIEW, 'Edit my profile', 'me/profile', icon: 'user', order: 35),
             new MenuItem('overview.birthdays', $C::OVERVIEW, 'Birthdays', 'me/birthdays', icon: 'calendar', order: 36),
+            new MenuItem('overview.group_dashboard', $C::OVERVIEW, 'Group Dashboard', 'me/groups', icon: 'sitemap', order: 37),
 
             // ---- People ----
             new MenuItem('people.members', $C::PEOPLE, 'Members', 'members', permissions: ['identity.manage'], scopeCheck: 'any', icon: 'users', order: 10),

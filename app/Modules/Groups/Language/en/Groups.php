@@ -463,4 +463,33 @@ return [
         'disabledSub' => 'A leader can enable them under group configuration (groups.birthdays). Default is off.',
         'countUp' => '{0} of {1}',
     ],
+
+    'dashboard' => [
+        'title' => 'Group Dashboard',
+        'subtitle' => 'Overview of your groups and their activities',
+        'switcherLabel' => 'Select group',
+        'selectGroup' => 'Select a group to view',
+        'viewingGroup' => 'Viewing: {0}',
+        'noWidgets' => 'No widgets available for your current scope.',
+        'noGroupsHint' => 'Join a group to see group-related widgets.',
+        'asOf' => 'As of {0}',
+        'widgetCount' => '{0} widget(s)',
+        'widgetPlaceholder' => '{0} widget coming soon...',
+        'section' => [
+            'default' => 'General',
+            'events' => 'Events',
+            'giving' => 'Giving',
+            'people' => 'People',
+            'learning' => 'Learning',
+            'reports' => 'Reports',
+        ],
+        'widgets' => [
+            'membershipSummary' => 'My Groups',
+            'hierarchyNav' => 'Group Hierarchy',
+            'birthdays' => 'Birthdays',
+            'noGroups' => 'No groups',
+            'noHierarchy' => 'No hierarchy information',
+            'topLevel' => 'Top-level group',
+        ],
+    ],
 ];

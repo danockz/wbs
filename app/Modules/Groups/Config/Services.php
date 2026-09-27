@@ -13,6 +13,8 @@ use WBS\Admin\Config\Services as AdminServices;
 use WBS\Groups\Services\BirthdayConfigAdapter;
 use WBS\Groups\Services\BirthdayService;
 use WBS\Groups\Services\GroupCrosscutService;
+use WBS\Groups\Services\GroupDashboardService;
+use WBS\Groups\Services\GroupDashboardWidgetProvider;
 use WBS\Groups\Services\GroupKindService;
 use WBS\Groups\Services\GroupLifecycleService;
 use WBS\Groups\Services\GroupMembershipService;
@@ -27,6 +29,7 @@ use WBS\Shared\Config\Services as SharedServices;
 class Services extends BaseService
 {
     private static ?BirthdayService $birthdays = null;
+    private static ?GroupDashboardService $groupDashboard = null;
 
     /**
      * Hierarchical group-aware birthdays (hub + calendar overlay + notify).
@@ -44,6 +47,27 @@ class Services extends BaseService
         }
 
         return self::$birthdays;
+    }
+
+    /**
+     * Hierarchical group dashboard service.
+     * Collects and renders widgets from all modules.
+     */
+    public static function groupDashboard(bool $getShared = true): GroupDashboardService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('groupDashboard');
+        }
+
+        $service = new GroupDashboardService(
+            Database::connect(),
+            SharedServices::clock(),
+        );
+
+        // Auto-register the Groups module's own widget provider
+        $service->registerProvider(new GroupsDashboardWidgetProvider());
+
+        return $service;
     }
 
     public static function groups(bool $getShared = true): GroupService
