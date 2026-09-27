@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace WBS\Groups\Config;
 
+use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\Config\BaseService;
+use Config\Dashboard;
 use Config\Database;
 use WBS\Audit\Config\Services as AuditServices;
 use WBS\Identity\Config\Services as IdentityServices;
@@ -43,18 +45,44 @@ class Services extends BaseService
     /**
      * Hierarchical group dashboard service.
      * Collects and renders widgets from all modules via auto-discovery.
+     * Caching is enabled by default with configurable TTL.
+     *
+     * @param bool $getShared Whether to return shared instance
+     * @param CacheInterface|null $cacheDriver Optional cache driver override
+     * @param bool|null $enableCaching Whether to enable widget caching (null = use config)
+     * @param int|null $cacheTtl Default cache TTL in seconds (null = use config)
      */
-    public static function groupDashboard(bool $getShared = true): GroupDashboardService
-    {
+    public static function groupDashboard(
+        bool $getShared = true,
+        ?CacheInterface $cacheDriver = null,
+        ?bool $enableCaching = null,
+        ?int $cacheTtl = null,
+    ): GroupDashboardService {
         if ($getShared) {
             return static::getSharedInstance('groupDashboard');
+        }
+
+        // Get dashboard configuration
+        $config = config('Dashboard');
+        
+        // Use config values if not explicitly provided
+        $autoDiscover = $config->autoDiscover ?? true;
+        $cachingEnabled = $enableCaching ?? ($config->cacheEnabled ?? true);
+        $ttl = $cacheTtl ?? ($config->defaultCacheTtl ?? 180);
+
+        // Use CodeIgniter's cache driver if caching is enabled and no driver provided
+        if ($cacheDriver === null && $cachingEnabled) {
+            $cacheDriver = service('cache');
         }
 
         // Auto-discover all widget providers from registered namespaces
         $service = new GroupDashboardService(
             Database::connect(),
             SharedServices::clock(),
-            autoDiscover: true,
+            autoDiscover: $autoDiscover,
+            cacheDriver: $cacheDriver,
+            enableCaching: $cachingEnabled,
+            cacheTtl: $ttl,
         );
 
         return $service;
