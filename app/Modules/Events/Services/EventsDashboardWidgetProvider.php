@@ -29,6 +29,7 @@ final class EventsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: MyUpcomingEventsWidgetRenderer::class,
                 order: 10,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // Group upcoming events
@@ -42,6 +43,7 @@ final class EventsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: GroupUpcomingEventsWidgetRenderer::class,
                 order: 20,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // My registrations
@@ -55,6 +57,7 @@ final class EventsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: MyRegistrationsWidgetRenderer::class,
                 order: 30,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
 
             // Events I'm organizing
@@ -68,6 +71,7 @@ final class EventsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: MyEventsWidgetRenderer::class,
                 order: 40,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
 
             // Committee tasks (if enabled)
@@ -81,6 +85,7 @@ final class EventsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: CommitteeTasksWidgetRenderer::class,
                 order: 50,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // Event analytics (for leaders)
@@ -94,6 +99,7 @@ final class EventsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: EventAnalyticsWidgetRenderer::class,
                 order: 60,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
         ];
     }

@@ -29,6 +29,7 @@ final class ContributionsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: MyGivingWidgetRenderer::class,
                 order: 10,
                 section: 'giving',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // My commitments
@@ -42,6 +43,7 @@ final class ContributionsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: MyCommitmentsWidgetRenderer::class,
                 order: 20,
                 section: 'giving',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
 
             // Group giving progress (for leaders)
@@ -55,6 +57,7 @@ final class ContributionsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: GroupGivingWidgetRenderer::class,
                 order: 30,
                 section: 'giving',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // Giving leaderboard (for leaders with report.view)
@@ -68,6 +71,7 @@ final class ContributionsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: GivingLeaderboardWidgetRenderer::class,
                 order: 40,
                 section: 'giving',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // Causes I support
@@ -81,6 +85,7 @@ final class ContributionsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: MyCausesWidgetRenderer::class,
                 order: 50,
                 section: 'giving',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
         ];
     }

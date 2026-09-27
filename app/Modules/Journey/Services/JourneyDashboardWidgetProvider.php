@@ -30,6 +30,7 @@ final class JourneyDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: MyStageWidgetRenderer::class,
                 order: 10,
                 section: 'journey',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // My journey progress
@@ -43,6 +44,7 @@ final class JourneyDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: MyProgressWidgetRenderer::class,
                 order: 20,
                 section: 'journey',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // Group pipeline (for leaders)
@@ -56,6 +58,7 @@ final class JourneyDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: GroupPipelineWidgetRenderer::class,
                 order: 30,
                 section: 'journey',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // Disciples under my care
@@ -69,6 +72,7 @@ final class JourneyDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: MyDisciplesWidgetRenderer::class,
                 order: 40,
                 section: 'journey',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
 
             // Discipling leaderboard (for leaders)
@@ -82,6 +86,7 @@ final class JourneyDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: DisciplingLeaderboardWidgetRenderer::class,
                 order: 50,
                 section: 'journey',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
         ];
     }

@@ -25,6 +25,7 @@ final class ReportingDashboardWidgetProvider implements GroupDashboardWidgetProv
                 rendererClass: GroupFunnelWidgetRenderer::class,
                 order: 10,
                 section: 'reports',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
         ];
     }

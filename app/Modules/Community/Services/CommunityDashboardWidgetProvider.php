@@ -25,6 +25,7 @@ final class CommunityDashboardWidgetProvider implements GroupDashboardWidgetProv
                 rendererClass: GroupFeedWidgetRenderer::class,
                 order: 10,
                 section: 'community',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
             new GroupDashboardWidget(
                 module: 'Community',
@@ -36,6 +37,7 @@ final class CommunityDashboardWidgetProvider implements GroupDashboardWidgetProv
                 rendererClass: RecentPostsWidgetRenderer::class,
                 order: 20,
                 section: 'community',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
         ];
     }

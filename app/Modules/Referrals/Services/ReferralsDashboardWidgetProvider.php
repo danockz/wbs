@@ -25,6 +25,7 @@ final class ReferralsDashboardWidgetProvider implements GroupDashboardWidgetProv
                 rendererClass: MyReferralsWidgetRenderer::class,
                 order: 10,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
             new GroupDashboardWidget(
                 module: 'Referrals',
@@ -36,6 +37,7 @@ final class ReferralsDashboardWidgetProvider implements GroupDashboardWidgetProv
                 rendererClass: GroupOutreachWidgetRenderer::class,
                 order: 20,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
         ];
     }

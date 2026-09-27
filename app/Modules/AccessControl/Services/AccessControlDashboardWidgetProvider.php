@@ -25,6 +25,7 @@ final class AccessControlDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: MyRequestsWidgetRenderer::class,
                 order: 10,
                 section: 'access',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
             new GroupDashboardWidget(
                 module: 'AccessControl',
@@ -36,6 +37,7 @@ final class AccessControlDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: PendingApprovalsWidgetRenderer::class,
                 order: 20,
                 section: 'access',
+                cacheType: GroupDashboardWidget::CACHE_LIVE,
             ),
         ];
     }

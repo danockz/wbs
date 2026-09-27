@@ -31,6 +31,7 @@ final class GroupsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: GroupMembershipWidgetRenderer::class,
                 order: 10,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // Group hierarchy navigation
@@ -44,6 +45,7 @@ final class GroupsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: GroupHierarchyWidgetRenderer::class,
                 order: 20,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_STATIC,
             ),
 
             // Birthdays widget (if enabled)
@@ -57,6 +59,7 @@ final class GroupsDashboardWidgetProvider implements GroupDashboardWidgetProvide
                 rendererClass: GroupBirthdaysWidgetRenderer::class,
                 order: 30,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
         ];
     }

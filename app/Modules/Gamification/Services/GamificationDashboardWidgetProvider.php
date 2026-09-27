@@ -29,6 +29,7 @@ final class GamificationDashboardWidgetProvider implements GroupDashboardWidgetP
                 rendererClass: MyStandingWidgetRenderer::class,
                 order: 10,
                 section: 'gamification',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // My points summary
@@ -42,6 +43,7 @@ final class GamificationDashboardWidgetProvider implements GroupDashboardWidgetP
                 rendererClass: MyPointsWidgetRenderer::class,
                 order: 20,
                 section: 'gamification',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // My badges
@@ -55,6 +57,7 @@ final class GamificationDashboardWidgetProvider implements GroupDashboardWidgetP
                 rendererClass: MyBadgesWidgetRenderer::class,
                 order: 30,
                 section: 'gamification',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
 
             // Group leaderboard (if user has permission)
@@ -68,6 +71,7 @@ final class GamificationDashboardWidgetProvider implements GroupDashboardWidgetP
                 rendererClass: GroupLeaderboardWidgetRenderer::class,
                 order: 40,
                 section: 'gamification',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // My streaks
@@ -81,6 +85,7 @@ final class GamificationDashboardWidgetProvider implements GroupDashboardWidgetP
                 rendererClass: MyStreaksWidgetRenderer::class,
                 order: 50,
                 section: 'gamification',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // My achievements
@@ -94,6 +99,7 @@ final class GamificationDashboardWidgetProvider implements GroupDashboardWidgetP
                 rendererClass: MyAchievementsWidgetRenderer::class,
                 order: 60,
                 section: 'gamification',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
         ];
     }

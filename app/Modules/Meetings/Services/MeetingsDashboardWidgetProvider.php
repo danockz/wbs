@@ -25,6 +25,7 @@ final class MeetingsDashboardWidgetProvider implements GroupDashboardWidgetProvi
                 rendererClass: MyMeetingsWidgetRenderer::class,
                 order: 10,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
             new GroupDashboardWidget(
                 module: 'Meetings',
@@ -36,6 +37,7 @@ final class MeetingsDashboardWidgetProvider implements GroupDashboardWidgetProvi
                 rendererClass: GroupScheduleWidgetRenderer::class,
                 order: 20,
                 section: 'events',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
         ];
     }

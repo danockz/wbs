@@ -25,6 +25,7 @@ final class StreamingDashboardWidgetProvider implements GroupDashboardWidgetProv
                 rendererClass: LiveStreamsWidgetRenderer::class,
                 order: 10,
                 section: 'streaming',
+                cacheType: GroupDashboardWidget::CACHE_LIVE,
             ),
         ];
     }

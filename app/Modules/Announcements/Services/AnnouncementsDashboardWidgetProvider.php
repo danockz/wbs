@@ -25,6 +25,7 @@ final class AnnouncementsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: MyAnnouncementsWidgetRenderer::class,
                 order: 10,
                 section: 'comms',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
             new GroupDashboardWidget(
                 module: 'Announcements',
@@ -36,6 +37,7 @@ final class AnnouncementsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: GroupAnnouncementsWidgetRenderer::class,
                 order: 20,
                 section: 'comms',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
         ];
     }

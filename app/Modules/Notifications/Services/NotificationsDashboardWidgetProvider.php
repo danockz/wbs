@@ -25,6 +25,7 @@ final class NotificationsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: MyNotificationsWidgetRenderer::class,
                 order: 10,
                 section: 'comms',
+                cacheType: GroupDashboardWidget::CACHE_LIVE,
             ),
             new GroupDashboardWidget(
                 module: 'Notifications',
@@ -36,6 +37,7 @@ final class NotificationsDashboardWidgetProvider implements GroupDashboardWidget
                 rendererClass: CampaignStatusWidgetRenderer::class,
                 order: 30,
                 section: 'comms',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
         ];
     }

@@ -30,6 +30,7 @@ final class IdentityDashboardWidgetProvider implements GroupDashboardWidgetProvi
                 rendererClass: MyProfileWidgetRenderer::class,
                 order: 10,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_STATIC,
             ),
 
             // My group memberships
@@ -43,6 +44,7 @@ final class IdentityDashboardWidgetProvider implements GroupDashboardWidgetProvi
                 rendererClass: MyMembershipsWidgetRenderer::class,
                 order: 20,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // Recent members (for leaders)
@@ -56,6 +58,7 @@ final class IdentityDashboardWidgetProvider implements GroupDashboardWidgetProvi
                 rendererClass: RecentMembersWidgetRenderer::class,
                 order: 30,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_REALTIME,
             ),
 
             // Membership conflicts (for admins)
@@ -69,6 +72,7 @@ final class IdentityDashboardWidgetProvider implements GroupDashboardWidgetProvi
                 rendererClass: MembershipConflictsWidgetRenderer::class,
                 order: 40,
                 section: 'people',
+                cacheType: GroupDashboardWidget::CACHE_LIVE,
             ),
         ];
     }

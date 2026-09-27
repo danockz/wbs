@@ -29,6 +29,7 @@ final class CoursesDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: MyCoursesWidgetRenderer::class,
                 order: 10,
                 section: 'learning',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
 
             // My course progress
@@ -42,6 +43,7 @@ final class CoursesDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: MyCourseProgressWidgetRenderer::class,
                 order: 20,
                 section: 'learning',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
 
             // Group courses (for leaders)
@@ -55,6 +57,7 @@ final class CoursesDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: GroupCoursesWidgetRenderer::class,
                 order: 30,
                 section: 'learning',
+                cacheType: GroupDashboardWidget::CACHE_LIST,
             ),
 
             // Group completion rates (for leaders)
@@ -68,6 +71,7 @@ final class CoursesDashboardWidgetProvider implements GroupDashboardWidgetProvid
                 rendererClass: CompletionRatesWidgetRenderer::class,
                 order: 40,
                 section: 'learning',
+                cacheType: GroupDashboardWidget::CACHE_SUMMARY,
             ),
         ];
     }
