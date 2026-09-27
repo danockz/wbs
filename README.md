@@ -3,6 +3,9 @@
 A highly secure, multilingual, modular community & capacity-building platform
 built around the **Win–Build–Send** funnel.
 
+Dated apply-pack history (full original text, newest first) is in
+[`CHANGELOG.md`](CHANGELOG.md). How to run locally is in [`RUNBOOK.md`](RUNBOOK.md).
+
 > **Status: Feature-complete across all 18 modules.** Every confirmed SRS
 > functional-requirement gap tracked in `docs/SRS_FR_COVERAGE_AUDIT.md` is now
 > implemented and verified. Current footprint: **18 modules · 39 migrations · 48
