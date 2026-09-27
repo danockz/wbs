@@ -10,21 +10,8 @@ use WBS\Audit\Config\Services as AuditServices;
 use WBS\Identity\Config\Services as IdentityServices;
 use WBS\Journey\Config\Services as JourneyServices;
 use WBS\Admin\Config\Services as AdminServices;
-use WBS\Groups\Services\GroupsDashboardWidgetProvider;
-use WBS\Gamification\Services\GamificationDashboardWidgetProvider;
-use WBS\Identity\Services\IdentityDashboardWidgetProvider;
-use WBS\Journey\Services\JourneyDashboardWidgetProvider;
-use WBS\Events\Services\EventsDashboardWidgetProvider;
-use WBS\Contributions\Services\ContributionsDashboardWidgetProvider;
-use WBS\Courses\Services\CoursesDashboardWidgetProvider;
-use WBS\Community\Services\CommunityDashboardWidgetProvider;
-use WBS\Announcements\Services\AnnouncementsDashboardWidgetProvider;
-use WBS\Notifications\Services\NotificationsDashboardWidgetProvider;
-use WBS\AccessControl\Services\AccessControlDashboardWidgetProvider;
-use WBS\Reporting\Services\ReportingDashboardWidgetProvider;
-use WBS\Referrals\Services\ReferralsDashboardWidgetProvider;
-use WBS\Meetings\Services\MeetingsDashboardWidgetProvider;
-use WBS\Streaming\Services\StreamingDashboardWidgetProvider;
+use WBS\Groups\Services\GroupDashboardService;
+use WBS\Groups\Support\WidgetProviderDiscovery;
 use WBS\Shared\Config\Services as SharedServices;
 
 /**
@@ -55,7 +42,7 @@ class Services extends BaseService
 
     /**
      * Hierarchical group dashboard service.
-     * Collects and renders widgets from all modules.
+     * Collects and renders widgets from all modules via auto-discovery.
      */
     public static function groupDashboard(bool $getShared = true): GroupDashboardService
     {
@@ -63,27 +50,12 @@ class Services extends BaseService
             return static::getSharedInstance('groupDashboard');
         }
 
+        // Auto-discover all widget providers from registered namespaces
         $service = new GroupDashboardService(
             Database::connect(),
             SharedServices::clock(),
+            autoDiscover: true,
         );
-
-        // Register all module widget providers
-        $service->registerProvider(new GroupsDashboardWidgetProvider());
-        $service->registerProvider(new GamificationDashboardWidgetProvider());
-        $service->registerProvider(new IdentityDashboardWidgetProvider());
-        $service->registerProvider(new JourneyDashboardWidgetProvider());
-        $service->registerProvider(new EventsDashboardWidgetProvider());
-        $service->registerProvider(new ContributionsDashboardWidgetProvider());
-        $service->registerProvider(new CoursesDashboardWidgetProvider());
-        $service->registerProvider(new CommunityDashboardWidgetProvider());
-        $service->registerProvider(new AnnouncementsDashboardWidgetProvider());
-        $service->registerProvider(new NotificationsDashboardWidgetProvider());
-        $service->registerProvider(new AccessControlDashboardWidgetProvider());
-        $service->registerProvider(new ReportingDashboardWidgetProvider());
-        $service->registerProvider(new ReferralsDashboardWidgetProvider());
-        $service->registerProvider(new MeetingsDashboardWidgetProvider());
-        $service->registerProvider(new StreamingDashboardWidgetProvider());
 
         return $service;
     }

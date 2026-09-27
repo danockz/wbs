@@ -8,6 +8,7 @@ use CodeIgniter\Database\BaseConnection;
 use WBS\Groups\Support\GroupDashboardScope;
 use WBS\Groups\Support\GroupDashboardWidget;
 use WBS\Groups\Support\GroupDashboardWidgetProvider;
+use WBS\Groups\Support\WidgetProviderDiscovery;
 use WBS\Groups\Support\WidgetRenderer;
 use WBS\Shared\Support\Clock;
 use WBS\Shared\Support\Result;
@@ -27,10 +28,17 @@ final class GroupDashboardService
     /** @var array<string,WidgetRenderer> Cache of renderer instances */
     private array $renderers = [];
 
+    /** @var bool Whether auto-discovery has been performed */
+    private bool $discovered = false;
+
     public function __construct(
         private readonly BaseConnection $db,
         private readonly Clock $clock,
+        bool $autoDiscover = true,
     ) {
+        if ($autoDiscover) {
+            $this->discoverProviders();
+        }
     }
 
     /**
@@ -39,6 +47,27 @@ final class GroupDashboardService
     public function registerProvider(GroupDashboardWidgetProvider $provider): void
     {
         $this->providers[] = $provider;
+    }
+
+    /**
+     * Auto-discover and register all widget providers from known namespaces.
+     */
+    private function discoverProviders(): void
+    {
+        if ($this->discovered) {
+            return;
+        }
+        
+        WidgetProviderDiscovery::discoverAndRegister($this);
+        $this->discovered = true;
+    }
+
+    /**
+     * Manually trigger discovery (useful if providers are added after construction).
+     */
+    public function discover(): void
+    {
+        $this->discoverProviders();
     }
 
     /**

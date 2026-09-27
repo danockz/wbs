@@ -464,6 +464,7 @@ return [
         'countUp' => '{0} of {1}',
     ],
 
+
     'dashboard' => [
         'title' => 'Group Dashboard',
         'subtitle' => 'Overview of your groups and their activities',
@@ -472,6 +473,7 @@ return [
         'viewingGroup' => 'Viewing: {0}',
         'noWidgets' => 'No widgets available for your current scope.',
         'noGroupsHint' => 'Join a group to see group-related widgets.',
+        'noWidgetsHint' => 'Widgets will appear as features are enabled for your groups.',
         'asOf' => 'As of {0}',
         'widgetCount' => '{0} widget(s)',
         'widgetComingSoon' => 'Coming soon...',
@@ -483,8 +485,8 @@ return [
         'configBadge' => 'Config',
         'widgetEmpty' => 'No data available',
         'gated' => 'Gated',
-        'noGroupsHint' => 'Join a group to see group-related widgets.',
-        'noWidgetsHint' => 'Widgets will appear as features are enabled for your groups.',
+        'groupId' => 'Group: {0}',
+        'scope' => [
             'self' => 'Personal',
             'membership' => 'My Groups',
             'membership_desc' => 'My Groups + Descendants',
@@ -492,13 +494,19 @@ return [
             'ancestors' => 'Ancestors',
             'ancestor_only' => 'Leaders Above',
         ],
-        'noWidgetsHint' => 'Widgets will appear as modules are enabled for your groups.',
+        'section' => [
             'default' => 'General',
             'events' => 'Events',
             'giving' => 'Giving',
             'people' => 'People',
             'learning' => 'Learning',
             'reports' => 'Reports',
+            'comms' => 'Communications',
+            'community' => 'Community',
+            'access' => 'Access',
+            'streaming' => 'Streaming',
+            'journey' => 'Journey',
+            'gamification' => 'Gamification',
         ],
         'widgets' => [
             'membershipSummary' => 'My Groups',
