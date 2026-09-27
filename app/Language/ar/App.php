@@ -29,6 +29,7 @@ return [
         'overview_approvals'      => 'الموافقات المنتظرة',
         'overview_sessions'       => 'جلساتي',
         'overview_profile'       => 'تعديل ملفي الشخصي',
+        'overview_birthdays'     => 'أعياد الميلاد',
         'people_members'          => 'الأعضاء',
         'people_bulk'             => 'تسجيل جماعي',
         'people_pipeline'         => 'مسار صناعة التلاميذ',

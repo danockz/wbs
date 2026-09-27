@@ -43,6 +43,7 @@ return [
         'overview_approvals'      => 'Approvals awaiting me',
         'overview_sessions'       => 'My sessions',
         'overview_profile'       => 'Edit my profile',
+        'overview_birthdays'     => 'Birthdays',
         'people_members'          => 'Members',
         'people_bulk'             => 'Bulk sign-up',
         'people_pipeline'         => 'Disciple-making pipeline',

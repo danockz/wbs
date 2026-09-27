@@ -232,7 +232,7 @@ namespace {
         && (int) array_values($override)[0]['enabled'] === 1);
 
     chk('gamification_config seeded (7)', count($db->rows['gamification_config'] ?? []) === 7);
-    chk('group_configurations seeded (8)', count($db->rows['group_configurations'] ?? []) === 8);
+    chk('group_configurations seeded (9)', count($db->rows['group_configurations'] ?? []) === 9);
     // The event_committee capability ships DISABLED (default-OFF gating), and the
     // seeder must not silently turn committees on for the demo org.
     $committeeCfg = array_values(array_filter(
@@ -251,6 +251,13 @@ namespace {
     chk('integration_decisions capability seeded once', count($intCfg) === 1);
     chk('integration_decisions seeded DISABLED (default OFF)', count($intCfg) === 1
         && (json_decode((string) $intCfg[0]['value_json'], true)['enabled'] ?? true) === false);
+    $bdayCfg = array_values(array_filter(
+        $db->rows['group_configurations'] ?? [],
+        static fn ($r): bool => (string) $r['capability'] === 'groups.birthdays',
+    ));
+    chk('groups.birthdays capability seeded once', count($bdayCfg) === 1);
+    chk('groups.birthdays seeded DISABLED (default OFF)', count($bdayCfg) === 1
+        && (json_decode((string) $bdayCfg[0]['value_json'], true)['enabled'] ?? true) === false);
     // every inheritance mode present at least once
     $modes = array_unique(array_map(fn ($r) => $r['inheritance_mode'], $db->rows['group_configurations'] ?? []));
     foreach (['ancestor_default_child_override', 'inherit_only', 'child_owned', 'not_inheritable'] as $m) {

@@ -196,14 +196,25 @@ final class EventController extends BaseController
 
         $events = $this->calendarEventsInRange($first, $next, $scope);
 
+        $birthdays = [];
+        $uid       = $this->actorId();
+        if ($uid !== null) {
+            try {
+                $birthdays = GroupServices::birthdays()->forCalendar($this->orgId(), $uid, $year, $month);
+            } catch (\Throwable) {
+                $birthdays = [];
+            }
+        }
+
         return $this->respondWith(
-            Result::ok(['events' => $events, 'year' => $year, 'month' => $month]),
+            Result::ok(['events' => $events, 'year' => $year, 'month' => $month, 'birthdays' => $birthdays]),
             htmlView: 'WBS\Events\Views\calendar',
             viewData: [
                 'group_id'      => $scope['selected'],
                 'year'          => $year,
                 'month'         => $month,
                 'events'        => $events,
+                'birthdays'     => $birthdays,
                 'picker'        => $scope['picker'],
                 'settings'      => $scope['settings'],
                 'can_configure' => $scope['can_configure'],

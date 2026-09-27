@@ -228,6 +228,14 @@ php spark identity:prune-sessions --retention-days=7
 php spark acl:expire            # all orgs
 php spark acl:expire --org=<uuid>
 
+# Scheduled (cron): in-app birthday notices for today (org timezone).
+# Gated by hierarchical group config `groups.birthdays` (default OFF).
+# Hub / notify / calendar are separate flags; peers 7d and leaders 30d
+# unless the group overrides peer_days / leader_days / show_peers / show_leaders.
+# Idempotent via notification_deliveries.dedupe_key. Run daily.
+php spark birthdays:notify --all
+php spark birthdays:notify --org=<uuid>
+
 # One-off: import public geo reference data (dr5hn / GeoDB), hierarchy order.
 # Source ids are preserved as our PKs; re-running is an idempotent no-op.
 php spark geo:import --dir=/data/geo --version=2024.1 --source=dr5hn

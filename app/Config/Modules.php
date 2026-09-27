@@ -73,6 +73,7 @@ class Modules extends BaseModules
      * @var list<string>
      */
     public $aliases = [
+        'commands',
         'events',
         'filters',
         'registrars',

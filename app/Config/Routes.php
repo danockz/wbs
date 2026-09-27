@@ -52,6 +52,9 @@ $routes->get('me', '\WBS\Identity\Controllers\WebSessionController::me', ['filte
 $routes->get('me/profile', '\WBS\Identity\Controllers\WebSessionController::profile', ['filter' => 'auth']);
 $routes->post('me/profile', '\WBS\Identity\Controllers\WebSessionController::updateProfile', ['filter' => ['auth', 'webcsrf']]);
 
+// Birthday hub (own + peers in current groups + ancestor-group leaders).
+$routes->get('me/birthdays', '\WBS\Groups\Controllers\BirthdayController::index', ['filter' => 'auth']);
+
 // Member profile photo (self-service). The AVATAR endpoint always returns an
 // image — the member's photo when set, else a deterministic inline-SVG initials
 // avatar (no external calls, works in a network-less preview). Set/remove are

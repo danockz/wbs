@@ -9,6 +9,9 @@ use Config\Database;
 use WBS\Audit\Config\Services as AuditServices;
 use WBS\Identity\Config\Services as IdentityServices;
 use WBS\Journey\Config\Services as JourneyServices;
+use WBS\Admin\Config\Services as AdminServices;
+use WBS\Groups\Services\BirthdayConfigAdapter;
+use WBS\Groups\Services\BirthdayService;
 use WBS\Groups\Services\GroupCrosscutService;
 use WBS\Groups\Services\GroupKindService;
 use WBS\Groups\Services\GroupLifecycleService;
@@ -23,6 +26,26 @@ use WBS\Shared\Config\Services as SharedServices;
  */
 class Services extends BaseService
 {
+    private static ?BirthdayService $birthdays = null;
+
+    /**
+     * Hierarchical group-aware birthdays (hub + calendar overlay + notify).
+     * Module-local cache — not getSharedInstance — so tests can construct
+     * BirthdayService directly without fighting the CI4 shared bag.
+     */
+    public static function birthdays(): BirthdayService
+    {
+        if (self::$birthdays === null) {
+            self::$birthdays = new BirthdayService(
+                Database::connect(),
+                SharedServices::clock(),
+                new BirthdayConfigAdapter(AdminServices::effectiveConfig()),
+            );
+        }
+
+        return self::$birthdays;
+    }
+
     public static function groups(bool $getShared = true): GroupService
     {
         if ($getShared) {

@@ -18,11 +18,13 @@
  * @var int     $year
  * @var int     $month  1..12
  * @var list<array<string,mixed>> $events  events whose start falls in this month
+ * @var list<array<string,mixed>> $birthdays windowed overlay chips (not event rows)
  */
-$group_id = $group_id ?? null;
-$year     = (int) ($year ?? (int) gmdate('Y'));
-$month    = (int) ($month ?? (int) gmdate('n'));
-$events   = $events ?? [];
+$group_id  = $group_id ?? null;
+$year      = (int) ($year ?? (int) gmdate('Y'));
+$month     = (int) ($month ?? (int) gmdate('n'));
+$events    = $events ?? [];
+$birthdays = is_array($birthdays ?? null) ? $birthdays : [];
 
 include __DIR__ . '/_locale.php';
 
@@ -47,6 +49,14 @@ foreach ($events as $e) {
     $day = (int) substr($starts, 8, 2); // YYYY-MM-DD -> DD
     if ($day >= 1 && $day <= 31) {
         $byDay[$day][] = $e;
+    }
+}
+
+$bdayByDay = [];
+foreach ($birthdays as $b) {
+    $day = (int) ($b['day'] ?? 0);
+    if ($day >= 1 && $day <= 31) {
+        $bdayByDay[$day][] = $b;
     }
 }
 
@@ -123,7 +133,7 @@ $MAX_CHIPS = 3;
             <a class="btn" href="/events/calendar<?= esc($gq(['month' => sprintf('%04d-%02d', $nextY, $nextM)]), 'attr') ?>"><?= esc(lang('Events.calendar.next')) ?> &#8594;</a>
         </div>
 
-        <?php if ($events === []): ?>
+        <?php if ($events === [] && $birthdays === []): ?>
             <p class="empty"><?= esc(lang('Events.calendar.empty')) ?></p>
         <?php endif; ?>
 
@@ -151,6 +161,11 @@ $MAX_CHIPS = 3;
                         <?php $col = $statusColor((string) ($e['status'] ?? '')); $hm = substr((string) ($e['starts_at'] ?? ''), 11, 5); ?>
                         <a class="chip" style="border-inline-start-color:<?= esc($col, 'attr') ?>" href="/events/<?= esc((string) $e['id'], 'attr') ?>" title="<?= esc((string) $e['title'], 'attr') ?>">
                             <?php if ($hm !== ''): ?><span class="t"><?= esc($hm) ?></span> <?php endif; ?><?= esc((string) $e['title']) ?>
+                        </a>
+                    <?php endforeach; ?>
+                    <?php foreach (($bdayByDay[$d] ?? []) as $b): ?>
+                        <a class="chip" style="border-inline-start-color:#f9a8d4" href="/me/birthdays" title="<?= esc((string) ($b['display_name'] ?? ''), 'attr') ?>">
+                            <?= esc((string) ($b['display_name'] ?? '')) ?>
                         </a>
                     <?php endforeach; ?>
                     <?php if (count($dayEvents) > $MAX_CHIPS): ?>

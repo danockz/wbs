@@ -29,6 +29,7 @@ return [
         'overview_approvals'      => 'Aprobaciones pendientes',
         'overview_sessions'       => 'Mis sesiones',
         'overview_profile'       => 'Editar mi perfil',
+        'overview_birthdays'     => 'Cumpleaños',
         'people_members'          => 'Miembros',
         'people_bulk'             => 'Registro masivo',
         'people_pipeline'         => 'Embudo de discipulado',

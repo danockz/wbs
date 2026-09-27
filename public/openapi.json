@@ -4095,7 +4095,7 @@
         ],
         "operationId": "templatesConsole_get_certificates_templates",
         "summary": "Templates console",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::templatesConsole`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::templatesConsole`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -4150,7 +4150,7 @@
         ],
         "operationId": "createTemplate_post_certificates_templates",
         "summary": "Create template",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::createTemplate`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::createTemplate`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "201": {
             "description": "Success \u2014 Result envelope.",
@@ -4212,13 +4212,79 @@
       }
     },
     "/certificates/templates/{templateId}": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "operationId": "editTemplate_get_certificates_templates_segment",
+        "summary": "Edit template",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::editTemplate`.\n\nRequires permission(s): `event.certificate.manage,any`.",
+        "responses": {
+          "200": {
+            "description": "Success \u2014 Result envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation or request error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden \u2014 missing permission.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Resource identifier (UUIDv7)."
+          }
+        ],
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "Events"
         ],
         "operationId": "reviseTemplate_post_certificates_templates_segment",
         "summary": "Revise template",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::reviseTemplate`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::reviseTemplate`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -4297,7 +4363,7 @@
         ],
         "operationId": "editTemplate_get_certificates_templates_segment_edit",
         "summary": "Edit template",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::editTemplate`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::editTemplate`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -4365,7 +4431,7 @@
         ],
         "operationId": "previewTemplate_get_certificates_templates_segment_preview",
         "summary": "Preview template",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::previewTemplate`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::previewTemplate`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -4433,7 +4499,7 @@
         ],
         "operationId": "retireTemplate_post_certificates_templates_segment_retire",
         "summary": "Retire template",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::retireTemplate`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::retireTemplate`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -4613,7 +4679,7 @@
         ],
         "operationId": "issue_post_certificates_segment_issue",
         "summary": "Issue",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::issue`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::issue`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -4692,7 +4758,7 @@
         ],
         "operationId": "revoke_post_certificates_segment_revoke",
         "summary": "Revoke",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::revoke`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::revoke`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -8767,7 +8833,7 @@
         ],
         "operationId": "eventConsole_get_events_segment_certificates",
         "summary": "Event console",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::eventConsole`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::eventConsole`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -8835,7 +8901,7 @@
         ],
         "operationId": "requestForEvent_post_events_segment_certificates_request",
         "summary": "Request for event",
-        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::requestForEvent`.\n\nRequires permission(s): `event.certificate.manage`.",
+        "description": "Handler `WBS\\Events\\Controllers\\CertificateController::requestForEvent`.\n\nRequires permission(s): `event.certificate.manage,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -28263,6 +28329,53 @@
         ]
       }
     },
+    "/me/birthdays": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "operationId": "index_get_me_birthdays",
+        "summary": "Index",
+        "description": "Handler `WBS\\Groups\\Controllers\\BirthdayController::index`.\n\nRequires an authenticated session or API token.",
+        "responses": {
+          "200": {
+            "description": "Success \u2014 Result envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation or request error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ]
+      }
+    },
     "/me/contacts": {
       "get": {
         "tags": [
@@ -30667,7 +30780,7 @@
         ],
         "operationId": "index_get_notifications_credentials",
         "summary": "Index",
-        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::index`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::index`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -30724,7 +30837,7 @@
         ],
         "operationId": "create_post_notifications_credentials_connections",
         "summary": "Create",
-        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::create`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::create`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "201": {
             "description": "Success \u2014 Result envelope.",
@@ -30792,7 +30905,7 @@
         ],
         "operationId": "grant_post_notifications_credentials_connections_segment_grants",
         "summary": "Grant",
-        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::grant`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::grant`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -30950,7 +31063,7 @@
         ],
         "operationId": "revokeGrant_post_notifications_credentials_grants_segment_revoke",
         "summary": "Revoke grant",
-        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::revokeGrant`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\GroupCredentialController::revokeGrant`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -31107,7 +31220,7 @@
         ],
         "operationId": "index_get_notifications_templates",
         "summary": "Index",
-        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::index`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::index`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -31162,7 +31275,7 @@
         ],
         "operationId": "create_post_notifications_templates",
         "summary": "Create",
-        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::create`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::create`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "201": {
             "description": "Success \u2014 Result envelope.",
@@ -31230,7 +31343,7 @@
         ],
         "operationId": "revise_post_notifications_templates_segment",
         "summary": "Revise",
-        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::revise`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::revise`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -31309,7 +31422,7 @@
         ],
         "operationId": "edit_get_notifications_templates_segment_edit",
         "summary": "Edit",
-        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::edit`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::edit`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -31377,7 +31490,7 @@
         ],
         "operationId": "retire_post_notifications_templates_segment_retire",
         "summary": "Retire",
-        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::retire`.\n\nRequires permission(s): `provider.configure`.",
+        "description": "Handler `WBS\\Notifications\\Controllers\\TemplateController::retire`.\n\nRequires permission(s): `provider.configure,any`.",
         "responses": {
           "200": {
             "description": "Success \u2014 Result envelope.",
@@ -40002,7 +40115,7 @@
     "contribution.refund.approve",
     "contribution.refund.request",
     "course.create,any",
-    "event.certificate.manage",
+    "event.certificate.manage,any",
     "event.create,any",
     "event.expense.approve",
     "event.expense.approve,any",
@@ -40024,6 +40137,7 @@
     "notification.send",
     "notification.send,any",
     "provider.configure",
+    "provider.configure,any",
     "referral.link.create",
     "report.export,any",
     "report.view",

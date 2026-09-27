@@ -29,6 +29,7 @@ return [
         'overview_approvals'      => '待我审批',
         'overview_sessions'       => '我的会话',
         'overview_profile'       => '编辑我的资料',
+        'overview_birthdays'     => '生日',
         'people_members'          => '成员',
         'people_bulk'             => '批量注册',
         'people_pipeline'         => '门徒培养管道',

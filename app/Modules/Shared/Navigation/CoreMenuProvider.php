@@ -40,6 +40,7 @@ final class CoreMenuProvider
             new MenuItem('overview.approvals', $C::OVERVIEW, 'Approvals awaiting me', 'access-requests/pending', icon: 'inbox', order: 28),
             new MenuItem('overview.sessions', $C::OVERVIEW, 'My sessions', 'me/sessions', icon: 'shield', order: 30),
             new MenuItem('overview.profile', $C::OVERVIEW, 'Edit my profile', 'me/profile', icon: 'user', order: 35),
+            new MenuItem('overview.birthdays', $C::OVERVIEW, 'Birthdays', 'me/birthdays', icon: 'calendar', order: 36),
 
             // ---- People ----
             new MenuItem('people.members', $C::PEOPLE, 'Members', 'members', permissions: ['identity.manage'], scopeCheck: 'any', icon: 'users', order: 10),

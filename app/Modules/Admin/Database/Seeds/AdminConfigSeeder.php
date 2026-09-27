@@ -345,6 +345,18 @@ class AdminConfigSeeder extends Seeder
             // seeded DISABLED — the capability is default OFF everywhere
             // (IntegrationConfig::CAPABILITY). A leader turns it on for their own
             // subtree; descendants inherit unless they override.
+            // Birthdays: hub + in-app notify + calendar overlay. Seeded DISABLED
+            // (BirthdayConfig::CAPABILITY) — a leader turns it on for their subtree.
+            ['wbs-national',    'groups.birthdays', 'ancestor_default_child_override', [
+                'enabled'      => false,
+                'peer_days'    => 7,
+                'leader_days'  => 30,
+                'show_peers'   => true,
+                'show_leaders' => true,
+                'hub'          => true,
+                'notify'       => true,
+                'calendar'     => true,
+            ]],
             ['wbs-national',    'referrals.integration_decisions', 'ancestor_default_child_override', [
                 'enabled'                             => false,
                 'required_groups'                     => ['salvation', 'water_baptism', 'holy_spirit_baptism', 'foundation_course'],

@@ -29,6 +29,7 @@ return [
         'overview_approvals'      => 'Approbations en attente',
         'overview_sessions'       => 'Mes sessions',
         'overview_profile'       => 'Modifier mon profil',
+        'overview_birthdays'     => 'Anniversaires',
         'people_members'          => 'Membres',
         'people_bulk'             => 'Inscription groupée',
         'people_pipeline'         => 'Pipeline de formation de disciples',
