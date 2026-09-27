@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace WBS\Groups\Services;
 
+use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\Database\BaseConnection;
+use WBS\Groups\Support\CachingWidgetRenderer;
 use WBS\Groups\Support\GroupDashboardScope;
 use WBS\Groups\Support\GroupDashboardWidget;
 use WBS\Groups\Support\GroupDashboardWidgetProvider;
+use WBS\Groups\Support\WidgetCache;
 use WBS\Groups\Support\WidgetProviderDiscovery;
 use WBS\Groups\Support\WidgetRenderer;
 use WBS\Shared\Support\Clock;
@@ -31,13 +34,27 @@ final class GroupDashboardService
     /** @var bool Whether auto-discovery has been performed */
     private bool $discovered = false;
 
+    /** @var WidgetCache|null Cache instance for widget HTML */
+    private ?WidgetCache $cache = null;
+
+    /** @var bool Whether caching is enabled */
+    private bool $cachingEnabled = false;
+
     public function __construct(
         private readonly BaseConnection $db,
         private readonly Clock $clock,
         bool $autoDiscover = true,
+        ?CacheInterface $cacheDriver = null,
+        bool $enableCaching = false,
+        int $cacheTtl = 180,
     ) {
         if ($autoDiscover) {
             $this->discoverProviders();
+        }
+        
+        if ($enableCaching && $cacheDriver !== null) {
+            $this->cache = new WidgetCache($cacheDriver, $cacheTtl);
+            $this->cachingEnabled = true;
         }
     }
 
@@ -156,20 +173,32 @@ final class GroupDashboardService
             return '';
         }
 
-        if (! isset($this->renderers[$widget->rendererClass])) {
+        $rendererClass = $widget->rendererClass;
+        
+        if (! isset($this->renderers[$rendererClass])) {
             // Try to use create() factory method if available
-            if (method_exists($widget->rendererClass, 'create')) {
-                $renderer = $widget->rendererClass::create();
+            if (method_exists($rendererClass, 'create')) {
+                $renderer = $rendererClass::create();
             } else {
-                $renderer = new $widget->rendererClass();
+                $renderer = new $rendererClass();
             }
             if (! $renderer instanceof WidgetRenderer) {
                 return '';
             }
-            $this->renderers[$widget->rendererClass] = $renderer;
+            
+            // Wrap with caching if enabled
+            if ($this->cachingEnabled && $this->cache !== null) {
+                $renderer = new CachingWidgetRenderer($renderer, $this->cache);
+            }
+            
+            $this->renderers[$rendererClass] = $renderer;
         }
 
-        return $this->renderers[$widget->rendererClass]->render(
+        // Add widget metadata to scope data for cache key generation
+        $scopeData['widget_id'] = $widget->id;
+        $scopeData['cache_type'] = $widget->cacheType;
+
+        return $this->renderers[$rendererClass]->render(
             $scopeData['org_id'] ?? '',
             $scopeData['user_id'] ?? '',
             $scopeData,

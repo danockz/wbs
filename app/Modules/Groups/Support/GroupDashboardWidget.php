@@ -21,6 +21,16 @@ namespace WBS\Groups\Support;
 final readonly class GroupDashboardWidget
 {
     /**
+     * Cache types for widget output.
+     * Determines how long rendered HTML is cached.
+     */
+    public const string CACHE_STATIC = 'static';
+    public const string CACHE_SUMMARY = 'summary';
+    public const string CACHE_LIST = 'list';
+    public const string CACHE_REALTIME = 'realtime';
+    public const string CACHE_LIVE = 'live';
+
+    /**
      * @param string $module      Module name (e.g., 'Events', 'Contributions')
      * @param string $key         Unique key within the module (e.g., 'upcoming_events')
      * @param string $labelKey    Lang key for the widget title (e.g., 'Events.dashboard.upcoming')
@@ -30,6 +40,7 @@ final readonly class GroupDashboardWidget
      * @param string $rendererClass Class name that implements WidgetRenderer
      * @param int $order           Display order within its section (lower = earlier)
      * @param string $section      Section to group under (e.g., 'events', 'giving', 'people')
+     * @param string $cacheType    Cache type: static, summary, list, realtime, live
      */
     public function __construct(
         public string $module,
@@ -41,6 +52,7 @@ final readonly class GroupDashboardWidget
         public string $rendererClass = '',
         public int $order = 100,
         public string $section = 'default',
+        public string $cacheType = self::CACHE_LIST,
     ) {
     }
 
