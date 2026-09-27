@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home — Win–Build–Send</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1000px 500px at 50% -10%, #22d3ee22, transparent), #0b1120; color:#e2e8f0;
+            display:grid; place-items:center; min-height:100vh; padding:20px; }
+        .card { width:100%; max-width:520px; background:#0f172aee; border:1px solid #1e293b; border-radius:16px; padding:32px 30px; }
+        .hi { font-size:1.7rem; margin:0 0 4px; }
+        .sub { color:#94a3b8; margin-bottom:22px; }
+        .badge { display:inline-block; font-size:.8rem; font-weight:600; padding:4px 10px; border-radius:999px;
+            border:1px solid #334155; margin-bottom:22px; }
+        .links { display:grid; gap:10px; margin-bottom:24px; }
+        .links a { display:block; padding:14px 16px; border:1px solid #1e293b; border-radius:12px; background:#0b1120;
+            color:#e2e8f0; text-decoration:none; }
+        .links a:hover { border-color:#22d3ee; }
+        .links .arrow { float:right; color:#22d3ee; }
+        .logout { border:none; background:transparent; color:#f87171; cursor:pointer; font-size:.9rem; padding:0; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="hi">Welcome, Ama Mensah 👋</div>
+        <div class="sub">You're signed in to Win–Build–Send.</div>
+
+        <span class="badge" style="color:#34d399; border-color:#34d39955;">
+            🔐 Strong (MFA)        </span>
+
+        <div class="links">
+            <a href="/g">Browse groups <span class="arrow">→</span></a>
+            <a href="/g">Your community &amp; events <span class="arrow">→</span></a>
+        </div>
+
+        <form method="post" action="/logout">
+            <input type="hidden" name="_csrf" value="demo-csrf-token">
+            <button class="logout" type="submit">Sign out</button>
+        </form>
+    </div>
+</body>
+</html>

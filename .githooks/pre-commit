@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+# WBS pre-commit hook — keep the menu in sync with routes, and keep the
+# standalone test suite green for whatever you touched.
+#
+# Enable once per clone:
+#     git config core.hooksPath .githooks
+#
+set -euo pipefail
+
+changed="$(git diff --cached --name-only)"
+
+# 1) Menu coverage — a page-like GET route must be linked in the catalog or
+#    recorded as an intentional exclusion. Only when routes/menu changed.
+if echo "$changed" | grep -Eq 'app/Config/Routes\.php|app/Modules/Shared/Navigation/'; then
+    echo "• menu coverage check (routes/menu changed)…"
+    php spark menu:scaffold --check
+fi
+
+# 2) i18n parity — if any Language catalog changed, every locale must still mirror
+#    English exactly (keys + {0}/{1} placeholders). Fast, DB-free, always safe.
+if echo "$changed" | grep -Eq 'app/(Modules/[^/]+/)?Language/'; then
+    echo "• i18n catalog parity check (language files changed)…"
+    php app/Modules/Shared/I18n/tests/catalog_parity_test.php >/dev/null \
+        || { echo "  ✗ i18n parity failed — run: composer i18n:parity"; exit 1; }
+fi
+
+# 3) Standalone tests — run the scripts relevant to the staged changes so commits
+#    stay fast while still catching regressions in touched areas. Full suite runs
+#    in CI and via `composer qa`.
+#    Derive a filter from the top-level module(s) touched under app/Modules/.
+mods="$(echo "$changed" | sed -n 's#^app/Modules/\([^/]*\)/.*#\1#p' | sort -u)"
+if [ -n "$mods" ]; then
+    for m in $mods; do
+        # Only run if this module actually ships standalone tests.
+        if find "app/Modules/$m" -name '*_test.php' -not -name '*bench.php' -print -quit | grep -q .; then
+            echo "• standalone tests for module: $m"
+            php tests/run-standalone.php --filter="/Modules/$m/" --quiet \
+                || { echo "  ✗ standalone tests failed for $m — run: composer test:standalone"; exit 1; }
+        fi
+    done
+fi
+
+echo "• pre-commit checks passed"

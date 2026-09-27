@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Record a manual gift</title><style>body{margin:0;background:#0b1120;color:#e2e8f0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:32px;}.sub{color:#94a3b8;margin-bottom:8px;}a{color:#2dd4bf;}.empty{color:#94a3b8;}h1{margin:.2em 0;}</style></head><body>
+
+    <style>
+        .mf-form { max-width:640px; }
+        .mf-form .err { background:#7f1d1d55; border:1px solid #ef4444; color:#fecaca; border-radius:9px; padding:11px 14px; margin-bottom:18px; font-size:.9rem; }
+        .mf-field { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+        .mf-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .mf-form label { font-size:.8rem; font-weight:700; color:#cbd5e1; }
+        .mf-form .hint { font-size:.72rem; color:#64748b; font-weight:400; }
+        .mf-form input[type=number], .mf-form input[type=text], .mf-form input[type=date], .mf-form select {
+            font:inherit; color:#e2e8f0; background:#0b1424; border:1px solid #334155; border-radius:9px; padding:10px 12px; width:100%; }
+        .mf-form input:focus, .mf-form select:focus { outline:none; border-color:#2dd4bf; }
+        .mf-actions { display:flex; gap:12px; margin-top:6px; flex-wrap:wrap; }
+        .mf-btn { border:0; border-radius:9px; cursor:pointer; font-size:.95rem; font-weight:700; font-family:inherit; padding:11px 20px; }
+        .mf-btn.primary { background:#0d9488; color:#fff; }
+        .mf-btn.primary:hover { background:#0f766e; }
+        .mf-btn.ghost { background:transparent; border:1px solid #334155; color:#cbd5e1; text-decoration:none; display:inline-block; }
+        .mf-btn.ghost:hover { border-color:#475569; }
+        .mf-note { background:#0b1424; border:1px solid #1e293b; border-radius:9px; padding:11px 14px; margin-bottom:18px; color:#94a3b8; font-size:.82rem; }
+        .mf-sec { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#64748b; margin:22px 0 4px; border-top:1px solid #1e293b; padding-top:14px; }
+        @media (max-width:560px){ .mf-grid { grid-template-columns:1fr; } }
+    </style>
+
+    <p><a href="/vbcs/manual/pending">&larr; Back to pending queue</a></p>
+    <h1>Record a manual gift</h1>
+    <div class="sub">Log an offline or in-kind contribution for approval by another staff member.</div>
+
+    <div class="mf-note">Maker-checker: what you submit here must be approved by a different staff member before it counts.</div>
+
+    
+        <form class="mf-form" method="post" action="/vbcs/manual">
+        <input type="hidden" name="_csrf" value="preview-token">
+
+        <div class="mf-field">
+            <label for="cause_id">Cause</label>
+            <select id="cause_id" name="cause_id" required>
+                <option value="" disabled selected>— select a cause —</option>
+                                                        <option value="c-1">Building Fund</option>
+                                                        <option value="c-2">Missions Outreach</option>
+                                                        <option value="c-3">Benevolence</option>
+                            </select>
+        </div>
+
+        <div class="mf-grid">
+            <div class="mf-field">
+                <label for="type">Type</label>
+                <select id="type" name="type" required>
+                                            <option value="cash" selected>Cash</option>
+                                            <option value="cheque">Cheque</option>
+                                            <option value="bank_transfer">Bank transfer</option>
+                                            <option value="in_kind">In-kind (goods/services/time)</option>
+                                    </select>
+            </div>
+            <div class="mf-field">
+                <label for="currency">Currency                    <span class="hint">3-letter code</span></label>
+                <input type="text" id="currency" name="currency" maxlength="3" minlength="3"
+                       placeholder="GHS" value="GHS" style="text-transform:uppercase">
+            </div>
+        </div>
+
+        <div class="mf-grid">
+            <div class="mf-field">
+                <label for="stated_value_minor">Value                    <span class="hint">in minor units (e.g. 5000 = 50.00); for cash/cheque/transfer or appraised goods/services</span></label>
+                <input type="number" id="stated_value_minor" name="stated_value_minor" min="0" step="1" inputmode="numeric"
+                       value="">
+            </div>
+            <div class="mf-field">
+                <label for="received_date">Received date</label>
+                <input type="date" id="received_date" name="received_date" value="">
+            </div>
+        </div>
+
+        <div class="mf-sec">In-kind (goods/services/time)</div>
+
+        <div class="mf-grid">
+            <div class="mf-field">
+                <label for="in_kind_category">In-kind category                    <span class="hint">Only for in-kind gifts</span></label>
+                <select id="in_kind_category" name="in_kind_category">
+                    <option value="" selected>—</option>
+                                            <option value="goods">Goods</option>
+                                            <option value="services">Services</option>
+                                            <option value="time">Time (volunteer hours)</option>
+                                    </select>
+            </div>
+            <div class="mf-field">
+                <label for="in_kind_hours">Volunteer hours                    <span class="hint">for in-kind time; valued at the configured hourly rate</span></label>
+                <input type="number" id="in_kind_hours" name="in_kind_hours" min="0" step="0.25" inputmode="decimal"
+                       value="">
+            </div>
+        </div>
+
+        <div class="mf-sec">Valuation method</div>
+
+        <div class="mf-field">
+            <label for="valuation_method">Valuation method                <span class="hint">optional; how the value was determined</span></label>
+            <input type="text" id="valuation_method" name="valuation_method" maxlength="120" value="">
+        </div>
+
+        <div class="mf-grid">
+            <div class="mf-field">
+                <label for="custodian_id">Custodian                    <span class="hint">optional; who holds the funds/goods</span></label>
+                <input type="text" id="custodian_id" name="custodian_id" maxlength="64" value="">
+            </div>
+            <div class="mf-field">
+                <label for="evidence_ref">Evidence reference                    <span class="hint">optional; receipt/slip number</span></label>
+                <input type="text" id="evidence_ref" name="evidence_ref" maxlength="190" value="">
+            </div>
+        </div>
+
+        <div class="mf-actions">
+            <button type="submit" class="mf-btn primary">Submit for approval</button>
+            <a class="mf-btn ghost" href="/vbcs/manual/pending">Cancel</a>
+        </div>
+    </form>
+    </body></html>

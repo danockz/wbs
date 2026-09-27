@@ -1,0 +1,3 @@
+[
+  {"id":83,"name":"Ghana","iso3":"GHA","iso2":"GH","numeric_code":"288","phonecode":"233","capital":"Accra","currency":"GHS","currency_name":"Ghana cedi","currency_symbol":"₵","tld":".gh","native":"Ghana","region":"Africa","region_id":1,"subregion":"Western Africa","subregion_id":1,"nationality":"Ghanaian","timezones":[{"zoneName":"Africa/Accra","gmtOffset":0,"gmtOffsetName":"UTC+00:00","abbreviation":"GMT","tzName":"Greenwich Mean Time"}],"translations":{"fr":"Ghana"},"latitude":"8.00000000","longitude":"-2.00000000","emoji":"🇬🇭","emojiU":"U+1F1EC U+1F1ED"}
+]

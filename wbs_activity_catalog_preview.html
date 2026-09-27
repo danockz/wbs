@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configurable Win–Build–Send Activities — Admin Console (preview)</title>
+<style>
+  :root{
+    --win:#EF4444; --build:#4CAF50; --send:#FF9800; --general:#6B7280;
+    --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --get:#0369a1; --post:#15803d; --patch:#b45309; --delete:#b91c1c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  header{padding:28px 32px;background:linear-gradient(120deg,#1e293b,#0f172a);color:#fff}
+  header h1{margin:0 0 4px;font-size:22px}
+  header p{margin:0;color:#cbd5e1;font-size:13px}
+  .wrap{max-width:1160px;margin:0 auto;padding:24px 32px 64px}
+  .note{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;padding:10px 14px;border-radius:8px;font-size:13px;margin:18px 0}
+  h2.sec{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:30px 0 12px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .phase{margin:22px 0 8px;display:flex;align-items:center;gap:10px}
+  .phase .dot{width:12px;height:12px;border-radius:50%}
+  .phase h3{margin:0;font-size:16px;letter-spacing:.04em;text-transform:uppercase}
+  .phase .sub{color:var(--muted);font-size:12px}
+  .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+  .cat{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .cat h4{margin:0;padding:11px 14px;font-size:13px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);background:#fbfdff}
+  .cat h4 .grow{flex:1}
+  .chip{font-size:10px;font-weight:700;color:#fff;border-radius:20px;padding:2px 8px;letter-spacing:.03em}
+  table{width:100%;border-collapse:collapse}
+  td{padding:8px 14px;border-top:1px solid #f1f5f9;font-size:13px;vertical-align:top}
+  td.name{font-weight:600}
+  .mode{display:inline-block;font-size:10px;font-weight:700;border-radius:5px;padding:1px 6px;margin-top:3px}
+  .m-fixed{background:#e0f2fe;color:#075985}
+  .m-variable{background:#ede9fe;color:#5b21b6}
+  .m-formula{background:#fef3c7;color:#92400e}
+  .pts{white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right;color:#0f172a;font-weight:700}
+  .meta{color:var(--muted);font-size:11px;display:block;margin-top:2px}
+  code{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f5f9;padding:1px 5px;border-radius:4px}
+  .acts{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+  .btn{font-size:10px;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:2px 8px;color:#334155;background:#fff;cursor:default;display:inline-flex;align-items:center;gap:4px}
+  .btn.view:hover{border-color:var(--get)} .btn.edit:hover{border-color:var(--patch)} .btn.off:hover{border-color:var(--delete)}
+  .btn .v{font-weight:700}
+  .btn.view .v{color:var(--get)} .btn.edit .v{color:var(--patch)} .btn.off .v{color:var(--delete)} .btn.add .v{color:var(--post)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .panel h4{margin:0 0 10px;font-size:14px;display:flex;align-items:center;gap:8px}
+  .panel h4 .grow{flex:1}
+  .fu{padding:8px 0;border-top:1px solid #f1f5f9;font-size:13px}
+  .fu:first-of-type{border-top:0}
+  .badge{font-size:10px;font-weight:700;border-radius:6px;padding:1px 6px;background:#f1f5f9;color:#475569}
+  .kv{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid #f1f5f9;font-size:13px}
+  .kv:first-of-type{border-top:0}
+  .kv .r{display:flex;align-items:center;gap:8px}
+  .ro{font-size:10px;color:#b91c1c;font-weight:700}
+  /* lifecycle strip */
+  .life{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:6px}
+  .step{flex:1;min-width:150px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;position:relative}
+  .step h5{margin:0 0 4px;font-size:12px;display:flex;align-items:center;gap:6px}
+  .st{font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px}
+  .st-pending{background:#fef9c3;color:#854d0e}
+  .st-completed{background:#dcfce7;color:#166534}
+  .st-cancelled{background:#fee2e2;color:#991b1b}
+  .arrow{align-self:center;color:var(--muted);font-weight:700;padding:0 8px}
+  .verb{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.04em;border-radius:4px;padding:1px 5px;color:#fff}
+  .v-get{background:var(--get)} .v-post{background:var(--post)} .v-patch{background:var(--patch)} .v-delete{background:var(--delete)}
+  /* CRUD matrix */
+  table.matrix{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;width:100%}
+  table.matrix th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:center;padding:10px 8px;background:#fbfdff;border-bottom:1px solid var(--line)}
+  table.matrix th:first-child{text-align:left}
+  table.matrix td{text-align:center;font-size:13px}
+  table.matrix td:first-child{text-align:left;font-weight:600}
+  .yes{color:#166534;font-weight:700}
+  .soft{color:#b45309;font-weight:700}
+  .imm{color:#5b21b6;font-weight:700}
+  .em{color:var(--muted);font-size:11px;display:block}
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:8px 0 0}
+  .legend span b{color:#334155}
+</style>
+</head>
+<body>
+<header>
+  <h1>Configurable Win–Build–Send Activities</h1>
+  <p>Admin console preview · every activity, achievement trigger, follow-up, and knob is data-configured at runtime — no deploy. Now with <b>full CRUD</b> on every surface. Rendered from the default seeded catalog (<code>WbsActivityCatalogSeeder</code>).</p>
+</header>
+<div class="wrap">
+
+  <div class="note">
+    <strong>How to read this:</strong> the earning surface is organised as
+    <b>phase → category → activity</b>. Each row shows its per-record actions —
+    <span class="btn view"><span class="v">View</span></span>
+    <span class="btn edit"><span class="v">Edit</span></span>
+    <span class="btn off"><span class="v">Disable</span></span> — which map to the
+    real REST endpoints below. Editing an activity supersedes its version so the
+    immutable ledger always references the exact rule that paid out; "Disable" is a
+    soft-delete (<code>status = inactive</code>).
+  </div>
+
+  <!-- ============ ACTIVITY CATALOG ============ -->
+  <h2 class="sec">Earning activities · catalog</h2>
+
+  <!-- WIN -->
+  <div class="phase"><span class="dot" style="background:var(--win)"></span>
+    <h3>Win</h3><span class="sub">reach &amp; convert new people</span></div>
+  <div class="cats">
+    <div class="cat">
+      <h4>📣 Outreach <span class="grow"></span><span class="chip" style="background:var(--win)">WIN</span></h4>
+      <table>
+        <tr><td class="name">Outreach Contact<span class="meta">event: outreach.logged · daily limit 20 · ×1.5 visit / ×0.8 sms</span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">20</td></tr>
+      </table>
+    </div>
+    <div class="cat">
+      <h4>➕ First Contact <span class="grow"></span><span class="chip" style="background:var(--win)">WIN</span></h4>
+      <table>
+        <tr><td class="name">New Member Recruited<span class="meta">event: member.recruited · requires approval → <code>group_leader</code></span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">100</td></tr>
+        <tr><td class="name">First-Time Attendance<span class="meta">event: attendance.firsttime</span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">50</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- BUILD -->
+  <div class="phase"><span class="dot" style="background:var(--build)"></span>
+    <h3>Build</h3><span class="sub">disciple &amp; grow existing members</span></div>
+  <div class="cats">
+    <div class="cat">
+      <h4>📅 Attendance <span class="grow"></span><span class="chip" style="background:var(--build)">BUILD</span></h4>
+      <table>
+        <tr><td class="name">Event Attendance<span class="meta">event: event.attended · cap 2/day · cooldown 1h</span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">50</td></tr>
+        <tr><td class="name">Streaming Participation<span class="meta">formula: <code>base_points * min(1, duration_minutes / 30)</code> · clamp 10–50</span>
+          <span class="mode m-formula">formula</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">10–50</td></tr>
+      </table>
+    </div>
+    <div class="cat">
+      <h4>📈 Spiritual Growth <span class="grow"></span><span class="chip" style="background:var(--build)">BUILD</span></h4>
+      <table>
+        <tr><td class="name">Course Completion<span class="meta">event: course.completed</span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">100</td></tr>
+        <tr><td class="name">Foundation Graduation<span class="meta">event: foundation.graduated</span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">75</td></tr>
+      </table>
+    </div>
+    <div class="cat">
+      <h4>🤝 Member Care <span class="grow"></span><span class="chip" style="background:var(--build)">BUILD</span></h4>
+      <table>
+        <tr><td class="name">Member Follow-up<span class="meta">event: followup.logged · daily limit 10 · ×1.5 visit / ×0.9 whatsapp / ×0.8 sms</span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">20</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SEND -->
+  <div class="phase"><span class="dot" style="background:var(--send)"></span>
+    <h3>Send</h3><span class="sub">mobilise members to serve &amp; give</span></div>
+  <div class="cats">
+    <div class="cat">
+      <h4>⭐ Leadership <span class="grow"></span><span class="chip" style="background:var(--send)">SEND</span></h4>
+      <table>
+        <tr><td class="name">Leadership Service<span class="meta">event: leadership.served · caller-supplied value · clamp 20–100</span>
+          <span class="mode m-variable">variable</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">20–100</td></tr>
+      </table>
+    </div>
+    <div class="cat">
+      <h4>🎁 Giving <span class="grow"></span><span class="chip" style="background:var(--send)">SEND</span></h4>
+      <table>
+        <tr><td class="name">Financial Giving<span class="meta">formula: <code>floor(amount / 10) * base_points</code> · clamp 5–1000</span>
+          <span class="mode m-formula">formula</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">5–1000</td></tr>
+        <tr><td class="name">Testimony Shared<span class="meta">event: testimony.shared · weekly limit 2</span>
+          <span class="mode m-fixed">fixed</span>
+          <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></td>
+          <td class="pts">25</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ FOLLOW-UP RECORD LIFECYCLE ============ -->
+  <h2 class="sec">Follow-up record · lifecycle (create → update → cancel)</h2>
+  <div class="panel">
+    <h4>🗂️ Absent-member follow-up for “Ama Mensah”
+      <span class="grow"></span>
+      <span class="badge">method: visit ×1.5</span></h4>
+    <div class="life">
+      <div class="step">
+        <h5><span class="verb v-post">POST</span> Recorded <span class="st st-pending">pending</span></h5>
+        <span class="meta"><code>POST /follow-ups</code><br>Scheduled, not yet done — <b>no points</b> (status doesn’t count).</span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <h5><span class="verb v-patch">PATCH</span> Completed <span class="st st-completed">completed</span></h5>
+        <span class="meta"><code>PATCH /follow-ups/{id}</code> · outcome added<br>Awards <b>+30 pts</b> (20 × 1.5 visit) to the follower — <b>once</b>, idempotent on <code>followup:{id}</code>.</span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <h5><span class="verb v-patch">PATCH</span> Edited again</h5>
+        <span class="meta">Summary/notes changed — <b>no double-award</b> (already has a ledger id).</span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <h5><span class="verb v-post">POST</span> Cancelled <span class="st st-cancelled">cancelled</span></h5>
+        <span class="meta"><code>POST /follow-ups/{id}/cancel</code><br>Soft-cancel; earned points are <b>not</b> clawed back. Further edits refused.</span>
+      </div>
+    </div>
+    <p class="meta" style="margin-top:10px">Read views: <code>GET /follow-ups/{id}</code> (one) · <code>GET /follow-ups/due</code> (work queue) · <code>GET /subjects/{id}/follow-ups</code> (member history).</p>
+  </div>
+
+  <div class="cols">
+    <div class="panel">
+      <h4>Follow-up types <span class="grow"></span><span class="btn add"><span class="v">+ New</span></span></h4>
+      <div class="fu"><b>New Visitor</b> <span class="badge">WIN</span>
+        <span class="meta">next in 3d · outcome required · awards <code>followup.member</code></span>
+        <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></div>
+      <div class="fu"><b>Absent Member</b> <span class="badge">BUILD</span>
+        <span class="meta">next in 7d · awards <code>followup.member</code></span>
+        <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></div>
+      <div class="fu"><b>Prayer Request</b> <span class="badge">BUILD</span>
+        <span class="meta">next in 2d · awards <code>followup.member</code></span>
+        <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></div>
+      <div class="fu"><b>Integration Check</b> <span class="badge">BUILD</span>
+        <span class="meta">next in 14d · awards <code>followup.member</code></span>
+        <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></div>
+    </div>
+    <div class="panel">
+      <h4>Follow-up methods <span class="grow"></span><span class="btn add"><span class="v">+ New</span></span></h4>
+      <div class="fu"><b>Visit</b> <span class="badge">×1.5</span><span class="meta">multiplier_key: visit</span>
+        <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></div>
+      <div class="fu"><b>WhatsApp</b> <span class="badge">×0.9</span><span class="meta">multiplier_key: whatsapp</span>
+        <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></div>
+      <div class="fu"><b>SMS</b> <span class="badge">×0.8</span><span class="meta">multiplier_key: sms</span>
+        <div class="acts"><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Disable</span></span></div></div>
+      <div class="fu"><b>Call · KingsChat · Email</b><span class="meta">3 more channels seeded</span></div>
+    </div>
+  </div>
+
+  <!-- ============ RUNTIME CONFIG ============ -->
+  <h2 class="sec">Runtime config · typed key/value</h2>
+  <div class="panel">
+    <h4>🔧 gamification_config <span class="grow"></span><span class="btn add"><span class="v">+ Key</span></span></h4>
+    <div class="kv"><span><code>leaderboard_cache_ttl</code></span>
+      <span class="r"><span>300 <span class="badge">integer</span></span><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Delete</span></span></span></div>
+    <div class="kv"><span><code>achievement_evaluation_mode</code></span>
+      <span class="r"><span>auto <span class="badge">string</span></span><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Delete</span></span></span></div>
+    <div class="kv"><span><code>achievement_retroactive_evaluation</code></span>
+      <span class="r"><span>true <span class="badge">boolean</span></span><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Delete</span></span></span></div>
+    <div class="kv"><span><code>followups_award_enabled</code></span>
+      <span class="r"><span>true <span class="badge">boolean</span></span><span class="btn view"><span class="v">View</span></span><span class="btn edit"><span class="v">Edit</span></span><span class="btn off"><span class="v">Delete</span></span></span></div>
+    <div class="kv"><span><code>engine_version</code> <span class="ro">🔒 READ-ONLY</span></span>
+      <span class="r"><span>1 <span class="badge">string</span></span><span class="btn view"><span class="v">View</span></span></span></div>
+    <p class="meta" style="margin-top:10px">Values are cast on read; read-only keys refuse both <b>edit</b> and <b>delete</b>.</p>
+  </div>
+
+  <!-- ============ CRUD COVERAGE ============ -->
+  <h2 class="sec">CRUD coverage · every configuration surface</h2>
+  <table class="matrix">
+    <thead><tr><th>Surface</th><th>Create</th><th>List</th><th>Read-one</th><th>Update</th><th>Delete</th></tr></thead>
+    <tbody>
+      <tr><td>Earning activities <span class="em">rules</span></td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="imm">✓ <span class="em">versioned</span></td><td class="soft">✓ <span class="em">disable</span></td></tr>
+      <tr><td>Activity categories</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="soft">✓ <span class="em">disable</span></td></tr>
+      <tr><td>Follow-up types</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="soft">✓ <span class="em">disable</span></td></tr>
+      <tr><td>Follow-up methods</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="soft">✓ <span class="em">disable</span></td></tr>
+      <tr><td>Follow-up records</td>
+        <td class="yes">✓</td><td class="yes">✓ <span class="em">due / history</span></td><td class="yes">✓</td>
+        <td class="yes">✓ <span class="em">lifecycle</span></td><td class="soft">✓ <span class="em">cancel</span></td></tr>
+      <tr><td>Runtime config</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="yes">✓ <span class="em">hard</span></td></tr>
+    </tbody>
+  </table>
+  <div class="legend">
+    <span><b class="yes">✓</b> full</span>
+    <span><b class="soft">✓ disable/cancel</b> soft-delete (status=inactive/cancelled)</span>
+    <span><b class="imm">✓ versioned</b> immutable edit — supersedes to a new version</span>
+  </div>
+
+  <h2 class="sec">Hierarchical group-permission compliance</h2>
+  <div class="panel">
+    <p style="margin:0 0 12px;color:var(--muted);font-size:13px">
+      Both axes flow through one shared <code>group_closure</code> resolver, so
+      these surfaces obey the same tree rules as ranks, campaigns and streams.
+    </p>
+    <table class="matrix">
+      <thead><tr><th>Scenario</th><th>Region admin<br>(+ descendants)</th><th>Region admin<br>(exact only)</th><th>District admin</th><th>Org-wide admin</th></tr></thead>
+      <tbody>
+        <tr><td>Manage a <b>district</b> category / follow-up type</td>
+          <td class="yes">✓ allow</td><td class="soft">✕ deny</td><td class="yes">✓ allow</td><td class="yes">✓ allow</td></tr>
+        <tr><td>Manage a <b>region</b> category / follow-up type</td>
+          <td class="yes">✓ allow</td><td class="yes">✓ allow</td><td class="soft">✕ deny</td><td class="yes">✓ allow</td></tr>
+        <tr><td>Manage an <b>org-wide</b> config key / method</td>
+          <td class="soft">✕ deny</td><td class="soft">✕ deny</td><td class="soft">✕ deny</td><td class="yes">✓ allow</td></tr>
+        <tr><td><b>District sees</b> a region row (inherited)</td>
+          <td class="yes">✓ visible</td><td class="soft">✕ hidden</td><td class="yes">✓ visible</td><td class="yes">✓ visible</td></tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <span><b class="yes">Data-scope</b> most-specific-wins: self → ancestor (if <code>include_descendants</code>) → org-wide (NULL)</span>
+      <span><b class="imm">Authz</b> PDP honours <code>scope_group_id</code> + <code>include_descendants</code></span>
+      <span><b class="soft">Coarse gate</b> <code>authorize:…,any</code> then in-service per-group check</span>
+    </div>
+  </div>
+
+</div>
+<footer>Preview only — the live surface is served by <code>GET /gamification/activity-catalog</code> and the endpoints shown. See <code>docs/configurable-wbs-activities.md</code> §7a for the full route table.</footer>
+</body>
+</html>

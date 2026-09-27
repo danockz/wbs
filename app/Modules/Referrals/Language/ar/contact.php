@@ -1,0 +1,30 @@
+<?php
+
+/** Service failure messages for the contact book / outreach flows (family key lang('contact.*')). Rendered human-readable at flash time via Shared\Support\Messages::humanize(). */
+return [
+    'attendance_bad_type' => 'يجب أن يكون نوع الحضور فعالية أو دورة.',
+    'attendance_target_required' => 'اختر الفعالية أو الدورة.',
+    'decision_date_future' => 'لا يمكن أن يكون تاريخ القرار في المستقبل.',
+    'decision_date_required' => 'تاريخ القرار مطلوب.',
+    'decision_type_invalid' => 'نوع قرار غير معروف.',
+    'decision_type_required' => 'اختر نوع القرار.',
+    'group_out_of_scope' => 'هذه المجموعة خارج نطاق قيادتك.',
+    'group_required' => 'اختر مجموعة.',
+    'name_required' => 'الاسم الكامل مطلوب.',
+    'not_found' => 'الجهة اتصال غير موجودة.',
+    'not_found_or_forbidden' => 'الاتصال غير موجود أو غير متاح لك.',
+    'owner_required' => 'مالك مطلوب.',
+    'rows_required' => 'لا توجد صفوف للاستيراد.',
+    'teardown_bad_input' => 'طلب التفكيك غير صالح.',
+    'transfer_already_pending' => 'هناك عملية نقل بانتظار المراجعة بالفعل.',
+    'transfer_bad_input' => 'طلب النقل غير صالح.',
+    'transfer_bad_state' => 'لا يمكن نقل جهة الاتصال هذه الآن.',
+    'transfer_failed' => 'تعذر تطبيق النقل.',
+    'transfer_no_group' => 'جهة الاتصال ليس لها مجموعة للنقل منها.',
+    'transfer_no_longer_eligible' => 'لم يعد جهة الاتصال مؤهلاً للنقل.',
+    'transfer_not_due' => 'لم يمر بعد فترة الخمول.',
+    'transfer_reason_required' => 'سبب النقل مطلوب.',
+    'transfer_request_not_found' => 'طلب النقل غير موجود.',
+    'transfer_self_approval' => 'لا يمكنك الموافقة على نقلك بنفسك.',
+    'transfer_submit_failed' => 'تعذر إضافة النقل إلى قائمة المراجعة.',
+];

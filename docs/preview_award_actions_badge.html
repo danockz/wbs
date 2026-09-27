@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><style>body{margin:0;background:#0b1120;color:#e2e8f0;font-family:system-ui,sans-serif;padding:24px}h1{font-size:1.6rem}.sub{color:#94a3b8}.card{background:#0f172aee;border:1px solid #1e293b;border-radius:10px;padding:12px;margin:10px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}.stat{background:#0f172aee;border:1px solid #1e293b;border-radius:10px;padding:10px}.stat .k{font-size:.66rem;text-transform:uppercase;color:#94a3b8}.stat .v{font-weight:700}.empty{color:#94a3b8}</style></head><body>
+    <style>
+        .aw-flash { border-radius:8px; padding:10px 13px; margin:10px 0; font-size:.9rem; }
+        .aw-flash.ok  { background:#052e1b; border:1px solid #14532d; color:#86efac; }
+        .aw-flash.err { background:#3a0d12; border:1px solid #7f1d1d; color:#fca5a5; }
+        .aw-actions { margin-top:22px; display:flex; gap:14px; flex-wrap:wrap; }
+        .aw-panel { flex:1 1 280px; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; }
+        .aw-panel h2 { font-size:.95rem; margin:0 0 4px; }
+        .aw-panel p.hint { color:#94a3b8; font-size:.78rem; margin:0 0 12px; }
+        .aw-panel label { display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:#94a3b8; margin:8px 0 3px; }
+        .aw-panel select, .aw-panel input { width:100%; padding:8px 10px; border-radius:8px; border:1px solid #334155; background:#0b1120; color:#e2e8f0; font-size:.9rem; }
+        .aw-btn { margin-top:12px; padding:9px 16px; border-radius:8px; border:0; font-weight:700; cursor:pointer; font-size:.88rem; }
+        .aw-btn.grant { background:#7c3aed; color:#fff; }
+        .aw-btn.revoke { background:#3a0d12; color:#fca5a5; border:1px solid #7f1d1d; }
+    </style>
+    <h1>Badge</h1>
+    <div class="aw-flash ok">Badge granted.</div>                <div class="sub">Zealot Evangelist</div>
+        <div class="card">Awarded for outstanding evangelism.</div>        <div class="grid">
+            <div class="stat"><div class="k">Code</div><div class="v">zealot</div></div>
+            <div class="stat"><div class="k">Visibility</div><div class="v">Public</div></div>
+            <div class="stat"><div class="k">Permanence</div><div class="v">Permanent</div></div>
+            <div class="stat"><div class="k">Expiry policy</div><div class="v">none</div></div>
+            <div class="stat"><div class="k">Group</div><div class="v">Org-wide</div></div>
+        </div>
+
+        <div class="aw-actions">
+            <div class="aw-panel">
+                <h2>Grant badge</h2>
+                <p class="hint">Award this badge to a member.</p>
+                <form method="post" action="/gamification/badges/zealot/grant">
+                    <input type="hidden" name="_csrf" value="PREVIEW">
+                    <label for="grant_subject">Member</label>
+                    <select id="grant_subject" name="subject_id" required>
+                        <option value="">Select a member…</option>
+                                                                                <option value="u1">Ama Mensah</option>
+                                                                                <option value="u2">Kofi Boateng</option>
+                                                                                <option value="u3">Esi Owusu</option>
+                                            </select>
+                    <label for="grant_ref">Reference (optional)</label>
+                    <input id="grant_ref" type="text" name="source_ref" maxlength="120" placeholder="e.g. reason or source">
+                    <button type="submit" class="aw-btn grant">Grant badge</button>
+                </form>
+            </div>
+            <div class="aw-panel">
+                <h2>Revoke badge</h2>
+                <p class="hint">Remove this badge from a member.</p>
+                <form method="post" action="/gamification/badges/zealot/revoke">
+                    <input type="hidden" name="_csrf" value="PREVIEW">
+                    <label for="revoke_subject">Member</label>
+                    <select id="revoke_subject" name="subject_id" required>
+                        <option value="">Select a member…</option>
+                                                                                <option value="u1">Ama Mensah</option>
+                                                                                <option value="u2">Kofi Boateng</option>
+                                                                                <option value="u3">Esi Owusu</option>
+                                            </select>
+                    <button type="submit" class="aw-btn revoke">Revoke badge</button>
+                </form>
+            </div>
+        </div>
+    </body></html>

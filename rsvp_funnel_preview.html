@@ -1,0 +1,103 @@
+<!doctype html><meta charset=utf-8><title>RSVP funnel preview</title><style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:24px}h1{font-size:18px}h3{color:#93c5fd;margin:24px 0 6px}.card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:14px}.pill{font-weight:600}.author{font-size:14px}.counts{font-size:13px;color:#94a3b8}button{background:#2563eb;color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer}select{padding:6px;border-radius:6px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}h2{font-size:15px}</style><h1>Event RSVP funnel — show.php panel states</h1><h3>Signed-in, not registered (open)</h3><h2>Your registration</h2>
+        <div class="card" style="margin-top:6px;">
+                                                <div class="counts" style="margin-bottom:8px;">RSVP to let the organizers know you are coming.</div>
+                
+                <form method="post" action="/events/ev9/register"
+                      style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <input type="hidden" name="_csrf" value="TKN">
+                    <label style="font-size:.82rem;color:#94a3b8;">
+                        <select name="rsvp_state" style="padding:8px 10px;border-radius:8px;border:1px solid #334155;background:#0b1120;color:#e2e8f0;font:inherit;">
+                                                            <option value="yes">Yes, I will attend</option>
+                                                            <option value="maybe">Maybe</option>
+                                                            <option value="no">No, I can&#039;t</option>
+                                                    </select>
+                    </label>
+                    <button type="submit" style="border:0;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;background:#0d9488;color:#fff;">
+                        RSVP                    </button>
+                </form>
+
+                                    </div>
+    
+    <h2>At a<h3>Registered (rsvp=maybe)</h3><h2>Your registration</h2>
+        <div class="card" style="margin-top:6px;">
+                                                <div class="row" style="margin-bottom:8px;">
+                        <span class="author">
+                                                        <span class="pill" style="color:#4ade80;">
+                                Registered                            </span>
+                            · Your RSVP: Maybe                        </span>
+                    </div>
+                                    
+                <form method="post" action="/events/ev9/register"
+                      style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <input type="hidden" name="_csrf" value="TKN">
+                    <label style="font-size:.82rem;color:#94a3b8;">
+                        <select name="rsvp_state" style="padding:8px 10px;border-radius:8px;border:1px solid #334155;background:#0b1120;color:#e2e8f0;font:inherit;">
+                                                            <option value="yes">Yes, I will attend</option>
+                                                            <option value="maybe" selected>Maybe</option>
+                                                            <option value="no">No, I can&#039;t</option>
+                                                    </select>
+                    </label<h3>Waitlisted</h3><h2>Your registration</h2>
+        <div class="card" style="margin-top:6px;">
+                                                <div class="row" style="margin-bottom:8px;">
+                        <span class="author">
+                                                        <span class="pill" style="color:#fbbf24;">
+                                Waitlisted                            </span>
+                            · Your RSVP: Yes, I will attend                        </span>
+                    </div>
+                                            <div class="counts" style="margin-bottom:8px;">This event is full — you are on the waitlist.</div>
+                                    
+                <form method="post" action="/events/ev9/register"
+                      style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <input type="hidden" name="_csrf" value="TKN">
+                    <label style="font-size:.82rem;color:#94a3b8;">
+                        <select name="rsvp_state" style="padding:8px 10px;border-radius:8px;border:1px solid #334155;background:#0b1120;color:#e2e8f0;font:inherit;">
+                                                            <option value="yes" selected>Yes, I will attend</option>
+                                                            <option value="maybe">Maybe</option>
+                                    <h3>Anonymous</h3><h2>Your registration</h2>
+        <div class="card" style="margin-top:6px;">
+                            <div class="counts">Sign in to register for this event.</div>
+                    </div>
+    
+    <h2>At a glance</h2>
+    <div class="grid">
+        <div class="stat"><div class="k">Capacity</div><div class="v">∞</div></div>
+        <div class="stat"><div class="k">Mode</div><div class="v" style="font-size:1rem;">physical</div></div>
+        <div class="stat"><div class="k">Registration</div><div class="v" style="font-size:1rem;">open</div></div>
+    </div>
+
+    
+    <h2>Attendance</h2>
+    <div class="card">
+        <div class="row">
+            <span class="author">Expected-attendance report</span>
+            <a class="pill" href="/events/ev9/attendance">open report →</a>
+        </div>
+        <div class="counts">Live funnel: invitations, responses, confirmed registrations and an expected-attendee band with uncertainty.</div>
+    </div>
+
+    <div class="meta">
+        Event ev9            </div>
+<h3>Registration closed</h3><h2>Your registration</h2>
+        <div class="card" style="margin-top:6px;">
+                            <div class="counts">Registration is closed for this event.</div>
+                    </div>
+    
+    <h2>At a glance</h2>
+    <div class="grid">
+        <div class="stat"><div class="k">Capacity</div><div class="v">∞</div></div>
+        <div class="stat"><div class="k">Mode</div><div class="v" style="font-size:1rem;">physical</div></div>
+        <div class="stat"><div class="k">Registration</div><div class="v" style="font-size:1rem;">closed</div></div>
+    </div>
+
+    
+    <h2>Attendance</h2>
+    <div class="card">
+        <div class="row">
+            <span class="author">Expected-attendance report</span>
+            <a class="pill" href="/events/ev9/attendance">open report →</a>
+        </div>
+        <div class="counts">Live funnel: invitations, responses, confirmed registrations and an expected-attendee band with uncertainty.</div>
+    </div>
+
+    <div class="meta">
+        Event ev9            </div>

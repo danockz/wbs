@@ -1,0 +1,538 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Menu preview</title><style>
+  /* ---- Mobile / narrow (default): fixed launcher + slide-out drawer ---- */
+  /* Fixed launcher — same top-left position on every page. */
+  .wbs-menu-toggle{position:fixed;left:-9999px;width:0;height:0}
+  .wbs-menu-fab{position:fixed;top:14px;left:14px;z-index:10000;width:42px;height:42px;
+    display:flex;align-items:center;justify-content:center;border-radius:10px;cursor:pointer;
+    background:#0f172a;border:1px solid #1e293b;color:#e2e8f0;box-shadow:0 4px 14px #0006}
+  .wbs-menu-fab:hover{border-color:#38bdf8}
+  .wbs-menu-toggle:focus-visible + .wbs-menu-fab{outline:2px solid #38bdf8;outline-offset:2px}
+  /* The one drawer — slides in from the left, over any page. */
+  .wbs-menu--drawer{position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:9999;
+    transform:translateX(-110%);transition:transform .2s ease;
+    background:#0f172a;border-right:1px solid #1e293b;width:260px;padding:60px 0 16px;
+    user-select:none;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#e2e8f0}
+  .wbs-menu-toggle:checked ~ .wbs-menu--drawer{transform:none;box-shadow:0 0 40px #000a}
+  .wbs-menu-backdrop{position:fixed;inset:0;z-index:9998;background:#0008;opacity:0;
+    pointer-events:none;transition:opacity .2s}
+  .wbs-menu-toggle:checked ~ .wbs-menu-backdrop{opacity:1;pointer-events:auto}
+  .wbs-menu__group{padding-bottom:6px}
+  .wbs-menu__cat{display:block;padding:12px 16px 4px;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:#94a3b8}
+  .wbs-menu__link{display:flex;align-items:center;gap:10px;padding:8px 16px;color:#e2e8f0;
+    text-decoration:none;border-left:3px solid transparent}
+  .wbs-menu__link:hover{background:#1e293b}
+  .wbs-menu__link[aria-current="page"]{background:#1e293b;border-left-color:#38bdf8;color:#fff}
+  .wbs-menu__icon{display:inline-flex;color:#94a3b8;flex:0 0 auto}
+  .wbs-menu__link[aria-current="page"] .wbs-menu__icon{color:#38bdf8}
+  .wbs-menu__loading{padding:16px;color:#475569;font-size:.82rem}
+
+  /* ---- Desktop / wide (>=1024px): pinned-open sidebar ----
+     Same single component: the drawer stays open, the launcher/backdrop hide, and
+     the page makes room with a left inset. Still one location — it just docks. */
+  @media (min-width:1024px){
+    body{padding-left:260px}
+    .wbs-menu-fab,.wbs-menu-backdrop{display:none}
+    .wbs-menu--drawer{transform:none;box-shadow:none;padding-top:16px}
+    /* On desktop the toggle is irrelevant; keep the drawer open regardless. */
+    .wbs-menu-toggle:checked ~ .wbs-menu--drawer{box-shadow:none}
+  }
+</style><style>body{margin:0;background:#0b1120;font-family:system-ui;color:#94a3b8;padding:0}.mock{display:flex;gap:24px;padding:24px;flex-wrap:wrap}.pane{border:1px solid #1e293b;border-radius:12px;overflow:hidden;background:#0b1120}.pane h2{margin:0;padding:12px 16px;font:600 13px system-ui;color:#e2e8f0;border-bottom:1px solid #1e293b;background:#0f172a}.pane .body{display:flex;min-height:520px}.desk-menu{width:260px;background:#0f172a;border-right:1px solid #1e293b;padding:16px 0;overflow-y:auto}.desk-content{flex:1;padding:24px;color:#94a3b8}.mob{width:390px;position:relative}.mob .screen{height:520px;overflow:hidden;position:relative;background:#0b1120}.mob .fab{position:absolute;top:14px;left:14px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:#0f172a;border:1px solid #1e293b;color:#e2e8f0}.mob .drawer{position:absolute;top:0;left:0;height:100%;width:260px;background:#0f172a;border-right:1px solid #1e293b;padding:60px 0 16px;overflow-y:auto;box-shadow:0 0 40px #000a}.mob .mobtext{padding:24px 24px 24px 24px;color:#475569}.wbs-menu__cat{display:block;padding:12px 16px 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8}.wbs-menu__link{display:flex;align-items:center;gap:10px;padding:8px 16px;color:#e2e8f0;text-decoration:none;border-left:3px solid transparent}.wbs-menu__link[aria-current="page"]{background:#1e293b;border-left-color:#38bdf8;color:#fff}.wbs-menu__icon{display:inline-flex;color:#94a3b8}h1{color:#e2e8f0;font:600 16px system-ui;padding:24px 24px 0}</style></head><body><h1>One menu component, responsive — 55 items / 11 categories</h1><div class="mock"><div class="pane"><h2>Desktop (&ge;1024px) — pinned-open sidebar</h2><div class="body"><nav class="desk-menu">
+    <style>
+        .wbs-menu{--bg:#0f172a;--fg:#e2e8f0;--mut:#94a3b8;--acc:#38bdf8;--hov:#1e293b;
+            font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);
+            background:var(--bg);width:250px;padding:12px 0;border-radius:12px;user-select:none}
+        .wbs-menu__cat{padding:12px 16px 4px;font-size:11px;letter-spacing:.08em;
+            text-transform:uppercase;color:var(--mut)}
+        .wbs-menu__link{display:flex;align-items:center;gap:10px;padding:8px 16px;color:var(--fg);
+            text-decoration:none;border-left:3px solid transparent}
+        .wbs-menu__link:hover{background:var(--hov)}
+        .wbs-menu__link[aria-current="page"]{background:var(--hov);border-left-color:var(--acc);color:#fff}
+        .wbs-menu__link svg{color:var(--mut);flex:0 0 auto}
+        .wbs-menu__link[aria-current="page"] svg{color:var(--acc)}
+        .wbs-menu__badge{margin-left:auto;background:#334155;color:#cbd5e1;border-radius:999px;
+            font-size:11px;padding:1px 7px;min-width:18px;text-align:center}
+        .wbs-menu__empty{padding:16px;color:var(--mut)}
+    </style>
+
+                        <div class="wbs-menu__cat">Overview</div>
+                                            <a class="wbs-menu__link" href="/me/dashboard"
+                                      data-item="overview.dashboard">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 12l4-2"/></svg>                    <span>Dashboard</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/me/contacts"
+                                      data-item="overview.contacts">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg>                    <span>My contacts &amp; follow-ups</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/follow-ups/due"
+                                      data-item="overview.followups">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h5l1 3h6l1-3h5"/><path d="M4 13l2-8h12l2 8v6H4z"/></svg>                    <span>My follow-ups due</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/access-requests/pending"
+                                      data-item="overview.approvals">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h5l1 3h6l1-3h5"/><path d="M4 13l2-8h12l2 8v6H4z"/></svg>                    <span>Approvals awaiting me</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/me/sessions"
+                                      data-item="overview.sessions">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/></svg>                    <span>My sessions</span>
+                                    </a>
+                                <div class="wbs-menu__cat">People</div>
+                                            <a class="wbs-menu__link" href="/members"
+                                      data-item="people.members">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11a3 3 0 000-6"/></svg>                    <span>Members</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/me/contacts"
+                                      data-item="people.bulk">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M19 8v6M22 11h-6"/></svg>                    <span>Bulk sign-up</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/pipeline"
+                                      data-item="people.pipeline">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8 19h7a3 3 0 003-3V8"/></svg>                    <span>Disciple-making pipeline</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/stages"
+                                      data-item="people.stages">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M6 15a9 9 0 019-9h1"/></svg>                    <span>Journey stages</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/proposals"
+                                      data-item="people.proposals">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Journey proposals</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/leaderboard/disciplers"
+                                      data-item="people.disciplers">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Discipler leaderboard</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/memberships/conflicts"
+                                      data-item="people.conflicts">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h4l10 12h4M3 18h4l3-4M17 4l4 2-4 2M17 16l4 2-4 2"/></svg>                    <span>Membership conflicts</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/identity/merges/pending"
+                                      data-item="people.merges">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11a3 3 0 000-6"/></svg>                    <span>Pending account merges</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/identity/policies"
+                                      data-item="people.policies">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9l-2 2 2 2"/></svg>                    <span>Identity policies</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/referrals/sponsor-reassignments/pending"
+                                      data-item="people.sponsors">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h4l10 12h4M3 18h4l3-4M17 4l4 2-4 2M17 16l4 2-4 2"/></svg>                    <span>Sponsor reassignments</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Groups</div>
+                                            <a class="wbs-menu__link" href="/g"
+                                      data-item="groups.directory">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>                    <span>Groups by location</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/group-kinds"
+                                      data-item="groups.kinds">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>                    <span>Group kinds</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/groups/create"
+                                      data-item="groups.create">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M12 11v4M10 13h4"/></svg>                    <span>Create group</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/groups/move"
+                                      data-item="groups.move">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4M18 8l4 4-4 4"/></svg>                    <span>Move / restructure</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/venues"
+                                      data-item="groups.venues">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>                    <span>Venues</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/venues/stats"
+                                      data-item="groups.venue_stats">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>                    <span>Venue stats</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Events</div>
+                                            <a class="wbs-menu__link" href="/events"
+                                      data-item="events.browse">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>                    <span>Events</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/events/create"
+                                      data-item="events.create">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M12 13v4M10 15h4"/></svg>                    <span>Create event</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/events/checkin"
+                                      data-item="events.checkin">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M20 14v.01M14 20v.01M20 20v.01M17 17h.01"/></svg>                    <span>Check-in</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/events/expenses"
+                                      data-item="events.expenses">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1z"/><path d="M8 8h8M8 12h8"/></svg>                    <span>Expense approvals</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Learning</div>
+                                            <a class="wbs-menu__link" href="/courses"
+                                      data-item="learning.courses">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l10 5-10 5L2 9z"/><path d="M6 11v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>                    <span>Courses</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/courses/create"
+                                      data-item="learning.create">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/></svg>                    <span>Create course</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Giving</div>
+                                            <a class="wbs-menu__link" href="/vbcs/partnership/tiers"
+                                      data-item="giving.partnership">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 8.5c-1-1.6-3.4-1-3.4 1 0 1.6 3.4 3.5 3.4 3.5s3.4-1.9 3.4-3.5c0-2-2.4-2.6-3.4-1z"/><path d="M3 14l4 4 8 1 6-3"/></svg>                    <span>Partnership tiers</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/vbcs/manual/pending"
+                                      data-item="giving.manual">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1z"/><path d="M8 8h8M8 12h8"/></svg>                    <span>Manual contributions review</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Communications</div>
+                                            <a class="wbs-menu__link" href="/community/feed"
+                                      data-item="comms.feed">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>                    <span>Community feed</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Streaming</div>
+                                            <a class="wbs-menu__link" href="/streams"
+                                      data-item="streaming.console">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/></svg>                    <span>Live streams</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Reports</div>
+                                            <a class="wbs-menu__link" href="/gamification/leaderboard"
+                                      data-item="reports.leaderboard">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v4a5 5 0 01-10 0zM5 6H3v2a3 3 0 003 3M19 6h2v2a3 3 0 01-3 3M9 17h6M12 13v4M8 21h8"/></svg>                    <span>Leaderboards</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/leaderboards/individuals"
+                                      data-item="reports.individuals">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Top individuals</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/leaderboards/groups"
+                                      data-item="reports.groups">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11a3 3 0 000-6"/></svg>                    <span>Top groups</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/ranks"
+                                      data-item="reports.ranks">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Ranks</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/achievements"
+                                      data-item="reports.achievements">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v4a5 5 0 01-10 0zM5 6H3v2a3 3 0 003 3M19 6h2v2a3 3 0 01-3 3M9 17h6M12 13v4M8 21h8"/></svg>                    <span>Achievements</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/reports/funnel"
+                   aria-current="page"                   data-item="reports.funnel">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>                    <span>Funnel dashboard</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/reports/export"
+                                      data-item="reports.export">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>                    <span>Exports</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Access &amp; Security</div>
+                                            <a class="wbs-menu__link" href="/roles"
+                                      data-item="access.roles">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9l-2 2 2 2"/></svg>                    <span>Roles</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/rules"
+                                      data-item="access.rules">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>                    <span>Rules</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/abac-policies"
+                                      data-item="access.policies">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>                    <span>ABAC policies</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/break-glass/pending-reviews"
+                                      data-item="access.breakglass">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 18v.01"/></svg>                    <span>Break-glass reviews</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Administration</div>
+                                            <a class="wbs-menu__link" href="/admin"
+                                      data-item="admin.settings">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>                    <span>Organization settings</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/admin/providers"
+                                      data-item="admin.providers">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6M15 2v6M7 8h10v3a5 5 0 01-10 0zM12 16v6"/></svg>                    <span>Providers</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/config"
+                                      data-item="admin.gam_config">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>                    <span>Points &amp; rewards settings</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/activity-catalog"
+                                      data-item="admin.gam_activities">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Activity catalog</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/badges"
+                                      data-item="admin.gam_badges">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Badges</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/rules"
+                                      data-item="admin.gam_rules">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-1.5 3L16 10H5"/></svg>                    <span>Gamification rules</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/activity-categories"
+                                      data-item="admin.gam_activity_cats">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>                    <span>Activity categories</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/follow-up-types"
+                                      data-item="admin.gam_fu_types">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Follow-up types</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/follow-up-methods"
+                                      data-item="admin.gam_fu_methods">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Follow-up methods</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/rank-definitions"
+                                      data-item="admin.gam_ranks">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Rank definitions</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/streak-definitions"
+                                      data-item="admin.gam_streaks">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-1.5 3L16 10H5"/></svg>                    <span>Streak definitions</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/pending"
+                                      data-item="admin.gam_pending">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h5l1 3h6l1-3h5"/><path d="M4 13l2-8h12l2 8v6H4z"/></svg>                    <span>Pending point awards</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/integrations/catalog"
+                                      data-item="admin.integrations">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6M15 2v6M7 8h10v3a5 5 0 01-10 0zM12 16v6"/></svg>                    <span>Integrations</span>
+                                    </a>
+                        </nav><div class="desk-content"><p>The drawer docks on the left; the launcher and backdrop are hidden. The page content is inset to make room.</p></div></div></div><div class="pane mob"><h2>Mobile (&lt;1024px) — launcher opens the drawer</h2><div class="body"><div class="screen"><div class="fab"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div><div class="drawer">
+    <style>
+        .wbs-menu{--bg:#0f172a;--fg:#e2e8f0;--mut:#94a3b8;--acc:#38bdf8;--hov:#1e293b;
+            font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);
+            background:var(--bg);width:250px;padding:12px 0;border-radius:12px;user-select:none}
+        .wbs-menu__cat{padding:12px 16px 4px;font-size:11px;letter-spacing:.08em;
+            text-transform:uppercase;color:var(--mut)}
+        .wbs-menu__link{display:flex;align-items:center;gap:10px;padding:8px 16px;color:var(--fg);
+            text-decoration:none;border-left:3px solid transparent}
+        .wbs-menu__link:hover{background:var(--hov)}
+        .wbs-menu__link[aria-current="page"]{background:var(--hov);border-left-color:var(--acc);color:#fff}
+        .wbs-menu__link svg{color:var(--mut);flex:0 0 auto}
+        .wbs-menu__link[aria-current="page"] svg{color:var(--acc)}
+        .wbs-menu__badge{margin-left:auto;background:#334155;color:#cbd5e1;border-radius:999px;
+            font-size:11px;padding:1px 7px;min-width:18px;text-align:center}
+        .wbs-menu__empty{padding:16px;color:var(--mut)}
+    </style>
+
+                        <div class="wbs-menu__cat">Overview</div>
+                                            <a class="wbs-menu__link" href="/me/dashboard"
+                                      data-item="overview.dashboard">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 12l4-2"/></svg>                    <span>Dashboard</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/me/contacts"
+                                      data-item="overview.contacts">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg>                    <span>My contacts &amp; follow-ups</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/follow-ups/due"
+                                      data-item="overview.followups">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h5l1 3h6l1-3h5"/><path d="M4 13l2-8h12l2 8v6H4z"/></svg>                    <span>My follow-ups due</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/access-requests/pending"
+                                      data-item="overview.approvals">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h5l1 3h6l1-3h5"/><path d="M4 13l2-8h12l2 8v6H4z"/></svg>                    <span>Approvals awaiting me</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/me/sessions"
+                                      data-item="overview.sessions">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/></svg>                    <span>My sessions</span>
+                                    </a>
+                                <div class="wbs-menu__cat">People</div>
+                                            <a class="wbs-menu__link" href="/members"
+                                      data-item="people.members">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11a3 3 0 000-6"/></svg>                    <span>Members</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/me/contacts"
+                                      data-item="people.bulk">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M19 8v6M22 11h-6"/></svg>                    <span>Bulk sign-up</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/pipeline"
+                                      data-item="people.pipeline">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8 19h7a3 3 0 003-3V8"/></svg>                    <span>Disciple-making pipeline</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/stages"
+                                      data-item="people.stages">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M6 15a9 9 0 019-9h1"/></svg>                    <span>Journey stages</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/proposals"
+                                      data-item="people.proposals">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Journey proposals</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/journey/leaderboard/disciplers"
+                                      data-item="people.disciplers">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Discipler leaderboard</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/memberships/conflicts"
+                                      data-item="people.conflicts">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h4l10 12h4M3 18h4l3-4M17 4l4 2-4 2M17 16l4 2-4 2"/></svg>                    <span>Membership conflicts</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/identity/merges/pending"
+                                      data-item="people.merges">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11a3 3 0 000-6"/></svg>                    <span>Pending account merges</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/identity/policies"
+                                      data-item="people.policies">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9l-2 2 2 2"/></svg>                    <span>Identity policies</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/referrals/sponsor-reassignments/pending"
+                                      data-item="people.sponsors">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h4l10 12h4M3 18h4l3-4M17 4l4 2-4 2M17 16l4 2-4 2"/></svg>                    <span>Sponsor reassignments</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Groups</div>
+                                            <a class="wbs-menu__link" href="/g"
+                                      data-item="groups.directory">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>                    <span>Groups by location</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/group-kinds"
+                                      data-item="groups.kinds">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>                    <span>Group kinds</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/groups/create"
+                                      data-item="groups.create">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M12 11v4M10 13h4"/></svg>                    <span>Create group</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/groups/move"
+                                      data-item="groups.move">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4M18 8l4 4-4 4"/></svg>                    <span>Move / restructure</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/venues"
+                                      data-item="groups.venues">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>                    <span>Venues</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/venues/stats"
+                                      data-item="groups.venue_stats">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>                    <span>Venue stats</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Events</div>
+                                            <a class="wbs-menu__link" href="/events"
+                                      data-item="events.browse">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>                    <span>Events</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/events/create"
+                                      data-item="events.create">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M12 13v4M10 15h4"/></svg>                    <span>Create event</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/events/checkin"
+                                      data-item="events.checkin">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M20 14v.01M14 20v.01M20 20v.01M17 17h.01"/></svg>                    <span>Check-in</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/events/expenses"
+                                      data-item="events.expenses">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1z"/><path d="M8 8h8M8 12h8"/></svg>                    <span>Expense approvals</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Learning</div>
+                                            <a class="wbs-menu__link" href="/courses"
+                                      data-item="learning.courses">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l10 5-10 5L2 9z"/><path d="M6 11v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>                    <span>Courses</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/courses/create"
+                                      data-item="learning.create">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/></svg>                    <span>Create course</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Giving</div>
+                                            <a class="wbs-menu__link" href="/vbcs/partnership/tiers"
+                                      data-item="giving.partnership">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 8.5c-1-1.6-3.4-1-3.4 1 0 1.6 3.4 3.5 3.4 3.5s3.4-1.9 3.4-3.5c0-2-2.4-2.6-3.4-1z"/><path d="M3 14l4 4 8 1 6-3"/></svg>                    <span>Partnership tiers</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/vbcs/manual/pending"
+                                      data-item="giving.manual">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1z"/><path d="M8 8h8M8 12h8"/></svg>                    <span>Manual contributions review</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Communications</div>
+                                            <a class="wbs-menu__link" href="/community/feed"
+                                      data-item="comms.feed">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>                    <span>Community feed</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Streaming</div>
+                                            <a class="wbs-menu__link" href="/streams"
+                                      data-item="streaming.console">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/></svg>                    <span>Live streams</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Reports</div>
+                                            <a class="wbs-menu__link" href="/gamification/leaderboard"
+                                      data-item="reports.leaderboard">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v4a5 5 0 01-10 0zM5 6H3v2a3 3 0 003 3M19 6h2v2a3 3 0 01-3 3M9 17h6M12 13v4M8 21h8"/></svg>                    <span>Leaderboards</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/leaderboards/individuals"
+                                      data-item="reports.individuals">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Top individuals</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/leaderboards/groups"
+                                      data-item="reports.groups">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11a3 3 0 000-6"/></svg>                    <span>Top groups</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/ranks"
+                                      data-item="reports.ranks">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Ranks</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/achievements"
+                                      data-item="reports.achievements">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v4a5 5 0 01-10 0zM5 6H3v2a3 3 0 003 3M19 6h2v2a3 3 0 01-3 3M9 17h6M12 13v4M8 21h8"/></svg>                    <span>Achievements</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/reports/funnel"
+                   aria-current="page"                   data-item="reports.funnel">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>                    <span>Funnel dashboard</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/reports/export"
+                                      data-item="reports.export">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>                    <span>Exports</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Access &amp; Security</div>
+                                            <a class="wbs-menu__link" href="/roles"
+                                      data-item="access.roles">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9l-2 2 2 2"/></svg>                    <span>Roles</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/rules"
+                                      data-item="access.rules">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>                    <span>Rules</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/abac-policies"
+                                      data-item="access.policies">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>                    <span>ABAC policies</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/break-glass/pending-reviews"
+                                      data-item="access.breakglass">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 18v.01"/></svg>                    <span>Break-glass reviews</span>
+                                    </a>
+                                <div class="wbs-menu__cat">Administration</div>
+                                            <a class="wbs-menu__link" href="/admin"
+                                      data-item="admin.settings">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>                    <span>Organization settings</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/admin/providers"
+                                      data-item="admin.providers">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6M15 2v6M7 8h10v3a5 5 0 01-10 0zM12 16v6"/></svg>                    <span>Providers</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/config"
+                                      data-item="admin.gam_config">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>                    <span>Points &amp; rewards settings</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/activity-catalog"
+                                      data-item="admin.gam_activities">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Activity catalog</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/badges"
+                                      data-item="admin.gam_badges">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Badges</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/rules"
+                                      data-item="admin.gam_rules">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-1.5 3L16 10H5"/></svg>                    <span>Gamification rules</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/activity-categories"
+                                      data-item="admin.gam_activity_cats">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>                    <span>Activity categories</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/follow-up-types"
+                                      data-item="admin.gam_fu_types">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Follow-up types</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/follow-up-methods"
+                                      data-item="admin.gam_fu_methods">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>                    <span>Follow-up methods</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/rank-definitions"
+                                      data-item="admin.gam_ranks">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>                    <span>Rank definitions</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/streak-definitions"
+                                      data-item="admin.gam_streaks">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-1.5 3L16 10H5"/></svg>                    <span>Streak definitions</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/gamification/pending"
+                                      data-item="admin.gam_pending">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h5l1 3h6l1-3h5"/><path d="M4 13l2-8h12l2 8v6H4z"/></svg>                    <span>Pending point awards</span>
+                                    </a>
+                                            <a class="wbs-menu__link" href="/integrations/catalog"
+                                      data-item="admin.integrations">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6M15 2v6M7 8h10v3a5 5 0 01-10 0zM12 16v6"/></svg>                    <span>Integrations</span>
+                                    </a>
+                        </div><div class="mobtext" style="margin-left:260px">Drawer shown open; tap the launcher to toggle.</div></div></div></div></div></body></html>

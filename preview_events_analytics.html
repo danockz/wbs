@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Events analytics</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #0ea5e922, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 1000px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.6rem,3.5vw,2.2rem); margin:0 0 4px; }
+        h2 { font-size: .82rem; text-transform:uppercase; letter-spacing:.08em; color:#94a3b8; margin:30px 0 12px; }
+        .sub { color:#94a3b8; margin-bottom:12px; }
+        .scope { display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+            color:#7dd3fc; border:1px solid #0ea5e955; border-radius:999px; padding:4px 12px; margin-bottom:6px; }
+        a.scope { text-decoration:none; }
+        a.scope:hover { color:#e0f2fe; border-color:#38bdf8; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+        .kpi { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; }
+        .kpi .n { font-size:1.7rem; font-weight:800; font-variant-numeric:tabular-nums; }
+        .kpi .k { font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:#94a3b8; margin-top:2px; }
+        .kpi.hl .n { color:#38bdf8; }
+        .kpi.good .n { color:#4ade80; }
+        .kpi.warn .n { color:#fbbf24; }
+        .split { display:flex; flex-direction:column; gap:8px; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; }
+        .srow { display:flex; align-items:center; gap:10px; font-size:.9rem; }
+        .srow .lbl { flex:0 0 130px; }
+        .srow .track { flex:1; height:9px; border-radius:6px; background:#1e293b; overflow:hidden; }
+        .srow .track > i { display:block; height:100%; border-radius:6px; }
+        .srow .val { flex:0 0 auto; font-variant-numeric:tabular-nums; font-weight:700; color:#cbd5e1; }
+        table { width:100%; border-collapse:collapse; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; overflow:hidden; }
+        th, td { text-align:start; padding:10px 12px; border-bottom:1px solid #1e293b; font-size:.9rem; }
+        th { font-size:.64rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; }
+        td.num, th.num { text-align:end; font-variant-numeric:tabular-nums; }
+        tr:last-child td { border-bottom:none; }
+        a.evlink { color:#e2e8f0; text-decoration:none; border-bottom:1px dotted #475569; }
+        a.evlink:hover { border-bottom-color:#38bdf8; }
+        .fillbadge { display:inline-block; min-width:52px; text-align:center; font-weight:700; font-variant-numeric:tabular-nums;
+            padding:2px 8px; border-radius:999px; font-size:.8rem; }
+        .empty { background:#0f172aee; border:1px dashed #334155; border-radius:12px; padding:20px; color:#94a3b8; text-align:center; }
+        .muted { color:#64748b; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Events analytics</h1>
+        <p class="sub">A birds-eye of your whole events programme.</p>
+        <div>
+            <span class="scope">
+                Organization-wide            </span>
+            <a class="scope" href="/events/calendar">Events calendar</a>
+            <a class="scope" href="/events">Events</a>
+        </div>
+
+                    <h2>Overview</h2>
+            <div class="grid">
+                <div class="kpi"><div class="n">18</div><div class="k">Total events</div></div>
+                <div class="kpi hl"><div class="n">6</div><div class="k">Upcoming</div></div>
+                <div class="kpi"><div class="n">12</div><div class="k">Past</div></div>
+                <div class="kpi good"><div class="n">13</div><div class="k">Published</div></div>
+                <div class="kpi"><div class="n">3</div><div class="k">Draft</div></div>
+                <div class="kpi"><div class="n">10</div><div class="k">Events run</div></div>
+            </div>
+
+            <h2>Attendance &amp; conversion</h2>
+            <div class="grid">
+                <div class="kpi"><div class="n">1,240</div><div class="k">Registrations</div></div>
+                <div class="kpi hl"><div class="n">842</div><div class="k">Check-ins</div></div>
+                <div class="kpi"><div class="n">701</div><div class="k">Unique attendees</div></div>
+                <div class="kpi good"><div class="n">67.9%</div><div class="k">RSVP → check-in</div></div>
+                <div class="kpi warn"><div class="n">398</div><div class="k">No-shows</div></div>
+                <div class="kpi"><div class="n">54</div><div class="k">Waitlisted</div></div>
+            </div>
+
+                            <h2>Ticket revenue</h2>
+                <div class="grid">
+                    <div class="kpi good"><div class="n">48,750.00 GHS</div><div class="k">Gross collected</div></div>
+                    <div class="kpi"><div class="n">163</div><div class="k">Paid orders</div></div>
+                </div>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:8px">
+                <div>
+                    <h2>By status</h2>
+                    <div class="split">
+                                                    <div class="srow">
+                                <span class="lbl">published</span>
+                                <span class="track"><i style="width:72%;background:#4ade80"></i></span>
+                                <span class="val">13</span>
+                            </div>
+                                                    <div class="srow">
+                                <span class="lbl">completed</span>
+                                <span class="track"><i style="width:0%;background:#38bdf8"></i></span>
+                                <span class="val">0</span>
+                            </div>
+                                                    <div class="srow">
+                                <span class="lbl">draft</span>
+                                <span class="track"><i style="width:17%;background:#a5b4fc"></i></span>
+                                <span class="val">3</span>
+                            </div>
+                                                    <div class="srow">
+                                <span class="lbl">cancelled</span>
+                                <span class="track"><i style="width:11%;background:#f87171"></i></span>
+                                <span class="val">2</span>
+                            </div>
+                                            </div>
+                </div>
+                <div>
+                    <h2>By mode</h2>
+                    <div class="split">
+                                                    <div class="srow">
+                                <span class="lbl">physical</span>
+                                <span class="track"><i style="width:56%;background:#38bdf8"></i></span>
+                                <span class="val">10</span>
+                            </div>
+                                                    <div class="srow">
+                                <span class="lbl">hybrid</span>
+                                <span class="track"><i style="width:28%;background:#38bdf8"></i></span>
+                                <span class="val">5</span>
+                            </div>
+                                                    <div class="srow">
+                                <span class="lbl">online</span>
+                                <span class="track"><i style="width:17%;background:#38bdf8"></i></span>
+                                <span class="val">3</span>
+                            </div>
+                                            </div>
+                </div>
+            </div>
+
+            <h2>Upcoming events</h2>
+                            <table>
+                    <thead><tr>
+                        <th>Event</th>
+                        <th>Starts (UTC)</th>
+                        <th class="num">Registered</th>
+                        <th class="num">Capacity</th>
+                        <th class="num">Fill</th>
+                    </tr></thead>
+                    <tbody>
+                                                    <tr>
+                                <td><a class="evlink" href="/events/e1">National Convention 2026</a></td>
+                                <td class="muted">2026-10-04 09:00</td>
+                                <td class="num">420</td>
+                                <td class="num">500</td>
+                                <td class="num"><span class="fillbadge" style="background:#fbbf2422;color:#fbbf24">84%</span></td>
+                            </tr>
+                                                    <tr>
+                                <td><a class="evlink" href="/events/e2">Regional Leaders Retreat</a></td>
+                                <td class="muted">2026-10-11 08:30</td>
+                                <td class="num">96</td>
+                                <td class="num">120</td>
+                                <td class="num"><span class="fillbadge" style="background:#fbbf2422;color:#fbbf24">80%</span></td>
+                            </tr>
+                                                    <tr>
+                                <td><a class="evlink" href="/events/e3">Youth Worship Night</a></td>
+                                <td class="muted">2026-10-18 18:00</td>
+                                <td class="num">210</td>
+                                <td class="num"><span class="muted">Unlimited</span></td>
+                                <td class="num"><span class="muted">—</span></td>
+                            </tr>
+                                                    <tr>
+                                <td><a class="evlink" href="/events/e4">Community Outreach Day</a></td>
+                                <td class="muted">2026-10-25 07:00</td>
+                                <td class="num">58</td>
+                                <td class="num">200</td>
+                                <td class="num"><span class="fillbadge" style="background:#4ade8022;color:#4ade80">29%</span></td>
+                            </tr>
+                                            </tbody>
+                </table>
+            
+                            <h2>Filling up</h2>
+                <table>
+                    <thead><tr>
+                        <th>Event</th>
+                        <th class="num">Registered</th>
+                        <th class="num">Capacity</th>
+                        <th class="num">Fill</th>
+                    </tr></thead>
+                    <tbody>
+                                                    <tr>
+                                <td><a class="evlink" href="/events/e5">Marriage Enrichment Seminar</a></td>
+                                <td class="num">97</td>
+                                <td class="num">100</td>
+                                <td class="num"><span class="fillbadge" style="background:#f8717122;color:#f87171">97%</span></td>
+                            </tr>
+                                                    <tr>
+                                <td><a class="evlink" href="/events/e1">National Convention 2026</a></td>
+                                <td class="num">420</td>
+                                <td class="num">500</td>
+                                <td class="num"><span class="fillbadge" style="background:#fbbf2422;color:#fbbf24">84%</span></td>
+                            </tr>
+                                                    <tr>
+                                <td><a class="evlink" href="/events/e2">Regional Leaders Retreat</a></td>
+                                <td class="num">96</td>
+                                <td class="num">120</td>
+                                <td class="num"><span class="fillbadge" style="background:#fbbf2422;color:#fbbf24">80%</span></td>
+                            </tr>
+                                            </tbody>
+                </table>
+                        </main>
+</body>
+</html>

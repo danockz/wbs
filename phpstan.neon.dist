@@ -1,0 +1,11 @@
+parameters:
+    level: 5
+    phpVersion: 80400
+    paths:
+        - app/Modules
+        - app/Controllers
+    excludePaths:
+        - app/Modules/*/Views/*
+    scanDirectories:
+        - vendor/codeigniter4/framework/system
+    treatPhpDocTypesAsCertain: false

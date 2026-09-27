@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overlays &amp; co-hosts — Win·Build·Send</title><style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #0891b222, transparent), #0b1120; color:#e2e8f0; }
+        a { color:#7dd3fc; text-decoration:none; }
+        .topbar { border-bottom:1px solid #1e293b; padding:14px 20px; display:flex; align-items:center; gap:14px;
+            background:#0b1120e6; position:sticky; top:0; backdrop-filter: blur(6px); }
+        .brand { font-weight:800; letter-spacing:-.01em; }
+        .brand span { color:#22d3ee; }
+        .nav { display:flex; gap:14px; font-size:.85rem; color:#94a3b8; }
+        .wrap { max-width: 900px; margin: 4vh auto; padding: 0 20px; }
+        h1 { font-size: 1.6rem; margin: 0 0 4px; }
+        .sub { color:#64748b; font-size:.9rem; margin-bottom: 22px; }
+        h2 { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:#818cf8; margin:26px 0 12px; }
+        .card { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:16px 18px; margin-bottom:12px; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+        .stat { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; }
+        .stat .k { font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:#64748b; }
+        .stat .v { font-size:1.3rem; font-weight:800; margin-top:6px; word-break:break-word; }
+        .pill { display:inline-block; font-size:.7rem; border-radius:999px; padding:3px 10px; background:#1e293b; color:#a5b4fc; }
+        .muted { color:#64748b; font-size:.82rem; }
+        .empty { text-align:center; color:#475569; padding:30px; border:1px dashed #1e293b; border-radius:12px; }
+        .meta { font-size:.75rem; color:#64748b; margin-top:18px; border-top:1px solid #1e293b; padding-top:12px; }
+        .warn { color:#fbbf24; }
+        .author { font-weight:700; font-size:.9rem; }
+        .time { color:#475569; font-size:.75rem; }
+        .row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+        .counts { color:#64748b; font-size:.8rem; margin-top:8px; }
+    </style></head>
+<body><div class="topbar"><div class="brand">Win<span>·</span>Build<span>·</span>Send</div>
+<div class="nav"><a href="#">Community</a><a href="#">Reports</a><a href="#">Status</a></div></div><div class="wrap"><h1>Sunday Service — Live</h1>
+<div class="sub">Overlays &amp; co-hosts · <span class="pill" style="color:#4ade80;">live</span> <span class="pill" style="">restricted</span></div>
+<h2>Co-hosts (WebRTC source feed)</h2><div class="card"><div class="row">
+      <span class="author">u-amoah <span class="pill" style="">host</span></span>
+      <span class="pill" style="color:#4ade80;">joined</span></div>
+      <div class="counts"><span style="color:#4ade80;">🔑 join token active</span> · expires 2026-09-03 18:30:00.000000 · joined 2026-09-03 17:02:11</div></div><div class="card"><div class="row">
+      <span class="author">u-boateng <span class="pill" style="">cohost</span></span>
+      <span class="pill" style="color:#fbbf24;">invited</span></div>
+      <div class="counts"><span class="muted">no join token issued</span></div></div><div class="card"><div class="row">
+      <span class="author">u-guest01 <span class="pill" style="">guest</span></span>
+      <span class="pill" style="color:#f87171;">removed</span></div>
+      <div class="counts"><span class="warn">🔑 token expired</span></div></div>
+<h2>Overlays (composited in the relay)</h2><div class="card"><div class="row">
+      <span class="author">lower_third <span class="muted">v3</span></span><span class="pill" style="color:#4ade80;">● live</span></div>
+      <div class="counts"><strong>Pastor Ama Serwaa</strong> — Guest Speaker</div>
+      <div class="time">updated 2026-09-03 17:05:00</div></div><div class="card"><div class="row">
+      <span class="author">cause_progress <span class="muted">v5</span></span><span class="pill" style="color:#4ade80;">● live</span></div>
+      <div class="counts">New Community Hall: <strong>GHS 42,500.00</strong> / GHS 100,000.00 <span class="pill">42%</span> <span class="muted">(live from ledger)</span></div>
+      <div class="time">updated 2026-09-03 17:05:00</div></div><div class="card"><div class="row">
+      <span class="author">quote_card <span class="muted">v1</span></span><span class="pill">hidden</span></div>
+      <div class="counts">“Win one, build one, send one.” — WBS</div>
+      <div class="time">updated 2026-09-03 17:05:00</div></div>
+<div class="meta">Stream str-01HZ… · overlay config is reviewed data, never code · co-host tokens are shown as status only, never revealed.</div></div>
+<p style="max-width:900px;margin:0 auto;padding:0 20px 30px;color:#475569;font-size:.72rem;">
+Static visual preview of app/Modules/Streaming/Views/overlays.php (FR-STR-008) with sample data — the live app renders this from OverlayService::console().</p>
+</body></html>

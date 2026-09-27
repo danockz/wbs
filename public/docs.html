@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WBS Platform API — Reference</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+  <style>
+    body { margin:0; background:#fafafa; }
+    .topbar { background:#0b3d2e; color:#fff; padding:14px 22px; font:600 16px system-ui,sans-serif; }
+    .topbar span { opacity:.75; font-weight:400; font-size:13px; margin-left:8px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">Win–Build–Send Platform API <span>OpenAPI 3.1 · generated from the route table</span></div>
+  <div id="swagger-ui"></div>
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js" crossorigin></script>
+  <script>
+    window.addEventListener('load', function () {
+      window.ui = SwaggerUIBundle({
+        url: 'openapi.json', dom_id: '#swagger-ui',
+        deepLinking: true, docExpansion: 'none', filter: true, tryItOutEnabled: true
+      });
+    });
+  </script>
+</body>
+</html>

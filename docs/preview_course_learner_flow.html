@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><style>body{margin:0;background:#0b1120;color:#e2e8f0;font-family:system-ui,sans-serif;padding:24px;max-width:760px}h1{font-size:1.6rem}.sub{color:#94a3b8;margin-bottom:6px}.card{background:#0f172aee;border:1px solid #1e293b;border-radius:10px;padding:12px 14px;margin:10px 0}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.pill{background:#1e293b;border-radius:99px;padding:2px 8px;font-size:.7rem;margin-left:6px}.time{color:#94a3b8;font-size:.82rem}.counts{color:#94a3b8;font-size:.82rem;margin-top:6px}.empty{color:#94a3b8}.author{font-weight:600}</style></head><body>
+
+    <style>
+        .lv-flash { border-radius:8px; padding:10px 13px; margin:12px 0; font-size:.9rem; }
+        .lv-flash.ok  { background:#052e1b; border:1px solid #14532d; color:#86efac; }
+        .lv-flash.err { background:#3a0d12; border:1px solid #7f1d1d; color:#fca5a5; }
+        .lv-enrol { display:flex; gap:12px; align-items:center; flex-wrap:wrap; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; margin:14px 0; }
+        .lv-enrol .msg { color:#cbd5e1; font-size:.92rem; }
+        .lv-btn { border:0; border-radius:8px; padding:9px 18px; font-weight:700; cursor:pointer; font-size:.9rem; background:#0d9488; color:#fff; }
+        .lv-btn.done { background:#166534; color:#dcfce7; padding:6px 12px; font-size:.82rem; }
+        .lv-prog { margin:14px 0; }
+        .lv-prog .bar { height:12px; border-radius:99px; background:#1e293b; overflow:hidden; }
+        .lv-prog .bar > i { display:block; height:100%; background:linear-gradient(90deg,#0d9488,#22c55e); }
+        .lv-prog .lbl { font-size:.78rem; color:#94a3b8; margin-top:5px; }
+        .lv-lesson-actions { margin-top:8px; }
+        .lv-donetag { color:#4ade80; font-weight:600; font-size:.82rem; }
+        .lv-lockedtag { color:#94a3b8; font-size:.82rem; }
+    </style>
+
+    <h1>Course syllabus</h1>
+    <div class="sub">3 lessons · locked lessons show only their unlock time</div>
+
+    <div class="lv-flash ok">Lesson marked complete.</div>    
+            <div class="lv-prog">
+            <div class="bar"><i style="width:33%"></i></div>
+            <div class="lbl">1 of 3 required lessons complete (33%)</div>
+        </div>
+    
+                                    <div class="card">
+                <div class="row">
+                    <span class="author">
+                        1. Welcome &amp; Foundations                        <span class="pill">required</span>                    </span>
+                                            <span class="time" style="color:#4ade80;">✓ available</span>
+                                    </div>
+                                    <div class="counts">Content: video:intro</div>
+                
+                                    <div class="lv-lesson-actions"><span class="lv-donetag">✓ Completed</span></div>
+                            </div>
+                                <div class="card">
+                <div class="row">
+                    <span class="author">
+                        2. The Gospel Story                        <span class="pill">required</span>                    </span>
+                                            <span class="time" style="color:#4ade80;">✓ available</span>
+                                    </div>
+                                    <div class="counts">Content: video:gospel</div>
+                
+                                    <form class="lv-lesson-actions" method="post"
+                          action="/enrollments/E9/lessons/L2/complete">
+                        <input type="hidden" name="_csrf" value="PREVIEW">
+                        <input type="hidden" name="course_id" value="disc101">
+                        <button type="submit" class="lv-btn done">Mark complete</button>
+                    </form>
+                            </div>
+                                <div class="card">
+                <div class="row">
+                    <span class="author">
+                        3. Prayer Life                        <span class="pill">required</span>                    </span>
+                                            <span class="time">🔒 unlocks 2026-09-20</span>
+                                    </div>
+                
+                                    <div class="lv-lesson-actions"><span class="lv-lockedtag">Unlocks later</span></div>
+                            </div>
+            </body></html>

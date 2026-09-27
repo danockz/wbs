@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Events — Win·Build·Send</title><style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #0891b222, transparent), #0b1120; color:#e2e8f0; }
+        a { color:#7dd3fc; text-decoration:none; }
+        .topbar { border-bottom:1px solid #1e293b; padding:14px 20px; display:flex; align-items:center; gap:14px;
+            background:#0b1120e6; position:sticky; top:0; backdrop-filter: blur(6px); }
+        .brand { font-weight:800; letter-spacing:-.01em; }
+        .brand span { color:#22d3ee; }
+        .nav { display:flex; gap:14px; font-size:.85rem; color:#94a3b8; }
+        .wrap { max-width: 900px; margin: 4vh auto; padding: 0 20px; }
+        h1 { font-size: 1.6rem; margin: 0 0 4px; }
+        .sub { color:#64748b; font-size:.9rem; margin-bottom: 22px; }
+        h2 { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:#818cf8; margin:26px 0 12px; }
+        .card { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:16px 18px; margin-bottom:12px; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+        .stat { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; }
+        .stat .k { font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:#64748b; }
+        .stat .v { font-size:1.3rem; font-weight:800; margin-top:6px; word-break:break-word; }
+        .pill { display:inline-block; font-size:.7rem; border-radius:999px; padding:3px 10px; background:#1e293b; color:#a5b4fc; }
+        .muted { color:#64748b; font-size:.82rem; }
+        .empty { text-align:center; color:#475569; padding:30px; border:1px dashed #1e293b; border-radius:12px; }
+        .meta { font-size:.75rem; color:#64748b; margin-top:18px; border-top:1px solid #1e293b; padding-top:12px; }
+        .warn { color:#fbbf24; }
+        .author { font-weight:700; font-size:.9rem; }
+        .time { color:#475569; font-size:.75rem; }
+        .row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+        .counts { color:#64748b; font-size:.8rem; margin-top:8px; }
+    </style></head><body><div class="topbar"><div class="brand">Win<span>·</span>Build<span>·</span>Send</div>
+<div class="nav"><a href="#">Events</a><a href="#">Courses</a><a href="#">Streams</a><a href="#">Community</a><a href="#">Reports</a><a href="#">Status</a></div></div>
+<div class="wrap"><h1>Events</h1><div class="sub">3 events</div><a class="card" style="display:block;" href="#"><div class="row">
+      <span class="author">Monthly Gathering</span><span class="pill" style="color:#4ade80;">published</span></div>
+      <div class="counts">starts 2026-09-20 17:00:00 UTC · capacity 250 · physical</div></a><a class="card" style="display:block;" href="#"><div class="row">
+      <span class="author">Leadership Retreat</span><span class="pill" style="color:#a5b4fc;">draft</span></div>
+      <div class="counts">starts 2026-10-04 09:00:00 UTC · capacity 60 · hybrid</div></a><a class="card" style="display:block;" href="#"><div class="row">
+      <span class="author">Founders Night (2026)</span><span class="pill" style="color:#38bdf8;">completed</span></div>
+      <div class="counts">starts 2026-08-01 18:30:00 UTC · capacity 120 · physical</div></a></div>
+<p style="max-width:900px;margin:0 auto;padding:0 20px 30px;color:#475569;font-size:.72rem;">
+Static preview of the wired global nav (from app/Views/layouts/app.php) + the new Events index. Nav now links Events · Courses · Streams · Community · Reports · Status.</p>
+</body></html>

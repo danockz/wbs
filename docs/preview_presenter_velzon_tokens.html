@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ticket types</title>
+    <style>
+:root{
+  /* Brand + semantic (Velzon palette) */
+  --wbs-primary:#405189; --wbs-primary-2:#4c5fa6; --wbs-on-primary:#fff;
+  --wbs-success:#0ab39c; --wbs-danger:#f06548; --wbs-warning:#f7b84b; --wbs-info:#299cdb;
+  /* Surfaces (platform dark scale) */
+  --wbs-bg:#0b1120; --wbs-surface:#0f172a; --wbs-surface-2:#111c33; --wbs-border:#1e293b; --wbs-border-2:#334155;
+  /* Text */
+  --wbs-text:#e2e8f0; --wbs-muted:#94a3b8; --wbs-faint:#64748b;
+  /* Radius scale (Velzon: sm .25 / base .375 / lg .5 rem, pill) */
+  --wbs-radius-sm:5px; --wbs-radius:8px; --wbs-radius-lg:12px; --wbs-radius-pill:999px;
+  /* Spacing scale */
+  --wbs-sp-1:4px; --wbs-sp-2:8px; --wbs-sp-3:12px; --wbs-sp-4:16px; --wbs-sp-5:22px; --wbs-sp-6:32px;
+  /* Typography */
+  --wbs-font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --wbs-fs-h1:clamp(1.6rem,3.5vw,2.2rem); --wbs-fs-body:.9rem; --wbs-fs-sm:.82rem; --wbs-fs-xs:.66rem;
+  /* Elevation */
+  --wbs-shadow:0 4px 14px rgba(0,0,0,.35);
+}
+</style>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: var(--wbs-font);
+            background: radial-gradient(1200px 600px at 50% -10%, #eab30822, transparent), var(--wbs-bg); color:var(--wbs-text); }
+        .wrap { max-width: 1040px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: var(--wbs-fs-h1); margin:0 0 4px; }
+        .sub { color:var(--wbs-muted); margin-bottom:8px; }
+        .count { color:var(--wbs-warning); font-weight:700; margin-bottom:22px; }
+        .facts { display:flex; flex-wrap:wrap; gap:var(--wbs-sp-3); margin:2px 0 22px; }
+        .fact { background:var(--wbs-surface); border:1px solid var(--wbs-border); border-radius:var(--wbs-radius-lg); padding:12px 16px; min-width:120px; }
+        .fact .k { display:block; font-size:.62rem; text-transform:uppercase; letter-spacing:.06em; color:var(--wbs-muted); margin-bottom:4px; }
+        .fact .v { font-size:1.25rem; font-weight:700; font-variant-numeric:tabular-nums; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:start; padding:11px 12px; border-bottom:1px solid var(--wbs-border); font-size:var(--wbs-fs-body); vertical-align:top; }
+        th { font-size:var(--wbs-fs-xs); text-transform:uppercase; letter-spacing:.06em; color:var(--wbs-muted); }
+        td.num, th.num { text-align:end; font-variant-numeric:tabular-nums; }
+        .report { font-weight:700; }
+        code { background:var(--wbs-bg); border:1px solid var(--wbs-border); border-radius:var(--wbs-radius-sm); padding:1px 6px; font-size:.82em; }
+        .chip { display:inline-block; font-size:var(--wbs-fs-xs); text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:var(--wbs-radius-pill); border:1px solid var(--wbs-border-2); white-space:nowrap; }
+        .muted { color:var(--wbs-faint); }
+        a.dl { color:var(--wbs-success); text-decoration:none; font-size:var(--wbs-fs-sm); }
+        a.dl:hover { text-decoration:underline; }
+        .empty { background:var(--wbs-surface); border:1px dashed var(--wbs-border-2); border-radius:var(--wbs-radius-lg); padding:24px; color:var(--wbs-muted); text-align:center; }
+        .flash { border-radius:var(--wbs-radius); padding:11px 14px; margin:0 0 18px; font-size:.86rem; }
+        .flash.ok { background:#052e1b; border:1px solid var(--wbs-success); color:#bbf7d0; }
+        .flash.err { background:#3f1d1d; border:1px solid var(--wbs-danger); color:#fecaca; }
+        details.card { background:var(--wbs-surface); border:1px solid var(--wbs-border); border-radius:var(--wbs-radius-lg); padding:0; margin:0 0 22px; }
+        details.card > summary { cursor:pointer; padding:13px 16px; font-weight:700; color:var(--wbs-text); list-style:none; }
+        details.card > summary::-webkit-details-marker { display:none; }
+        details.card > summary::before { content:'\FF0B'; color:#eab308; margin-inline-end:9px; font-weight:700; }
+        details.card[open] > summary::before { content:'\FF0D'; }
+        .form { padding:4px 16px 18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; align-items:end; }
+        .form .full { grid-column:1/-1; }
+        label { display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--wbs-muted); margin-bottom:5px; }
+        input, select, textarea { width:100%; background:var(--wbs-bg); border:1px solid var(--wbs-border-2); border-radius:var(--wbs-radius); color:var(--wbs-text); padding:9px 10px; font-size:.86rem; font-family:inherit; }
+        input:focus, select:focus, textarea:focus { outline:none; border-color:#eab308; }
+        input:invalid:not(:placeholder-shown) { border-color:var(--wbs-danger); }
+        .chk { display:flex; align-items:center; gap:8px; }
+        .chk input { width:auto; }
+        .chk label { margin:0; }
+        .btn { background:var(--wbs-primary); border:1px solid var(--wbs-primary-2); color:var(--wbs-on-primary); border-radius:var(--wbs-radius); padding:9px 16px; font-size:.84rem; font-weight:600; cursor:pointer; }
+        .btn:hover { filter:brightness(1.1); }
+        .rowbtn { background:transparent; border:1px solid #334155; color:#cbd5e1; border-radius:7px; padding:5px 11px; font-size:.76rem; cursor:pointer; }
+        .rowbtn:hover { border-color:#ef4444; color:#fecaca; }
+        .inline { display:inline; }
+        .backlink { color:#94a3b8; text-decoration:none; font-size:.82rem; display:inline-block; margin-bottom:14px; }
+        .backlink:hover { color:#e2e8f0; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+                    <a class="backlink" href="/events/ev1">&larr; Back</a>
+                <h1>Ticket types</h1>
+        <p class="sub">Ticket types available for this event.</p>
+                
+        
+                                <details class="card">
+                <summary>Add a ticket type</summary>
+                <form class="form" method="post" action="/events/ev1/ticket-types">
+                    <input type="hidden" name="_csrf" value="TESTCSRF">
+                                                                                                <div class="">
+                                <label for="f_name">Name</label>
+                                                                    <input type="text" id="f_name" name="name" required maxlength="200">
+                                                            </div>
+                                                                                                                        <div class="">
+                                <label for="f_price_minor">Price (minor units)</label>
+                                                                    <input type="number" id="f_price_minor" name="price_minor" min="0" step="1" inputmode="numeric">
+                                                            </div>
+                                                                                                                        <div class="">
+                                <label for="f_currency">Currency</label>
+                                                                    <input type="text" id="f_currency" name="currency" maxlength="3" pattern="[A-Za-z]{3}" placeholder="GHS">
+                                                            </div>
+                                                                                                                        <div class="">
+                                <label for="f_quantity_total">Quantity</label>
+                                                                    <input type="number" id="f_quantity_total" name="quantity_total" min="0">
+                                                            </div>
+                                                                                                                        <div class="full">
+                                <label for="f_description">Description</label>
+                                                                    <textarea id="f_description" name="description" rows="3" maxlength="500"></textarea>
+                                                            </div>
+                                                                <div class="full">
+                        <button class="btn" type="submit">Create ticket type</button>
+                    </div>
+                </form>
+            </details>
+        
+                
+                                    <p class="count">2 items</p>
+                        <table>
+                <thead><tr>
+                                                                    <th>Name</th>
+                                                                    <th class="num">Price</th>
+                                                                    <th>Currency</th>
+                                                                    <th class="num">Quantity</th>
+                                                                    <th class="num">Sold</th>
+                                                        </tr></thead>
+                <tbody>
+                                                                    <tr>
+                                                                                            <td><span class="report">Standard</span></td>
+                                                                                            <td class="num">5000</td>
+                                                                                            <td><span class="chip" style="color:#94a3b8;border-color:#94a3b855">GHS</span></td>
+                                                                                            <td class="num">100</td>
+                                                                                            <td class="num">12</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td><span class="report">VIP</span></td>
+                                                                                            <td class="num">15000</td>
+                                                                                            <td><span class="chip" style="color:#94a3b8;border-color:#94a3b855">GHS</span></td>
+                                                                                            <td class="num">20</td>
+                                                                                            <td class="num">5</td>
+                                                                                </tr>
+                                    </tbody>
+            </table>
+            </main>
+</body>
+</html>

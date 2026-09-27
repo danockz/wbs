@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Share your feedback</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #0ea5e922, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 720px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.5rem,3.4vw,2.1rem); margin:0 0 4px; }
+        .sub { color:#94a3b8; margin-bottom:6px; }
+        .event { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.8rem; color:#7dd3fc; border:1px solid #0369a1; border-radius:6px; padding:2px 8px; }
+        .intro { color:#cbd5e1; font-size:.92rem; margin:12px 0 20px; }
+        .flash { border-radius:10px; padding:12px 16px; margin:0 0 18px; font-size:.92rem; }
+        .flash.ok { background:#052e26; border:1px solid #065f46; color:#a7f3d0; }
+        .flash.err { background:#3f1d1d; border:1px solid #7f1d1d; color:#fecaca; }
+        .notice { border-radius:12px; padding:20px; background:#0f172aee; border:1px solid #1e293b; }
+        .notice h2 { margin:0 0 8px; font-size:1.1rem; color:#a7f3d0; }
+        .notice p { margin:0; color:#cbd5e1; font-size:.92rem; }
+        .q { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+        .q .prompt { font-size:.98rem; margin:0 0 12px; }
+        .req { color:#fca5a5; margin-inline-start:3px; }
+        .scale { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+        .scale label { display:inline-flex; flex-direction:column; align-items:center; gap:4px; font-size:.8rem; color:#cbd5e1; cursor:pointer; }
+        .scale input[type=radio] { width:20px; height:20px; accent-color:#0ea5e9; }
+        .scalehint { display:flex; justify-content:space-between; font-size:.72rem; color:#64748b; margin-top:6px; }
+        .opt { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:.9rem; color:#e2e8f0; cursor:pointer; }
+        .opt input[type=radio] { accent-color:#0ea5e9; }
+        textarea, select { width:100%; background:#0b1120; border:1px solid #334155; border-radius:8px; color:#e2e8f0; padding:9px 11px; font-size:.9rem; font-family:inherit; }
+        textarea:focus, select:focus { outline:2px solid #0ea5e9; border-color:#0ea5e9; }
+        textarea { min-height:80px; resize:vertical; }
+        .empty { color:#94a3b8; font-size:.9rem; font-style:italic; }
+        button { margin-top:6px; border:0; border-radius:8px; padding:11px 22px; font-size:.95rem; font-weight:600; cursor:pointer; background:#0ea5e9; color:#04222f; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Share your feedback</h1>
+        <p class="sub">Post-conference survey · Event: <span class="event">annual-conference-2026</span></p>
+
+                
+                    <p class="intro">Your answers help us improve. Required questions are marked with an asterisk.</p>
+            <form method="post" action="/feedback-forms/fb-2026/responses">
+                <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                                                        <div class="q">
+                        <p class="prompt">How would you rate the event overall?<span class="req">*</span></p>
+
+                                                    <div class="scale" role="radiogroup" aria-label="Rate from 1 to 5">
+                                                                    <label><input type="radio" name="rating[q1]" value="1" required>1</label>
+                                                                    <label><input type="radio" name="rating[q1]" value="2" required>2</label>
+                                                                    <label><input type="radio" name="rating[q1]" value="3" required>3</label>
+                                                                    <label><input type="radio" name="rating[q1]" value="4" required>4</label>
+                                                                    <label><input type="radio" name="rating[q1]" value="5" required>5</label>
+                                                            </div>
+                            <div class="scalehint"><span>Poor</span><span>Excellent</span></div>
+
+                                            </div>
+                                                        <div class="q">
+                        <p class="prompt">Which session was most valuable to you?</p>
+
+                                                    <select name="answer_choice[q2]">
+                                <option value="">Choose an option</option>
+                                                                    <option value="Opening keynote">Opening keynote</option>
+                                                                    <option value="Breakout: Leadership">Breakout: Leadership</option>
+                                                                    <option value="Breakout: Outreach">Breakout: Outreach</option>
+                                                                    <option value="Closing plenary">Closing plenary</option>
+                                                            </select>
+
+                                            </div>
+                                                        <div class="q">
+                        <p class="prompt">Would you attend again next year?<span class="req">*</span></p>
+
+                                                    <label class="opt"><input type="radio" name="answer_choice[q3]" value="yes" required> Yes</label>
+                            <label class="opt"><input type="radio" name="answer_choice[q3]" value="no" required> No</label>
+
+                                            </div>
+                                                        <div class="q">
+                        <p class="prompt">What could we improve?</p>
+
+                                                    <textarea name="answer_text[q4]" placeholder="Type your answer"></textarea>
+                                            </div>
+                                <button type="submit">Submit response</button>
+            </form>
+            </main>
+</body>
+</html>

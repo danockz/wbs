@@ -1,0 +1,30 @@
+<?php
+
+/** Service failure messages for the contact book / outreach flows (family key lang('contact.*')). Rendered human-readable at flash time via Shared\Support\Messages::humanize(). */
+return [
+    'attendance_bad_type' => 'El tipo de asistencia debe ser evento o curso.',
+    'attendance_target_required' => 'Elija el evento o el curso.',
+    'decision_date_future' => 'La fecha de decisión no puede ser futura.',
+    'decision_date_required' => 'La fecha de decisión es obligatoria.',
+    'decision_type_invalid' => 'Tipo de decisión desconocido.',
+    'decision_type_required' => 'Elija un tipo de decisión.',
+    'group_out_of_scope' => 'Ese grupo está fuera de su ámbito de liderazgo.',
+    'group_required' => 'Elija un grupo.',
+    'name_required' => 'El nombre completo es obligatorio.',
+    'not_found' => 'Contacto no encontrado.',
+    'not_found_or_forbidden' => 'Contacto no encontrado o no accesible para usted.',
+    'owner_required' => 'Se requiere un responsable.',
+    'rows_required' => 'No hay filas para importar.',
+    'teardown_bad_input' => 'Solicitud de desmontaje no válida.',
+    'transfer_already_pending' => 'Ya hay una transferencia pendiente de revisión.',
+    'transfer_bad_input' => 'Solicitud de transferencia no válida.',
+    'transfer_bad_state' => 'Este contacto no puede transferirse ahora mismo.',
+    'transfer_failed' => 'No se pudo aplicar la transferencia.',
+    'transfer_no_group' => 'El contacto no tiene grupo desde el que transferir.',
+    'transfer_no_longer_eligible' => 'El contacto ya no es elegible para transferencia.',
+    'transfer_not_due' => 'Aún no ha pasado el periodo de inactividad.',
+    'transfer_reason_required' => 'Se requiere un motivo de transferencia.',
+    'transfer_request_not_found' => 'Solicitud de transferencia no encontrada.',
+    'transfer_self_approval' => 'No puede aprobar su propia transferência.',
+    'transfer_submit_failed' => 'No se pudo encolar la transferencia para revisión.',
+];

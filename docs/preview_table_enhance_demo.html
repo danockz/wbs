@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Leaderboard</title>
+    <style>
+:root{
+  /* Brand + semantic (Velzon palette) */
+  --wbs-primary:#405189; --wbs-primary-2:#4c5fa6; --wbs-on-primary:#fff;
+  --wbs-success:#0ab39c; --wbs-danger:#f06548; --wbs-warning:#f7b84b; --wbs-info:#299cdb;
+  /* Surfaces (platform dark scale) */
+  --wbs-bg:#0b1120; --wbs-surface:#0f172a; --wbs-surface-2:#111c33; --wbs-border:#1e293b; --wbs-border-2:#334155;
+  /* Text */
+  --wbs-text:#e2e8f0; --wbs-muted:#94a3b8; --wbs-faint:#64748b;
+  /* Radius scale (Velzon: sm .25 / base .375 / lg .5 rem, pill) */
+  --wbs-radius-sm:5px; --wbs-radius:8px; --wbs-radius-lg:12px; --wbs-radius-pill:999px;
+  /* Spacing scale */
+  --wbs-sp-1:4px; --wbs-sp-2:8px; --wbs-sp-3:12px; --wbs-sp-4:16px; --wbs-sp-5:22px; --wbs-sp-6:32px;
+  /* Typography */
+  --wbs-font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --wbs-fs-h1:clamp(1.6rem,3.5vw,2.2rem); --wbs-fs-body:.9rem; --wbs-fs-sm:.82rem; --wbs-fs-xs:.66rem;
+  /* Elevation */
+  --wbs-shadow:0 4px 14px rgba(0,0,0,.35);
+}
+</style>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: var(--wbs-font);
+            background: radial-gradient(1200px 600px at 50% -10%, #f59e0b22, transparent), var(--wbs-bg); color:var(--wbs-text); }
+        .wrap { max-width: 1040px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: var(--wbs-fs-h1); margin:0 0 4px; }
+        .sub { color:var(--wbs-muted); margin-bottom:8px; }
+        .count { color:var(--wbs-warning); font-weight:700; margin-bottom:22px; }
+        .facts { display:flex; flex-wrap:wrap; gap:var(--wbs-sp-3); margin:2px 0 22px; }
+        .fact { background:var(--wbs-surface); border:1px solid var(--wbs-border); border-radius:var(--wbs-radius-lg); padding:12px 16px; min-width:120px; }
+        .fact .k { display:block; font-size:.62rem; text-transform:uppercase; letter-spacing:.06em; color:var(--wbs-muted); margin-bottom:4px; }
+        .fact .v { font-size:1.25rem; font-weight:700; font-variant-numeric:tabular-nums; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:start; padding:11px 12px; border-bottom:1px solid var(--wbs-border); font-size:var(--wbs-fs-body); vertical-align:top; }
+        th { font-size:var(--wbs-fs-xs); text-transform:uppercase; letter-spacing:.06em; color:var(--wbs-muted); }
+        td.num, th.num { text-align:end; font-variant-numeric:tabular-nums; }
+        .report { font-weight:700; }
+        code { background:var(--wbs-bg); border:1px solid var(--wbs-border); border-radius:var(--wbs-radius-sm); padding:1px 6px; font-size:.82em; }
+        .chip { display:inline-block; font-size:var(--wbs-fs-xs); text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:var(--wbs-radius-pill); border:1px solid var(--wbs-border-2); white-space:nowrap; }
+        .muted { color:var(--wbs-faint); }
+        a.dl { color:var(--wbs-success); text-decoration:none; font-size:var(--wbs-fs-sm); }
+        a.dl:hover { text-decoration:underline; }
+        .empty { background:var(--wbs-surface); border:1px dashed var(--wbs-border-2); border-radius:var(--wbs-radius-lg); padding:24px; color:var(--wbs-muted); text-align:center; }
+        .flash { border-radius:var(--wbs-radius); padding:11px 14px; margin:0 0 18px; font-size:.86rem; }
+        .flash.ok { background:#052e1b; border:1px solid var(--wbs-success); color:#bbf7d0; }
+        .flash.err { background:#3f1d1d; border:1px solid var(--wbs-danger); color:#fecaca; }
+        details.card { background:var(--wbs-surface); border:1px solid var(--wbs-border); border-radius:var(--wbs-radius-lg); padding:0; margin:0 0 22px; }
+        details.card > summary { cursor:pointer; padding:13px 16px; font-weight:700; color:var(--wbs-text); list-style:none; }
+        details.card > summary::-webkit-details-marker { display:none; }
+        details.card > summary::before { content:'\FF0B'; color:#f59e0b; margin-inline-end:9px; font-weight:700; }
+        details.card[open] > summary::before { content:'\FF0D'; }
+        .form { padding:4px 16px 18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; align-items:end; }
+        .form .full { grid-column:1/-1; }
+        label { display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--wbs-muted); margin-bottom:5px; }
+        input, select, textarea { width:100%; background:var(--wbs-bg); border:1px solid var(--wbs-border-2); border-radius:var(--wbs-radius); color:var(--wbs-text); padding:9px 10px; font-size:.86rem; font-family:inherit; }
+        input:focus, select:focus, textarea:focus { outline:none; border-color:#f59e0b; }
+        input:invalid:not(:placeholder-shown) { border-color:var(--wbs-danger); }
+        /* Progressive table enhancement (added only when JS upgrades the table). */
+        th.sortable { cursor:pointer; user-select:none; }
+        th.sortable:hover { color:var(--wbs-text); }
+        th.sortable::after { content:'\2195'; opacity:.35; margin-inline-start:6px; font-size:.8em; }
+        th.sorted-asc::after { content:'\2191'; opacity:1; }
+        th.sorted-desc::after { content:'\2193'; opacity:1; }
+        th.sortable:focus-visible { outline:2px solid var(--wbs-primary); outline-offset:-2px; }
+        .tbl-filterbar { display:flex; align-items:center; gap:10px; margin:0 0 12px; }
+        .tbl-filter { max-width:280px; }
+        .tbl-filter-count { color:var(--wbs-muted); font-size:var(--wbs-fs-sm); font-variant-numeric:tabular-nums; }
+        .tbl-actions { display:flex; gap:8px; justify-content:flex-end; margin:0 0 10px; }
+        .tbl-btn { background:var(--wbs-surface-2); border:1px solid var(--wbs-border-2); color:var(--wbs-text);
+            border-radius:var(--wbs-radius-sm); padding:6px 12px; font-size:var(--wbs-fs-sm); font-family:inherit; cursor:pointer; }
+        .tbl-btn:hover { border-color:var(--wbs-primary); }
+        .tbl-btn:disabled { opacity:.6; cursor:default; }
+        .tbl-btn[aria-pressed="true"] { border-color:var(--wbs-primary); color:#fff; }
+        table.tbl-compact th, table.tbl-compact td { padding:5px 10px; font-size:var(--wbs-fs-sm); }
+        .tbl-colmenu { position:relative; }
+        .tbl-colmenu-panel { position:absolute; z-index:20; inset-inline-end:0; margin-top:6px; min-width:170px;
+            background:var(--wbs-surface-2); border:1px solid var(--wbs-border-2); border-radius:var(--wbs-radius); padding:8px; box-shadow:var(--wbs-shadow); }
+        .tbl-colmenu-item { display:flex; align-items:center; gap:8px; padding:5px 6px; font-size:var(--wbs-fs-sm); text-transform:none; letter-spacing:0; color:var(--wbs-text); cursor:pointer; }
+        .tbl-colmenu-item input { width:auto; }
+        .chk { display:flex; align-items:center; gap:8px; }
+        .chk input { width:auto; }
+        .chk label { margin:0; }
+        .btn { background:var(--wbs-primary); border:1px solid var(--wbs-primary-2); color:var(--wbs-on-primary); border-radius:var(--wbs-radius); padding:9px 16px; font-size:.84rem; font-weight:600; cursor:pointer; }
+        .btn:hover { filter:brightness(1.1); }
+        .rowbtn { background:transparent; border:1px solid #334155; color:#cbd5e1; border-radius:7px; padding:5px 11px; font-size:.76rem; cursor:pointer; }
+        .rowbtn:hover { border-color:#ef4444; color:#fecaca; }
+        .inline { display:inline; }
+        .backlink { color:#94a3b8; text-decoration:none; font-size:.82rem; display:inline-block; margin-bottom:14px; }
+        .backlink:hover { color:#e2e8f0; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+                <h1>Campaign leaderboard</h1>
+        <p class="sub">Individuals ranked within this campaign.</p>
+                
+        
+        
+                
+                                    <p class="count">10 items</p>
+                                                <div class="tbl-tools" data-enhance="table" data-filter-min="8"
+                 data-filter-label="Filter…"
+                 data-export="Export CSV"
+                 data-export-name="gam_campaign_leaderboard"
+                 data-copy="Copy"
+                 data-copy-done="Copied"
+                 data-columns="Columns"
+                 data-density="Compact">
+                        <table>
+                <thead><tr>
+                                                                    <th class="num" data-sort="num">Rank</th>
+                                                                    <th data-sort="text">Subject</th>
+                                                                    <th class="num" data-sort="num">Score</th>
+                                                        </tr></thead>
+                <tbody>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="1">1</td>
+                                                                                            <td data-sort-value="Ama Owusu"><span class="report">Ama Owusu</span></td>
+                                                                                            <td class="num" data-sort-value="320">320</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="2">2</td>
+                                                                                            <td data-sort-value="Kofi Mensah"><span class="report">Kofi Mensah</span></td>
+                                                                                            <td class="num" data-sort-value="280">280</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="3">3</td>
+                                                                                            <td data-sort-value="Adjoa Boateng"><span class="report">Adjoa Boateng</span></td>
+                                                                                            <td class="num" data-sort-value="215">215</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="4">4</td>
+                                                                                            <td data-sort-value="Yaw Darko"><span class="report">Yaw Darko</span></td>
+                                                                                            <td class="num" data-sort-value="198">198</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="5">5</td>
+                                                                                            <td data-sort-value="Efua Sam"><span class="report">Efua Sam</span></td>
+                                                                                            <td class="num" data-sort-value="176">176</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="6">6</td>
+                                                                                            <td data-sort-value="Kwabena Osei"><span class="report">Kwabena Osei</span></td>
+                                                                                            <td class="num" data-sort-value="154">154</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="7">7</td>
+                                                                                            <td data-sort-value="Abena Nyarko"><span class="report">Abena Nyarko</span></td>
+                                                                                            <td class="num" data-sort-value="143">143</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="8">8</td>
+                                                                                            <td data-sort-value="Kojo Antwi"><span class="report">Kojo Antwi</span></td>
+                                                                                            <td class="num" data-sort-value="121">121</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="9">9</td>
+                                                                                            <td data-sort-value="Akua Frimpong"><span class="report">Akua Frimpong</span></td>
+                                                                                            <td class="num" data-sort-value="98">98</td>
+                                                                                </tr>
+                                                                    <tr>
+                                                                                            <td class="num" data-sort-value="10">10</td>
+                                                                                            <td data-sort-value="Kwame Asante"><span class="report">Kwame Asante</span></td>
+                                                                                            <td class="num" data-sort-value="77">77</td>
+                                                                                </tr>
+                                    </tbody>
+            </table>
+                        </div>
+                        </main>
+        <!-- Progressive enhancement only: same-origin, no deps, CSP script-src 'self'. Page works without it. -->
+    <script>
+/* DEMO INLINE COPY — production loads this same file via src="/assets/js/table-enhance.js" (CSP script-src 'self'). */
+/*
+ * Progressive table enhancement — zero-dependency, CSP-safe.
+ *
+ * WHY THIS EXISTS (see docs/FORMS_CRUD_VIEWS_AUDIT.md §5 / action #5):
+ *   The shared page presenter renders a COMPLETE, server-side table that works
+ *   with no JavaScript at all. This file is pure progressive enhancement: when
+ *   JS is available it upgrades any opted-in table with instant client-side
+ *   column sorting and a live filter box — no jQuery, no DataTables, no CDN,
+ *   nothing over the wire but this one ~3 KB same-origin file.
+ *
+ * CSP: loaded as a same-origin <script src> (script-src 'self'); no inline
+ *   handlers, no eval, no network. If this file fails to load the page is
+ *   unaffected — the plain server table remains fully usable.
+ *
+ * OPT-IN: the presenter wraps enhanceable tables in
+ *   <div class="tbl-tools" data-enhance="table" data-filter-min="8">…<table>…
+ *   Each sortable <th> carries data-sort ("text" | "num" | "date") and the
+ *   presenter tags each <td> with data-sort-value for a stable, locale-free key.
+ *   Export/copy buttons are added when the wrapper allows it (data-export /
+ *   data-copy labels present); both operate purely on the in-page table — no
+ *   network, no new document — so they stay within CSP connect-src 'self'.
+ */
+(function () {
+  'use strict';
+
+  function ready(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+
+  // Pull a comparable key for a cell: prefer data-sort-value, else text.
+  function cellKey(row, idx) {
+    var cells = row.children;
+    if (idx >= cells.length) { return ''; }
+    var td = cells[idx];
+    var v = td.getAttribute('data-sort-value');
+    return v !== null ? v : (td.textContent || '').trim();
+  }
+
+  function makeComparator(idx, type, dir) {
+    var mult = dir === 'desc' ? -1 : 1;
+    return function (a, b) {
+      var ka = cellKey(a, idx), kb = cellKey(b, idx);
+      var res;
+      if (type === 'num') {
+        var na = parseFloat(ka.replace(/[^0-9.\-]/g, '')) || 0;
+        var nb = parseFloat(kb.replace(/[^0-9.\-]/g, '')) || 0;
+        res = na - nb;
+      } else if (type === 'date') {
+        var da = Date.parse(ka) || 0, db = Date.parse(kb) || 0;
+        res = da - db;
+      } else {
+        res = ka.localeCompare(kb, undefined, { numeric: true, sensitivity: 'base' });
+      }
+      return res * mult;
+    };
+  }
+
+  // --- CSV helpers -------------------------------------------------------
+  function csvCell(text) {
+    var s = (text == null ? '' : String(text)).replace(/\s+/g, ' ').trim();
+    if (/[",\n]/.test(s)) { s = '"' + s.replace(/"/g, '""') + '"'; }
+    return s;
+  }
+
+  // Serialize the header + currently-VISIBLE rows to CSV. Prefers a cell's
+  // data-sort-value when present (raw value), else its trimmed text. The last
+  // column (row actions) is skipped when data-no-export is set on its <th>.
+  function tableToCsv(table) {
+    var lines = [];
+    var head = table.tHead && table.tHead.rows[0];
+    var skip = [];
+    if (head) {
+      var hcells = Array.prototype.slice.call(head.cells);
+      var hrow = hcells.map(function (th, i) {
+        if (th.hasAttribute('data-no-export')) { skip[i] = true; return null; }
+        return csvCell(th.textContent);
+      }).filter(function (v) { return v !== null; });
+      lines.push(hrow.join(','));
+    }
+    var tbody = table.tBodies[0];
+    if (tbody) {
+      Array.prototype.forEach.call(tbody.rows, function (r) {
+        if (r.style.display === 'none') { return; } // respect active filter
+        var cells = Array.prototype.slice.call(r.cells).map(function (td, i) {
+          if (skip[i]) { return null; }
+          var v = td.getAttribute('data-sort-value');
+          return csvCell(v !== null ? v : td.textContent);
+        }).filter(function (v) { return v !== null; });
+        lines.push(cells.join(','));
+      });
+    }
+    return lines.join('\r\n');
+  }
+
+  function download(filename, text) {
+    var blob = new Blob(['\uFEFF' + text], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+  }
+
+  function flash(btn, label) {
+    var orig = btn.textContent;
+    btn.textContent = label;
+    btn.disabled = true;
+    setTimeout(function () { btn.textContent = orig; btn.disabled = false; }, 1400);
+  }
+
+  function copyText(text, btn, doneLabel) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) { /* no-op */ }
+      document.body.removeChild(ta);
+      flash(btn, doneLabel);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { flash(btn, doneLabel); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  // Toggle a whole column (all header + body cells at index) on/off.
+  function setColumnHidden(table, idx, hidden) {
+    var apply = function (row) {
+      var cells = row.children;
+      if (idx < cells.length) { cells[idx].style.display = hidden ? 'none' : ''; }
+    };
+    if (table.tHead) { Array.prototype.forEach.call(table.tHead.rows, apply); }
+    Array.prototype.forEach.call(table.tBodies, function (tb) {
+      Array.prototype.forEach.call(tb.rows, apply);
+    });
+  }
+
+  // "Columns ▾" popover: one checkbox per column, driven by the header labels.
+  function addColumnMenu(container, table, label) {
+    var head = table.tHead && table.tHead.rows[0];
+    if (!head) { return null; }
+    var wrap = document.createElement('div');
+    wrap.className = 'tbl-colmenu';
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'tbl-btn';
+    toggle.textContent = label + ' \u25BE';
+    var panel = document.createElement('div');
+    panel.className = 'tbl-colmenu-panel';
+    panel.style.display = 'none';
+
+    Array.prototype.forEach.call(head.cells, function (th, idx) {
+      if (th.hasAttribute('data-no-export')) { return; } // skip the actions column
+      var id = 'colv_' + idx + '_' + Math.random().toString(36).slice(2, 7);
+      var row = document.createElement('label');
+      row.className = 'tbl-colmenu-item';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = true;
+      cb.id = id;
+      cb.addEventListener('change', function () { setColumnHidden(table, idx, !cb.checked); });
+      var span = document.createElement('span');
+      span.textContent = (th.textContent || '').trim();
+      row.appendChild(cb);
+      row.appendChild(span);
+      panel.appendChild(row);
+    });
+
+    toggle.addEventListener('click', function () {
+      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    });
+    wrap.appendChild(toggle);
+    wrap.appendChild(panel);
+    return wrap;
+  }
+
+  function addToolbar(container, table) {
+    var exportLbl = container.getAttribute('data-export');
+    var copyLbl = container.getAttribute('data-copy');
+    var colsLbl = container.getAttribute('data-columns');
+    var densityLbl = container.getAttribute('data-density');
+    if (!exportLbl && !copyLbl && !colsLbl && !densityLbl) { return; }
+    var bar = document.createElement('div');
+    bar.className = 'tbl-actions';
+
+    if (densityLbl) {
+      var db = document.createElement('button');
+      db.type = 'button';
+      db.className = 'tbl-btn';
+      db.textContent = densityLbl;
+      db.setAttribute('aria-pressed', 'false');
+      db.addEventListener('click', function () {
+        var on = table.classList.contains('tbl-compact');
+        if (on) { table.classList.remove('tbl-compact'); db.setAttribute('aria-pressed', 'false'); }
+        else { table.classList.add('tbl-compact'); db.setAttribute('aria-pressed', 'true'); }
+      });
+      bar.appendChild(db);
+    }
+    if (colsLbl) {
+      var menu = addColumnMenu(container, table, colsLbl);
+      if (menu) { bar.appendChild(menu); }
+    }
+
+    if (exportLbl) {
+      var eb = document.createElement('button');
+      eb.type = 'button';
+      eb.className = 'tbl-btn';
+      eb.textContent = exportLbl;
+      eb.addEventListener('click', function () {
+        var name = (container.getAttribute('data-export-name') || 'export') + '.csv';
+        download(name, tableToCsv(table));
+      });
+      bar.appendChild(eb);
+    }
+    if (copyLbl) {
+      var cb = document.createElement('button');
+      cb.type = 'button';
+      cb.className = 'tbl-btn';
+      cb.textContent = copyLbl;
+      cb.addEventListener('click', function () {
+        // Tab-separated is friendliest for pasting into spreadsheets.
+        var tsv = tableToCsv(table).split('\r\n').map(function (line) {
+          // naive CSV→TSV: only safe because our cells are already sanitized
+          return line;
+        }).join('\n');
+        copyText(tsv, cb, container.getAttribute('data-copy-done') || 'Copied');
+      });
+      bar.appendChild(cb);
+    }
+    container.insertBefore(bar, container.firstChild);
+  }
+
+  function enhance(container) {
+    // Idempotent: never enhance the same container twice (e.g. if the init hook
+    // fires more than once). Prevents duplicate toolbars/checkboxes.
+    if (container.getAttribute('data-enhanced') === '1') { return; }
+    container.setAttribute('data-enhanced', '1');
+    var table = container.querySelector('table');
+    if (!table) { return; }
+    var tbody = table.tBodies[0];
+    var thead = table.tHead;
+    if (!tbody || !thead) { return; }
+
+    var allRows = Array.prototype.slice.call(tbody.rows);
+    if (allRows.length < 1) { return; }
+    addToolbar(container, table);
+    if (allRows.length < 2) { return; } // sort/filter need ≥2 rows
+
+    // ---- Sorting ----------------------------------------------------------
+    var headCells = thead.rows[0] ? Array.prototype.slice.call(thead.rows[0].cells) : [];
+    headCells.forEach(function (th, idx) {
+      var type = th.getAttribute('data-sort');
+      if (!type) { return; } // action column etc.
+      th.classList.add('sortable');
+      th.setAttribute('role', 'button');
+      th.setAttribute('tabindex', '0');
+      th.setAttribute('aria-sort', 'none');
+
+      function doSort() {
+        var current = th.getAttribute('aria-sort');
+        var dir = current === 'ascending' ? 'desc' : 'asc';
+        headCells.forEach(function (h) {
+          h.setAttribute('aria-sort', 'none');
+          h.classList.remove('sorted-asc', 'sorted-desc');
+        });
+        th.setAttribute('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
+        th.classList.add(dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+        // Sort a snapshot of the currently-visible rows, then re-append all
+        // rows (hidden ones keep their relative order at the end).
+        var rows = Array.prototype.slice.call(tbody.rows);
+        rows.sort(makeComparator(idx, type, dir));
+        rows.forEach(function (r) { tbody.appendChild(r); });
+      }
+
+      th.addEventListener('click', doSort);
+      th.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doSort(); }
+      });
+    });
+
+    // ---- Filtering --------------------------------------------------------
+    var filterMin = parseInt(container.getAttribute('data-filter-min') || '8', 10);
+    if (allRows.length >= filterMin) {
+      var bar = document.createElement('div');
+      bar.className = 'tbl-filterbar';
+      var input = document.createElement('input');
+      input.type = 'search';
+      input.className = 'tbl-filter';
+      input.setAttribute('autocomplete', 'off');
+      input.placeholder = container.getAttribute('data-filter-label') || 'Filter…';
+      var status = document.createElement('span');
+      status.className = 'tbl-filter-count';
+      bar.appendChild(input);
+      bar.appendChild(status);
+      container.insertBefore(bar, table);
+
+      function applyFilter() {
+        var q = input.value.trim().toLowerCase();
+        var shown = 0;
+        allRows.forEach(function (r) {
+          var hit = q === '' || (r.textContent || '').toLowerCase().indexOf(q) !== -1;
+          r.style.display = hit ? '' : 'none';
+          if (hit) { shown++; }
+        });
+        status.textContent = q === '' ? '' : shown + ' / ' + allRows.length;
+      }
+      input.addEventListener('input', applyFilter);
+    }
+  }
+
+  ready(function () {
+    var containers = document.querySelectorAll('[data-enhance="table"]');
+    Array.prototype.forEach.call(containers, enhance);
+  });
+})();
+
+</script>
+    </body>
+</html>

@@ -1,0 +1,30 @@
+<?php
+
+/** Service failure messages for the contact book / outreach flows (family key lang('contact.*')). Rendered human-readable at flash time via Shared\Support\Messages::humanize(). */
+return [
+    'attendance_bad_type' => '出席类型必须为活动或课程.',
+    'attendance_target_required' => '请选择活动或课程.',
+    'decision_date_future' => '决定日期不能是将来时间.',
+    'decision_date_required' => '必须填写决定日期.',
+    'decision_type_invalid' => '未知的决定类型.',
+    'decision_type_required' => '请选择决定类型.',
+    'group_out_of_scope' => '该小组不在您的领导范围內.',
+    'group_required' => '请选择小组.',
+    'name_required' => '必须填写姓名.',
+    'not_found' => '找不到联系人.',
+    'not_found_or_forbidden' => '找不到联系人或您无权访问.',
+    'owner_required' => '必须指定负责人.',
+    'rows_required' => '没有可导入的行.',
+    'teardown_bad_input' => '拆除请求无效.',
+    'transfer_already_pending' => '已有一笔转移正在等待审核.',
+    'transfer_bad_input' => '转移请求无效.',
+    'transfer_bad_state' => '当前无法转移该联系人.',
+    'transfer_failed' => '无法执行转移.',
+    'transfer_no_group' => '该联系人没有可转出的小组.',
+    'transfer_no_longer_eligible' => '该联系人已不符合转移条件.',
+    'transfer_not_due' => '静默期尚未结束.',
+    'transfer_reason_required' => '必须填写转移原因.',
+    'transfer_request_not_found' => '找不到转移请求.',
+    'transfer_self_approval' => '您不能审批自己发起的转移.',
+    'transfer_submit_failed' => '无法将转移加入审核队列.',
+];

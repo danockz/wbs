@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My events</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #22c55e22, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 860px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.6rem,3.5vw,2.2rem); margin:0 0 4px; }
+        h2 { font-size: .82rem; text-transform:uppercase; letter-spacing:.08em; color:#94a3b8; margin:30px 0 12px; }
+        .sub { color:#94a3b8; margin-bottom:16px; }
+        .links a { display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+            color:#86efac; text-decoration:none; border:1px solid #22c55e55; border-radius:999px; padding:4px 12px; margin-inline-end:6px; }
+        .links a:hover { color:#dcfce7; border-color:#4ade80; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-top:10px; }
+        .kpi { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; }
+        .kpi .n { font-size:1.7rem; font-weight:800; font-variant-numeric:tabular-nums; }
+        .kpi .k { font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:#94a3b8; margin-top:2px; }
+        .kpi.good .n { color:#4ade80; }
+        .card { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; margin-bottom:10px; }
+        .cardhead { display:flex; align-items:center; gap:10px; justify-content:space-between; }
+        a.etitle { color:#e2e8f0; text-decoration:none; font-weight:700; font-size:1.02rem; border-bottom:1px dotted #475569; }
+        a.etitle:hover { border-bottom-color:#4ade80; }
+        .pill { font-size:.66rem; text-transform:uppercase; letter-spacing:.05em; padding:3px 10px; border-radius:999px; white-space:nowrap; }
+        .meta { display:flex; flex-wrap:wrap; gap:12px; color:#94a3b8; font-size:.82rem; margin:8px 0; }
+        .tags { display:flex; flex-wrap:wrap; gap:6px; }
+        .tag { font-size:.74rem; padding:3px 10px; border-radius:999px; background:#1e293b; color:#cbd5e1; text-decoration:none; border:1px solid #334155; }
+        .tag.good { background:#14532d55; color:#86efac; border-color:#22c55e55; }
+        .tag.warn { background:#78350f55; color:#fcd34d; border-color:#f59e0b55; }
+        .tag.cert { background:#3730a355; color:#c7d2fe; border-color:#6366f155; }
+        a.tag:hover { border-color:#4ade80; }
+        .empty { background:#0f172aee; border:1px dashed #334155; border-radius:12px; padding:20px; color:#94a3b8; text-align:center; }
+        .browse { display:inline-block; margin-top:8px; color:#4ade80; text-decoration:none; font-weight:600; }
+        .browse:hover { text-decoration:underline; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>My events</h1>
+        <p class="sub">Everything you’re registered for, attended, and earned.</p>
+        <div class="links">
+            <a href="/events">Events</a>
+            <a href="/events/calendar">Events calendar</a>
+                            <a href="https://public.test/events/mine.ics?token=dXNlci0xMjM.YWJjZGVmZ2hpamtsbW5vcA">Subscribe</a>
+                    </div>
+
+        <div class="grid">
+            <div class="kpi"><div class="n">2</div><div class="k">Upcoming</div></div>
+            <div class="kpi good"><div class="n">3</div><div class="k">Attended</div></div>
+            <div class="kpi"><div class="n">2</div><div class="k">Certificates</div></div>
+            <div class="kpi"><div class="n">5</div><div class="k">Tickets</div></div>
+        </div>
+
+        <h2>Upcoming</h2>
+                                        <article class="card">
+        <div class="cardhead">
+            <a class="etitle" href="/events/e1">National Convention 2026</a>
+            <span class="pill" style="background:#4ade8022;color:#4ade80">published</span>
+        </div>
+        <div class="meta">
+            <span class="m">&#128197; 2026-10-04 09:00</span>            <span class="m">hybrid</span>        </div>
+        <div class="tags">
+                            <span class="tag">Registered</span>
+                                        <span class="tag">&#127903; 3 ticket(s)</span>
+                                </div>
+    </article>
+                                    <article class="card">
+        <div class="cardhead">
+            <a class="etitle" href="/events/e2">Regional Leaders Retreat</a>
+            <span class="pill" style="background:#4ade8022;color:#4ade80">published</span>
+        </div>
+        <div class="meta">
+            <span class="m">&#128197; 2026-10-11 08:30</span>            <span class="m">physical</span>        </div>
+        <div class="tags">
+                            <span class="tag warn">Waitlisted</span>
+                                            </div>
+    </article>
+                        
+        <h2>Past &amp; attended</h2>
+                                        <article class="card">
+        <div class="cardhead">
+            <a class="etitle" href="/events/e9">Discipleship Bootcamp</a>
+            <span class="pill" style="background:#38bdf822;color:#38bdf8">completed</span>
+        </div>
+        <div class="meta">
+            <span class="m">&#128197; 2026-08-15 09:00</span>            <span class="m">physical</span>        </div>
+        <div class="tags">
+                            <span class="tag good">&#10003; Attended</span>
+                                                                                        <a class="tag cert" href="/certificates/verify/CERT-8F2A">&#127894; View certificate</a>
+                                    </div>
+    </article>
+                                    <article class="card">
+        <div class="cardhead">
+            <a class="etitle" href="/events/e10">Leadership Summit</a>
+            <span class="pill" style="background:#38bdf822;color:#38bdf8">completed</span>
+        </div>
+        <div class="meta">
+            <span class="m">&#128197; 2026-07-20 09:00</span>            <span class="m">hybrid</span>        </div>
+        <div class="tags">
+                            <span class="tag good">&#10003; Attended</span>
+                                        <span class="tag">&#127903; 2 ticket(s)</span>
+                                                                            <a class="tag cert" href="/certificates/verify/CERT-1B9C">&#127894; View certificate</a>
+                                    </div>
+    </article>
+                                    <article class="card">
+        <div class="cardhead">
+            <a class="etitle" href="/events/e11">Easter Concert</a>
+            <span class="pill" style="background:#38bdf822;color:#38bdf8">completed</span>
+        </div>
+        <div class="meta">
+            <span class="m">&#128197; 2026-04-05 18:00</span>            <span class="m">physical</span>        </div>
+        <div class="tags">
+                            <span class="tag good">&#10003; Attended</span>
+                                            </div>
+    </article>
+                            </main>
+</body>
+</html>

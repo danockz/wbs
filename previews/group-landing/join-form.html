@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Join Kumasi Central — Win–Build–Send</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1000px 500px at 50% -10%, #22d3ee22, transparent), #0b1120; color:#e2e8f0;
+            display:grid; place-items:center; min-height:100vh; padding:20px; }
+        .card { width:100%; max-width:460px; background:#0f172aee; border:1px solid #1e293b; border-radius:16px; padding:28px 26px; }
+        a { color:#22d3ee; text-decoration:none; }
+        .back { font-size:.85rem; opacity:.85; }
+        h1 { font-size:1.5rem; margin:12px 0 2px; }
+        .sub { color:#94a3b8; font-size:.92rem; margin-bottom:18px; }
+        label { display:block; font-size:.8rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; margin:14px 0 6px; }
+        input { width:100%; padding:12px 14px; border-radius:10px; border:1px solid #334155; background:#0b1120; color:#e2e8f0; font-size:1rem; }
+        input:focus { outline:none; border-color:#22d3ee; }
+        .hint { font-size:.8rem; color:#64748b; margin-top:6px; }
+        .btn { width:100%; margin-top:22px; padding:13px; border:none; border-radius:10px; background:#22d3ee; color:#00121a; font-weight:700; font-size:1rem; cursor:pointer; }
+        .errors { background:#7f1d1d33; border:1px solid #ef444455; color:#fecaca; border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:.9rem; }
+        .policy { margin-top:16px; font-size:.82rem; color:#64748b; }
+    </style>
+</head>
+<body>
+    <form class="card" method="post" action="/g/kumasi-central/join">
+        <a class="back" href="/g/kumasi-central">← Back to Kumasi Central</a>
+        <h1>Join Kumasi Central</h1>
+        <div class="sub">
+                            Ama Mensah will be your sponsor.
+                    </div>
+
+        
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" required maxlength="150"
+               value="" placeholder="e.g. Ama Mensah">
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required maxlength="190"
+               value="" placeholder="you@example.com">
+
+        <label for="phone">Phone <span style="text-transform:none;color:#64748b;">(optional)</span></label>
+        <input id="phone" name="phone" type="tel" maxlength="40" placeholder="+233 …">
+
+        <button class="btn" type="submit">Join this group</button>
+
+        <div class="policy">
+                            Your request will be reviewed by a group leader before you're added.
+                    </div>
+    </form>
+</body>
+</html>

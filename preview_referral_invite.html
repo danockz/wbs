@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>You&#039;re invited</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #7c3aed33, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 560px; margin: 0 auto; padding: 6vh 20px 60px; }
+        .card { background:#0f172aee; border:1px solid #1e293b; border-radius:16px; padding:26px 24px; margin:0 0 18px; }
+        h1 { font-size: clamp(1.7rem,4vw,2.4rem); margin:0 0 8px; }
+        .sub { color:#94a3b8; margin:0 0 4px; line-height:1.5; }
+        .campaign { display:inline-block; margin:14px 0 0; font-size:.72rem; text-transform:uppercase; letter-spacing:.07em;
+            color:#c4b5fd; border:1px solid #7c3aed66; border-radius:999px; padding:4px 12px; }
+        .cta { display:block; text-align:center; text-decoration:none; margin:20px 0 8px;
+            background:linear-gradient(135deg,#7c3aed,#9333ea); color:#fff; font-weight:700;
+            border-radius:12px; padding:14px 18px; font-size:1.02rem; }
+        .cta:hover { filter:brightness(1.08); }
+        .ctanote { color:#64748b; font-size:.82rem; text-align:center; margin:0; }
+        h2 { font-size:1.15rem; margin:0 0 6px; }
+        label { display:block; font-size:.82rem; color:#cbd5e1; margin:14px 0 5px; font-weight:600; }
+        input[type=text], input[type=email] { width:100%; background:#0b1120; border:1px solid #334155;
+            border-radius:10px; padding:11px 13px; color:#e2e8f0; font-size:.98rem; }
+        input:focus { outline:2px solid #7c3aed; border-color:#7c3aed; }
+        .consent { display:flex; gap:10px; align-items:flex-start; margin:16px 0 4px;
+            background:#0b1120; border:1px solid #334155; border-radius:10px; padding:12px 14px; }
+        .consent input { margin-top:3px; flex:0 0 auto; width:18px; height:18px; accent-color:#7c3aed; }
+        .consent label { margin:0; font-weight:500; color:#e2e8f0; }
+        .note { color:#64748b; font-size:.78rem; line-height:1.45; margin:8px 0 0; }
+        button { width:100%; margin-top:16px; background:linear-gradient(135deg,#7c3aed,#9333ea); color:#fff;
+            font-weight:700; border:0; border-radius:12px; padding:14px 18px; font-size:1.02rem; cursor:pointer; }
+        button:hover { filter:brightness(1.08); }
+        .privacy { text-align:center; color:#475569; font-size:.76rem; margin:18px 0 0; }
+        .flash { border-radius:10px; padding:12px 14px; margin:0 0 16px; font-size:.9rem; }
+        .flash.ok { background:#064e3b66; border:1px solid #10b98166; color:#6ee7b7; }
+        .flash.err { background:#7f1d1d66; border:1px solid #ef444466; color:#fca5a5; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+                
+        <section class="card">
+            <h1>You&#039;re invited</h1>
+            <p class="sub">Someone in our community thought you&#039;d want to be part of this.</p>
+                            <span class="campaign">Campaign: Harvest 2026</span>
+            
+                            <a class="cta" href="https://public.test/events/register/ev-42">Register for the event</a>
+                <p class="ctanote">You can head straight to where this invitation leads.</p>
+                    </section>
+
+        <section class="card">
+            <h2>Stay connected</h2>
+            <p class="sub">Leave your details and someone will personally follow up with you. This is optional.</p>
+
+            <form method="post" action="/r/AbC123xyz/prospect" novalidate>
+                <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+
+                <label for="display_name">Your name</label>
+                <input type="text" id="display_name" name="display_name"
+                       placeholder="First and last name" autocomplete="name">
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email"
+                       placeholder="you@example.com" autocomplete="email">
+
+                <div class="consent">
+                    <input type="checkbox" id="consent" name="consent" value="1" required>
+                    <label for="consent">I agree to be contacted about this invitation.</label>
+                </div>
+                <p class="note">We only store what you share here, and only after you tick the box above. Your details are never shown to the person who invited you.</p>
+
+                <button type="submit">Count me in</button>
+            </form>
+        </section>
+
+        <p class="privacy">Your privacy matters. We never reveal who invited you.</p>
+    </main>
+</body>
+</html>

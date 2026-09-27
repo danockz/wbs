@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Membership journey — Win–Build–Send</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #7c3aed22, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 900px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.6rem,3.5vw,2.2rem); margin:0 0 4px; }
+        .sub { color:#94a3b8; margin-bottom:20px; }
+        .scope { display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+            color:#c4b5fd; border:1px solid #7c3aed55; border-radius:999px; padding:4px 12px; margin-bottom:22px; }
+        .totalbar { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 18px; margin-bottom:24px; }
+        .totalbar .n { font-size:1.9rem; font-weight:800; }
+        .totalbar .k { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:start; padding:11px 12px; border-bottom:1px solid #1e293b; font-size:.92rem; }
+        th { font-size:.66rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; }
+        td.num { text-align:end; font-variant-numeric:tabular-nums; font-weight:700; }
+        .chip { font-size:.66rem; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:999px; border:1px solid #334155; }
+        .stagecode { display:block; font-size:.66rem; color:#64748b; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+        .bar { height:10px; border-radius:6px; background:#1e293b; overflow:hidden; min-width:60px; display:flex; }
+        .bar > i { display:block; height:100%; }
+        .bar > i:first-child { border-radius:6px 0 0 6px; }
+        .bar > i:last-child { border-radius:0 6px 6px 0; }
+        .empty { background:#0f172aee; border:1px dashed #334155; border-radius:12px; padding:24px; color:#94a3b8; text-align:center; }
+        .triage { display:flex; gap:10px; flex-wrap:wrap; margin:-8px 0 24px; }
+        .tcard { flex:1 1 120px; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:12px 14px;
+            border-inline-start-width:4px; }
+        .tcard .n { font-size:1.5rem; font-weight:800; font-variant-numeric:tabular-nums; }
+        .tcard .k { font-size:.66rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; display:flex; align-items:center; gap:6px; }
+        .dot { width:9px; height:9px; border-radius:999px; display:inline-block; }
+        .tnums { display:flex; gap:8px; justify-content:flex-end; }
+        .tnums span { font-size:.66rem; font-variant-numeric:tabular-nums; padding:2px 7px; border-radius:999px; border:1px solid #334155; color:#cbd5e1; }
+        .tnums span.z { opacity:.35; }
+        .legend { display:flex; gap:14px; flex-wrap:wrap; font-size:.72rem; color:#94a3b8; margin-top:6px; }
+        .legend span { display:inline-flex; align-items:center; gap:6px; }
+        a.stagelink { color:#e2e8f0; text-decoration:none; border-bottom:1px dotted #475569; }
+        a.stagelink:hover { border-bottom-color:#a78bfa; }
+        a.tlink { font-weight:700; text-decoration:none; }
+        a.tlink:hover { text-decoration:underline; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Membership journey pipeline</h1>
+        <p class="sub">How many active members sit at each stage of the discipleship ladder.</p>
+
+        <span class="scope">
+            Organization-wide        </span>
+
+        <div class="totalbar">
+            <div class="n">18</div>
+            <div class="k">Active members</div>
+        </div>
+
+                    <div class="triage">
+                                                        <div class="tcard" style="border-inline-start-color:#f87171">
+                        <div class="n" style="color:#f87171">7</div>
+                        <div class="k"><span class="dot" style="background:#f87171"></span>Hot</div>
+                    </div>
+                                                        <div class="tcard" style="border-inline-start-color:#fbbf24">
+                        <div class="n" style="color:#fbbf24">5</div>
+                        <div class="k"><span class="dot" style="background:#fbbf24"></span>Warm</div>
+                    </div>
+                                                        <div class="tcard" style="border-inline-start-color:#60a5fa">
+                        <div class="n" style="color:#60a5fa">6</div>
+                        <div class="k"><span class="dot" style="background:#60a5fa"></span>Cold</div>
+                    </div>
+                            </div>
+            <p class="sub" style="margin-top:-14px">Members split by how long they have been in their current stage — cold have stalled and most need a follow-up.</p>
+        
+                    <table>
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Phase</th>
+                        <th style="width:30%">Triage</th>
+                        <th class="num" title="Hot">Hot</th>
+                        <th class="num" title="Warm">Warm</th>
+                        <th class="num" title="Cold">Cold</th>
+                        <th class="num">Members</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                                                    <tr>
+                            <td><a class="stagelink" href="/journey/stages/first_timer/members">First Timer</a><span class="stagecode">first_timer</span></td>
+                            <td><span class="chip" style="color:#22d3ee;border-color:#22d3ee55">Win</span></td>
+                            <td>
+                                <div class="bar" role="img" aria-label="5 hot, 2 warm, 1 cold">
+                                    <i style="width:62.5%;background:#f87171"></i>                                    <i style="width:25%;background:#fbbf24"></i>                                    <i style="width:12.5%;background:#60a5fa"></i>                                </div>
+                            </td>
+                            <td class="num"><a class="tlink" style="color:#f87171" href="/journey/stages/first_timer/members?temperature=hot">5</a></td>
+                            <td class="num"><a class="tlink" style="color:#fbbf24" href="/journey/stages/first_timer/members?temperature=warm">2</a></td>
+                            <td class="num"><a class="tlink" style="color:#60a5fa" href="/journey/stages/first_timer/members?temperature=cold">1</a></td>
+                            <td class="num">8<span class="stagecode">44.4%</span></td>
+                        </tr>
+                                                                    <tr>
+                            <td><a class="stagelink" href="/journey/stages/new_believer/members">New Believer</a><span class="stagecode">new_believer</span></td>
+                            <td><span class="chip" style="color:#22d3ee;border-color:#22d3ee55">Win</span></td>
+                            <td>
+                                <div class="bar" role="img" aria-label="2 hot, 1 warm, 1 cold">
+                                    <i style="width:50%;background:#f87171"></i>                                    <i style="width:25%;background:#fbbf24"></i>                                    <i style="width:25%;background:#60a5fa"></i>                                </div>
+                            </td>
+                            <td class="num"><a class="tlink" style="color:#f87171" href="/journey/stages/new_believer/members?temperature=hot">2</a></td>
+                            <td class="num"><a class="tlink" style="color:#fbbf24" href="/journey/stages/new_believer/members?temperature=warm">1</a></td>
+                            <td class="num"><a class="tlink" style="color:#60a5fa" href="/journey/stages/new_believer/members?temperature=cold">1</a></td>
+                            <td class="num">4<span class="stagecode">22.2%</span></td>
+                        </tr>
+                                                                    <tr>
+                            <td><a class="stagelink" href="/journey/stages/growing/members">Growing Disciple</a><span class="stagecode">growing</span></td>
+                            <td><span class="chip" style="color:#a78bfa;border-color:#a78bfa55">Build</span></td>
+                            <td>
+                                <div class="bar" role="img" aria-label="0 hot, 2 warm, 2 cold">
+                                                                        <i style="width:50%;background:#fbbf24"></i>                                    <i style="width:50%;background:#60a5fa"></i>                                </div>
+                            </td>
+                            <td class="num"><span class="stagecode">0</span></td>
+                            <td class="num"><a class="tlink" style="color:#fbbf24" href="/journey/stages/growing/members?temperature=warm">2</a></td>
+                            <td class="num"><a class="tlink" style="color:#60a5fa" href="/journey/stages/growing/members?temperature=cold">2</a></td>
+                            <td class="num">4<span class="stagecode">22.2%</span></td>
+                        </tr>
+                                                                    <tr>
+                            <td><a class="stagelink" href="/journey/stages/sender/members">Sender / Multiplier</a><span class="stagecode">sender</span></td>
+                            <td><span class="chip" style="color:#f59e0b;border-color:#f59e0b55">Send</span></td>
+                            <td>
+                                <div class="bar" role="img" aria-label="0 hot, 0 warm, 2 cold">
+                                                                                                            <i style="width:100%;background:#60a5fa"></i>                                </div>
+                            </td>
+                            <td class="num"><span class="stagecode">0</span></td>
+                            <td class="num"><span class="stagecode">0</span></td>
+                            <td class="num"><a class="tlink" style="color:#60a5fa" href="/journey/stages/sender/members?temperature=cold">2</a></td>
+                            <td class="num">2<span class="stagecode">11.1%</span></td>
+                        </tr>
+                                    </tbody>
+            </table>
+            <div class="legend">
+                                    <span><span class="dot" style="background:#f87171"></span>Hot</span>
+                                    <span><span class="dot" style="background:#fbbf24"></span>Warm</span>
+                                    <span><span class="dot" style="background:#60a5fa"></span>Cold</span>
+                            </div>
+            </main>
+</body>
+</html>

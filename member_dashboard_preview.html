@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My dashboard — Win·Build·Send (preview)</title>
+<style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+        background: radial-gradient(1200px 600px at 50% -10%, #0891b222, transparent), #0b1120; color:#e2e8f0; }
+    a { color:#7dd3fc; text-decoration:none; }
+    .topbar { border-bottom:1px solid #1e293b; padding:14px 20px; display:flex; align-items:center; gap:14px;
+        background:#0b1120e6; position:sticky; top:0; backdrop-filter: blur(6px); }
+    .brand { font-weight:800; letter-spacing:-.01em; }
+    .brand span { color:#22d3ee; }
+    .nav { display:flex; gap:14px; font-size:.85rem; color:#94a3b8; flex-wrap:wrap; }
+    .wrap { max-width: 900px; margin: 4vh auto; padding: 0 20px; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    .sub { color:#64748b; font-size:.9rem; margin-bottom: 22px; }
+    h2 { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:#818cf8; margin:26px 0 12px; }
+    .card { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:16px 18px; margin-bottom:12px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+    .stat { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 16px; }
+    .stat .k { font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:#64748b; }
+    .stat .v { font-size:1.3rem; font-weight:800; margin-top:6px; word-break:break-word; }
+    .pill { display:inline-block; font-size:.7rem; border-radius:999px; padding:3px 10px; background:#1e293b; color:#a5b4fc; }
+    .muted { color:#64748b; font-size:.82rem; }
+    .empty { text-align:center; color:#475569; padding:30px; border:1px dashed #1e293b; border-radius:12px; }
+    .meta { font-size:.75rem; color:#64748b; margin-top:18px; border-top:1px solid #1e293b; padding-top:12px; }
+    .author { font-weight:700; font-size:.9rem; }
+    .row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+    .counts { color:#64748b; font-size:.8rem; margin-top:8px; }
+    /* preview-only: subtle highlight on the new hierarchical path line */
+    .path { color:#94a3b8; font-size:.8rem; margin-top:8px; }
+    .path b { color:#cbd5e1; font-weight:600; }
+    .previewnote { background:#0891b21a; border:1px solid #0e7490; color:#a5f3fc; border-radius:10px;
+        padding:10px 14px; font-size:.8rem; margin: 0 0 6px; }
+</style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="brand">Win<span>·</span>Build<span>·</span>Send</div>
+        <div class="nav">
+            <a href="#">My dashboard</a>
+            <a href="#">Events</a>
+            <a href="#">Courses</a>
+            <a href="#">Streams</a>
+            <a href="#">Community</a>
+            <a href="#">Reports</a>
+            <a href="#">Status</a>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="previewnote">Static preview of <code>GET /me/dashboard</code> with sample data. The new hierarchical <b>group path</b> appears under “My groups”.</div>
+
+        <h1>Welcome, Ama Mensah</h1>
+        <div class="sub">Your personal dashboard · member since Aug 14, 2024</div>
+
+        <h2>Standing</h2>
+        <div class="grid">
+            <div class="stat"><div class="k">Points (this season)</div><div class="v">1,240</div><div class="muted" style="margin-top:4px">Season 2026</div></div>
+            <div class="stat"><div class="k">Rank</div><div class="v">Silver</div><div class="muted" style="margin-top:4px">260 pts to Gold</div></div>
+            <div class="stat"><div class="k">Badges</div><div class="v">5</div></div>
+            <div class="stat"><div class="k">Achievements</div><div class="v">3</div></div>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div class="muted">Silver</div>
+                <div class="muted">Gold (260 pts to go)</div>
+            </div>
+            <div style="height:8px;background:#1e293b;border-radius:999px;margin-top:8px;overflow:hidden;">
+                <div style="height:100%;width:64%;background:linear-gradient(90deg,#22d3ee,#a78bfa);"></div>
+            </div>
+            <div class="muted" style="margin-top:6px;font-size:.72rem;">64% to next rank</div>
+        </div>
+
+        <h2>My milestones</h2>
+        <div class="card">
+            <div class="k" style="font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b;">Reached</div>
+            <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;">
+                <span class="pill">🎟️ Attended 5 events</span>
+                <span class="pill">💎 Diamond Giver</span>
+                <span class="pill">🔥 30-day streak</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="k" style="font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b;">Next up</div>
+            <div class="row" style="margin-top:10px;"><div>🎓 Complete 3 courses</div><div class="muted">1 to go</div></div>
+            <div class="row" style="margin-top:10px;"><div>🏅 Attend 10 events</div><div class="muted">3 to go</div></div>
+        </div>
+
+        <h2>Badges &amp; achievements</h2>
+        <div class="card">
+            <div class="k" style="font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b;">Badges earned</div>
+            <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;">
+                <span class="pill">Diamond Giver</span>
+                <span class="pill">Silver Giver</span>
+                <span class="pill">Q3 Giving Challenge</span>
+                <span class="pill">Event Regular</span>
+                <span class="pill">First Course</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="author">🏅 Community Builder</div>
+                <span class="pill">150 XP</span>
+            </div>
+            <div class="counts">build · Unlocked Jul 2, 2026</div>
+        </div>
+        <div class="card">
+            <div class="k" style="font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b;">Almost there</div>
+            <div style="margin-top:12px;">
+                <div class="row"><div>Course Completionist</div><div class="muted">2/3</div></div>
+                <div style="height:6px;background:#1e293b;border-radius:999px;margin-top:6px;overflow:hidden;">
+                    <div style="height:100%;width:66%;background:#818cf8;"></div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Streaks</h2>
+        <div class="grid">
+            <div class="stat"><div class="k">🔥 Weekly giving</div><div class="v">6</div><div class="muted" style="margin-top:4px">Best: 9 · weekly</div></div>
+            <div class="stat"><div class="k">🔥 Event attendance</div><div class="v">4</div><div class="muted" style="margin-top:4px">Best: 4 · monthly</div></div>
+        </div>
+
+        <h2>Upcoming events</h2>
+        <div class="card">
+            <div class="row">
+                <div class="author">Q3 Community Outreach</div>
+                <span class="pill">going</span>
+            </div>
+            <div class="counts">Sep 20, 2026 · in-person · Africa/Accra</div>
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="author">Leadership Workshop</div>
+                <span class="pill">registered</span>
+            </div>
+            <div class="counts">Oct 5, 2026 · online</div>
+        </div>
+
+        <h2>My certificates</h2>
+        <div class="card">
+            <div class="row">
+                <div class="author">Foundations of Discipleship</div>
+                <span class="pill">issued</span>
+            </div>
+            <div class="counts">Issued Jun 12, 2026 · Verify ID: <code>WBS-CERT-4F9A2C</code> · <a href="#">Download PDF</a></div>
+        </div>
+
+        <h2>My learning</h2>
+        <div class="grid">
+            <div class="stat"><div class="k">Active courses</div><div class="v">2</div></div>
+            <div class="stat"><div class="k">Completed</div><div class="v">4</div></div>
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="author">Servant Leadership 101</div>
+                <span class="pill">in_progress</span>
+            </div>
+            <div class="counts">build · Enrolled Aug 1, 2026</div>
+        </div>
+
+        <h2>My groups</h2>
+        <div class="card">
+            <div class="row">
+                <div class="author">Accra Metro District</div>
+                <span class="pill">member</span>
+            </div>
+            <div class="path">🏢 <b>Greater Accra Region</b> › <b>Accra Metro District</b></div>
+            <div class="counts">district · Joined Aug 14, 2024</div>
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="author">Adenta Chapter</div>
+                <span class="pill">leader</span>
+            </div>
+            <div class="path">🏢 <b>Greater Accra Region</b> › <b>Accra Metro District</b> › <b>Adenta Chapter</b></div>
+            <div class="counts">chapter · Joined Jan 9, 2025</div>
+        </div>
+
+        <div class="meta">As of 2026-09-05 12:00:00 UTC · self-scoped view</div>
+    </div>
+</body>
+</html>

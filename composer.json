@@ -1,0 +1,84 @@
+{
+    "name": "codeigniter4/appstarter",
+    "description": "CodeIgniter4 starter app",
+    "license": "MIT",
+    "type": "project",
+    "homepage": "https://codeigniter.com",
+    "support": {
+        "forum": "https://forum.codeigniter.com/",
+        "source": "https://github.com/codeigniter4/CodeIgniter4",
+        "slack": "https://codeigniterchat.slack.com"
+    },
+    "require": {
+        "php": "^8.2",
+        "cboden/ratchet": "^0.4.4",
+        "codeigniter4/framework": "^4.7",
+        "dompdf/dompdf": "^3.1",
+        "endroid/qr-code": "^6.1",
+        "lcobucci/clock": "^3.5",
+        "lcobucci/jwt": "^5.6",
+        "paragonie/sodium_compat": "^2.5",
+        "phpmailer/phpmailer": "^7.0",
+        "spomky-labs/otphp": "^11.4",
+        "zircote/swagger-php": "^6.0"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9",
+        "mikey179/vfsstream": "^1.6",
+        "phpstan/phpstan": "^2.2",
+        "phpunit/phpunit": "^10.5.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Config\\": "app/Config/",
+            "WBS\\": "app/Modules/"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Support\\": "tests/_support"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:standalone": "php tests/run-standalone.php",
+        "i18n:parity": "php app/Modules/Shared/I18n/tests/catalog_parity_test.php",
+        "analyse": "phpstan analyse --memory-limit=512M",
+        "lint": "bash -c 'find app -name \"*.php\" -print0 | xargs -0 -n1 -P4 php -l > /dev/null'",
+        "menu:check": "php spark menu:scaffold --check",
+        "cs": "echo \"no coding-standard tool configured\"",
+        "migrate": "php spark migrate --all",
+        "seed:rbac": "php spark db:seed 'WBS\\AccessControl\\Database\\Seeds\\RbacBootstrapSeeder'",
+        "seed:adapter": "php spark db:seed 'WBS\\Integrations\\Database\\Seeds\\AdapterCatalogSeeder'",
+        "seed:certtemplates": "php spark db:seed 'WBS\\Events\\Database\\Seeds\\CertificateTemplateSeeder'",
+        "seed:demo": "php spark db:seed 'WBS\\Admin\\Database\\Seeds\\DemoDataSeeder'",
+        "seed:journey": "php spark db:seed 'WBS\\Journey\\Database\\Seeds\\JourneyStageSeeder'",
+        "seed:journey-gamification": "php spark db:seed 'WBS\\Journey\\Database\\Seeds\\JourneyGamificationSeeder'",
+        "seed:membership-rules": "php spark db:seed 'WBS\\Journey\\Database\\Seeds\\MembershipRuleSeeder'",
+        "seed:all": [
+            "@seed:rbac",
+            "@seed:adapter",
+            "@seed:certtemplates",
+            "@seed:journey",
+            "@seed:journey-gamification",
+            "@seed:membership-rules",
+            "@seed:demo"
+        ],
+        "qa": [
+            "@lint",
+            "@menu:check",
+            "@analyse",
+            "@test",
+            "@test:standalone"
+        ]
+    }
+}

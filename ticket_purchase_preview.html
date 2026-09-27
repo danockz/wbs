@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tickets</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #7c3aed22, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 820px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.5rem,3.4vw,2.1rem); margin:0 0 4px; }
+        .sub { color:#94a3b8; margin-bottom:6px; }
+        .event { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.8rem; color:#c4b5fd; border:1px solid #6d28d9; border-radius:6px; padding:2px 8px; }
+        h2 { font-size:1.05rem; margin:26px 0 12px; padding-top:16px; border-top:1px solid #1e293b; }
+        .flash { border-radius:10px; padding:12px 16px; margin:0 0 18px; font-size:.92rem; }
+        .flash.ok { background:#1e1b4b; border:1px solid #6d28d9; color:#ddd6fe; }
+        .flash.err { background:#3f1d1d; border:1px solid #7f1d1d; color:#fecaca; }
+        .note { border-radius:10px; padding:12px 16px; margin:0 0 16px; font-size:.9rem; background:#0f172aee; border:1px solid #1e293b; color:#cbd5e1; }
+        .note.hold { background:#1e1b4b; border-color:#6d28d9; color:#ddd6fe; }
+        .tier { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+        .tier.gone { opacity:.6; }
+        .tier .top { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+        .tier h3 { margin:0; font-size:1.02rem; }
+        .price { font-weight:700; font-size:1.05rem; color:#e9d5ff; }
+        .desc { color:#94a3b8; font-size:.86rem; margin:6px 0 0; }
+        .avail { font-size:.78rem; color:#a5b4fc; margin-top:4px; }
+        .avail.out { color:#fca5a5; }
+        .buy { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin-top:12px; }
+        label { display:block; font-size:.74rem; color:#cbd5e1; margin:0 0 4px; }
+        input, select { background:#0b1120; border:1px solid #334155; border-radius:8px; color:#e2e8f0; padding:8px 10px; font-size:.88rem; }
+        input:focus, select:focus { outline:2px solid #7c3aed; border-color:#7c3aed; }
+        input.qty { width:78px; }
+        input.promo { width:150px; }
+        button { border:0; border-radius:8px; padding:9px 18px; font-size:.9rem; font-weight:600; cursor:pointer; background:#7c3aed; color:#fff; }
+        .empty { color:#94a3b8; font-size:.88rem; font-style:italic; padding:6px 2px; }
+        .badge { font-size:.72rem; border-radius:999px; padding:2px 10px; border:1px solid; }
+        .badge.paid { color:#4ade80; border-color:#166534; background:#052e16; }
+        table { width:100%; border-collapse:collapse; font-size:.9rem; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; overflow:hidden; }
+        th, td { text-align:start; padding:9px 12px; border-bottom:1px solid #16233a; }
+        th { color:#64748b; font-weight:600; font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; }
+        td.num, th.num { text-align:end; font-variant-numeric:tabular-nums; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Get your tickets</h1>
+        <p class="sub">Event: <span class="event">annual-conference-2026</span></p>
+
+                
+                    <div class="note hold">You have 1 ticket(s) on hold — complete your purchase before it expires.</div>
+        
+        <h2>Available tickets</h2>
+
+                                                    <div class="tier">
+                    <div class="top">
+                        <h3>General admission</h3>
+                        <span class="price">Free</span>
+                    </div>
+                                            <p class="desc">Free RSVP tier — one seat per person.</p>
+                                                                <div class="avail">120 left</div>
+                    
+                                            <form class="buy" method="post" action="/events/annual-conference-2026/tickets">
+                            <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                            <input type="hidden" name="ticket_type_id" value="tt-free">
+                            <div>
+                                <label for="qty-tt-free">Quantity</label>
+                                <input class="qty" id="qty-tt-free" type="number" name="quantity" value="1" min="1" max="20" inputmode="numeric">
+                            </div>
+                                                        <button type="submit">Get free ticket</button>
+                        </form>
+                                    </div>
+                                            <div class="tier">
+                    <div class="top">
+                        <h3>VIP</h3>
+                        <span class="price">50.00 GHS</span>
+                    </div>
+                                            <p class="desc">Front rows + reception.</p>
+                                                                <div class="avail">3 left</div>
+                    
+                                            <form class="buy" method="post" action="/events/annual-conference-2026/tickets">
+                            <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                            <input type="hidden" name="ticket_type_id" value="tt-vip">
+                            <div>
+                                <label for="qty-tt-vip">Quantity</label>
+                                <input class="qty" id="qty-tt-vip" type="number" name="quantity" value="1" min="1" max="20" inputmode="numeric">
+                            </div>
+                                                            <div>
+                                    <label for="promo-tt-vip">Promo code (optional)</label>
+                                    <input class="promo" id="promo-tt-vip" type="text" name="promo_code" maxlength="64" placeholder="Enter a code">
+                                </div>
+                                                        <button type="submit">Buy ticket</button>
+                        </form>
+                                    </div>
+                                            <div class="tier gone">
+                    <div class="top">
+                        <h3>Early bird</h3>
+                        <span class="price">20.00 GHS</span>
+                    </div>
+                                            <p class="desc">Discounted early tier.</p>
+                                                                <div class="avail out">Sold out</div>
+                    
+                                    </div>
+            
+                    
+                    <h2>Your tickets</h2>
+                            <table>
+                    <thead><tr>
+                        <th>Available tickets</th>
+                        <th class="num">Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody>
+                                                    <tr>
+                                <td>General admission</td>
+                                <td class="num">1</td>
+                                <td>0.00 GHS</td>
+                                <td><span class="badge paid">Confirmed</span></td>
+                            </tr>
+                                            </tbody>
+                </table>
+                        </main>
+</body>
+</html>

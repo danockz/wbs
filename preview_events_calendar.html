@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Events calendar — October 2026</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #6366f122, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 1040px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.5rem,3vw,2rem); margin:0 0 4px; }
+        .sub { color:#94a3b8; margin-bottom:16px; }
+        .scope { display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+            color:#c7d2fe; border:1px solid #6366f155; border-radius:999px; padding:4px 12px; }
+        a.scope { text-decoration:none; }
+        a.scope:hover { color:#e0e7ff; border-color:#818cf8; }
+        .navbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:14px 0 16px; }
+        .navbar .month { font-size:1.15rem; font-weight:800; flex:1; min-width:160px; }
+        .btn { display:inline-block; text-decoration:none; font-size:.8rem; color:#e2e8f0; background:#1e293b;
+            border:1px solid #334155; border-radius:8px; padding:6px 12px; }
+        .btn:hover { border-color:#818cf8; }
+        .cal { display:grid; grid-template-columns: repeat(7,1fr); gap:6px; }
+        .dow { font-size:.64rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; text-align:center; padding:4px 0; }
+        .cell { min-height:96px; background:#0f172aee; border:1px solid #1e293b; border-radius:10px; padding:6px; overflow:hidden; }
+        .cell.blank { background:transparent; border:1px dashed #1e293b33; }
+        .cell.today { border-color:#818cf8; box-shadow:0 0 0 1px #818cf855 inset; }
+        .daynum { font-size:.72rem; font-weight:700; color:#cbd5e1; margin-bottom:4px; display:flex; justify-content:space-between; }
+        .daynum .td { font-size:.56rem; text-transform:uppercase; color:#818cf8; }
+        .chip { display:block; font-size:.7rem; line-height:1.25; text-decoration:none; color:#e2e8f0;
+            padding:3px 6px; border-radius:6px; margin-bottom:3px; border-inline-start:3px solid #6366f1; background:#1e293b; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .chip:hover { background:#334155; }
+        .chip .t { color:#94a3b8; font-variant-numeric:tabular-nums; }
+        .more { font-size:.62rem; color:#94a3b8; }
+        .empty { background:#0f172aee; border:1px dashed #334155; border-radius:12px; padding:20px; color:#94a3b8; text-align:center; margin-top:14px; }
+        @media (max-width:640px){ .cell { min-height:70px; } .chip { font-size:.6rem; } }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Events calendar</h1>
+        <p class="sub">Your events, month by month.</p>
+        <div>
+            <span class="scope">Organization-wide</span>
+            <a class="scope" href="/events/analytics">Events analytics</a>
+            <a class="scope" href="/events">List view</a>
+            <a class="scope" href="/events/calendar.ics">Subscribe</a>
+        </div>
+
+        <div class="navbar">
+            <span class="month">October 2026</span>
+            <a class="btn" href="/events/calendar?month=2026-09">&#8592; Previous month</a>
+            <a class="btn" href="/events/calendar">Today</a>
+            <a class="btn" href="/events/calendar?month=2026-11">Next month &#8594;</a>
+        </div>
+
+        
+        <div class="cal">
+                            <div class="dow">Mon</div>
+                            <div class="dow">Tue</div>
+                            <div class="dow">Wed</div>
+                            <div class="dow">Thu</div>
+                            <div class="dow">Fri</div>
+                            <div class="dow">Sat</div>
+                            <div class="dow">Sun</div>
+            
+                            <div class="cell blank"></div>
+                            <div class="cell blank"></div>
+                            <div class="cell blank"></div>
+            
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>1</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>2</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>3</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>4</span>
+                                            </div>
+                                                                    <a class="chip" style="border-inline-start-color:#4ade80" href="/events/e1" title="National Convention 2026">
+                            <span class="t">09:00</span> National Convention 2026                        </a>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>5</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>6</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>7</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>8</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>9</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>10</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>11</span>
+                                            </div>
+                                                                    <a class="chip" style="border-inline-start-color:#4ade80" href="/events/e2" title="Regional Leaders Retreat">
+                            <span class="t">08:30</span> Regional Leaders Retreat                        </a>
+                                                                    <a class="chip" style="border-inline-start-color:#4ade80" href="/events/e6" title="Prayer Vigil">
+                            <span class="t">21:00</span> Prayer Vigil                        </a>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>12</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>13</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>14</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>15</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>16</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>17</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>18</span>
+                                            </div>
+                                                                    <a class="chip" style="border-inline-start-color:#4ade80" href="/events/e3" title="Youth Worship Night">
+                            <span class="t">18:00</span> Youth Worship Night                        </a>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>19</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>20</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>21</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>22</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>23</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>24</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>25</span>
+                                            </div>
+                                                                    <a class="chip" style="border-inline-start-color:#4ade80" href="/events/e4" title="Community Outreach Day">
+                            <span class="t">07:00</span> Community Outreach Day                        </a>
+                                                                    <a class="chip" style="border-inline-start-color:#a5b4fc" href="/events/e5" title="Marriage Seminar">
+                            <span class="t">10:00</span> Marriage Seminar                        </a>
+                                                                    <a class="chip" style="border-inline-start-color:#4ade80" href="/events/e7" title="Choir Rehearsal">
+                            <span class="t">14:00</span> Choir Rehearsal                        </a>
+                                                                <span class="more">+1 more</span>
+                                    </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>26</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>27</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>28</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>29</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>30</span>
+                                            </div>
+                                                        </div>
+                                            <div class="cell">
+                    <div class="daynum">
+                        <span>31</span>
+                                            </div>
+                                                        </div>
+                    </div>
+    </main>
+</body>
+</html>

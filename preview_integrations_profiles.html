@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connector profiles — Integrations</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #7c3aed22, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 1080px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.6rem,3.5vw,2.2rem); margin:0 0 4px; }
+        .sub { color:#94a3b8; margin-bottom:8px; max-width:78ch; }
+        .count { color:#c4b5fd; font-weight:700; margin:14px 0 22px; }
+        .flash { border-radius:10px; padding:11px 14px; margin:0 0 18px; font-size:.86rem; }
+        .flash.ok { background:#1e1b4b; border:1px solid #7c3aed88; color:#ddd6fe; }
+        .flash.err { background:#3f1d1d; border:1px solid #ef444455; color:#fecaca; }
+        details.reg { background:#0f172a; border:1px solid #4c1d95; border-radius:12px; padding:0; margin:0 0 24px; }
+        details.reg > summary { cursor:pointer; padding:13px 16px; font-weight:700; color:#e2e8f0; list-style:none; }
+        details.reg > summary::-webkit-details-marker { display:none; }
+        details.reg > summary::before { content:'＋'; color:#a78bfa; margin-inline-end:9px; font-weight:700; }
+        details.reg[open] > summary::before { content:'－'; }
+        .rsub { padding:0 16px 6px; color:#94a3b8; font-size:.78rem; max-width:82ch; }
+        .form { padding:6px 16px 18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; align-items:end; }
+        .form .full { grid-column:1/-1; }
+        label { display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:#94a3b8; margin-bottom:5px; }
+        select, input { width:100%; background:#0b1120; border:1px solid #334155; border-radius:8px; color:#e2e8f0; padding:9px 10px; font-size:.86rem; }
+        select:focus, input:focus { outline:none; border-color:#a78bfa; }
+        .btn { border-radius:8px; padding:8px 14px; font-size:.82rem; font-weight:600; cursor:pointer; border:1px solid; }
+        .btn.go { background:#6d28d9; border-color:#a78bfa; color:#fff; }
+        .btn.go:hover { background:#5b21b6; }
+        .btn.ghost { background:transparent; border-color:#7f1d1d; color:#fca5a5; }
+        .btn.ghost:hover { background:#3f1d1d; }
+        .empty { color:#94a3b8; font-style:italic; }
+        table { width:100%; border-collapse:collapse; font-size:.84rem; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; overflow:hidden; }
+        th, td { text-align:start; padding:10px 12px; border-bottom:1px solid #16233a; vertical-align:top; }
+        th { color:#64748b; font-weight:600; font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; }
+        .code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:#c4b5fd; }
+        .pill { font-size:.68rem; font-weight:700; padding:3px 10px; border-radius:999px; border:1px solid; white-space:nowrap; }
+        .host { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.76rem; color:#93c5fd; word-break:break-all; }
+        .actions form { display:inline-flex; gap:6px; align-items:center; margin:0 6px 4px 0; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Connector profiles</h1>
+        <p class="sub">No-code provider profiles map a non-conforming API onto the canonical operation model. Every profile is validated server-side and certified one step at a time: draft → sandbox verified → security review → finance review → approved → active.</p>
+        <p class="count">4 profiles</p>
+
+                
+        <!-- Define a profile -->
+        <details class="reg">
+            <summary>Define a profile</summary>
+            <p class="rsub">All routing is constrained to reviewed enums; the approved host must be an HTTPS domain (no IP literals). Request/response mappings are configuration only — no code, no arbitrary headers.</p>
+            <form class="form" method="post" action="/integrations/profiles">
+                <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                <div>
+                    <label for="f-code">Profile code</label>
+                    <input id="f-code" name="code" required maxlength="80" placeholder="e.g. acme_payments">
+                </div>
+                <div>
+                    <label for="f-family">Protocol family</label>
+                    <select id="f-family" name="family" required>
+                                                    <option value="smtp_email">smtp_email</option>
+                                                    <option value="rest_json_notification">rest_json_notification</option>
+                                                    <option value="hosted_payment_checkout">hosted_payment_checkout</option>
+                                                    <option value="payment_intent_api">payment_intent_api</option>
+                                                    <option value="webhook_receiver">webhook_receiver</option>
+                                                    <option value="video_meeting">video_meeting</option>
+                                                    <option value="live_stream_metrics">live_stream_metrics</option>
+                                                    <option value="sms_gateway">sms_gateway</option>
+                                                    <option value="push_notification">push_notification</option>
+                                            </select>
+                </div>
+                <div>
+                    <label for="f-op">Canonical operation</label>
+                    <select id="f-op" name="canonical_op" required>
+                                                    <option value="sendNotification">sendNotification</option>
+                                                    <option value="createCheckout">createCheckout</option>
+                                                    <option value="queryPayment">queryPayment</option>
+                                                    <option value="verifyWebhook">verifyWebhook</option>
+                                                    <option value="createMeetingLink">createMeetingLink</option>
+                                                    <option value="getStreamMetrics">getStreamMetrics</option>
+                                                    <option value="refundPayment">refundPayment</option>
+                                                    <option value="healthCheck">healthCheck</option>
+                                            </select>
+                </div>
+                <div>
+                    <label for="f-method">HTTP method</label>
+                    <select id="f-method" name="http_method">
+                        <option value="">—</option>
+                                                    <option value="GET">GET</option>
+                                                    <option value="POST">POST</option>
+                                            </select>
+                </div>
+                <div>
+                    <label for="f-host">Approved host</label>
+                    <input id="f-host" name="approved_host" required maxlength="191" placeholder="https://api.provider.com">
+                </div>
+                <div>
+                    <label for="f-algo">Signature algorithm</label>
+                    <select id="f-algo" name="signature_algo">
+                        <option value="">—</option>
+                                                    <option value="hmac_sha256">hmac_sha256</option>
+                                                    <option value="hmac_sha512">hmac_sha512</option>
+                                                    <option value="jws_es256">jws_es256</option>
+                                                    <option value="jws_rs256">jws_rs256</option>
+                                                    <option value="none">none</option>
+                                            </select>
+                </div>
+                <div>
+                    <label for="f-owner">Owner (optional)</label>
+                    <input id="f-owner" name="owner_id" maxlength="36" placeholder="Named integration owner">
+                </div>
+                <div class="full">
+                    <button class="btn go" type="submit">Create profile</button>
+                </div>
+            </form>
+        </details>
+
+                    <table>
+                <thead><tr>
+                    <th>Code</th>
+                    <th>Version</th>
+                    <th>Family</th>
+                    <th>Operation</th>
+                    <th>Method</th>
+                    <th>Approved host</th>
+                    <th>Signature</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr></thead>
+                <tbody>
+                                                                    <tr>
+                            <td class="code">acme_pay</td>
+                            <td>v2</td>
+                            <td>hosted_payment_checkout</td>
+                            <td>createCheckout</td>
+                            <td>POST</td>
+                            <td class="host">api.acme.com</td>
+                            <td>hmac_sha256</td>
+                            <td><span class="pill" style="color:#22c55e;border-color:#22c55e55;">Active</span></td>
+                            <td class="actions">
+                                                                                                    <form method="post" action="/integrations/profiles/p1/revoke">
+                                        <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                                        <button class="btn ghost" type="submit">Revoke</button>
+                                    </form>
+                                                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td class="code">notify_smtp</td>
+                            <td>v1</td>
+                            <td>smtp_email</td>
+                            <td>sendNotification</td>
+                            <td>POST</td>
+                            <td class="host">mail.acme.com</td>
+                            <td>none</td>
+                            <td><span class="pill" style="color:#94a3b8;border-color:#94a3b855;">Draft</span></td>
+                            <td class="actions">
+                                                                    <form method="post" action="/integrations/profiles/p2/advance">
+                                        <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                                        <input type="hidden" name="to_status" value="sandbox_verified">
+                                        <button class="btn go" type="submit">Advance to Sandbox Verified</button>
+                                    </form>
+                                                                                                    <form method="post" action="/integrations/profiles/p2/revoke">
+                                        <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                                        <button class="btn ghost" type="submit">Revoke</button>
+                                    </form>
+                                                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td class="code">video_link</td>
+                            <td>v3</td>
+                            <td>video_meeting</td>
+                            <td>createMeetingLink</td>
+                            <td>POST</td>
+                            <td class="host">meet.acme.com</td>
+                            <td>jws_es256</td>
+                            <td><span class="pill" style="color:#fb923c;border-color:#fb923c55;">Security Review</span></td>
+                            <td class="actions">
+                                                                    <form method="post" action="/integrations/profiles/p3/advance">
+                                        <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                                        <input type="hidden" name="to_status" value="finance_review">
+                                        <button class="btn go" type="submit">Advance to Finance Review</button>
+                                    </form>
+                                                                                                    <form method="post" action="/integrations/profiles/p3/revoke">
+                                        <input type="hidden" name="_csrf" value="PREVIEW-TOKEN">
+                                        <button class="btn ghost" type="submit">Revoke</button>
+                                    </form>
+                                                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td class="code">legacy_sms</td>
+                            <td>v1</td>
+                            <td>sms_gateway</td>
+                            <td>sendNotification</td>
+                            <td>—</td>
+                            <td class="host">sms.old.com</td>
+                            <td>—</td>
+                            <td><span class="pill" style="color:#ef4444;border-color:#ef444455;">Revoked</span></td>
+                            <td class="actions">
+                                                                                                    <span class="empty">No further steps.</span>
+                                                            </td>
+                        </tr>
+                                    </tbody>
+            </table>
+            </main>
+</body>
+</html>

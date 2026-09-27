@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q3 Outreach Drive — base group project (no teams)</title>
+<style>
+  :root{
+    --bg:#0b1120; --card:#111a2e; --card2:#0f172a; --line:#1e293b;
+    --ink:#e2e8f0; --dim:#94a3b8; --dim2:#64748b;
+    --accra:#a855f7; --tema:#14b8a6; --green:#22c55e; --cyan:#38bdf8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0b1120,#0d1426 60%,#0b1120);
+    color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    padding:28px 18px 60px}
+  .wrap{max-width:1040px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 2px;letter-spacing:.2px}
+  .sub{color:var(--dim);margin:0 0 4px}
+  .pill{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;
+    border:1px solid var(--line);color:var(--dim);background:#0e1830;margin:2px 6px 2px 0}
+  .pill.on{color:#bbf7d0;border-color:#14532d;background:#0c2417}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 20px;
+    box-shadow:0 1px 0 rgba(255,255,255,.02) inset;margin-top:18px}
+  .card h2{font-size:14px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);margin:0 0 14px;font-weight:700}
+  .banner{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    background:linear-gradient(120deg,#12203c,#0e1830);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
+  .kv{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px}
+  .kv div{font-size:13px;color:var(--dim)}
+  .kv b{display:block;color:var(--ink);font-size:18px;font-weight:700}
+  .row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+  .row:first-of-type{border-top:0}
+  .rank{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;
+    font-weight:700;font-size:13px;background:#0e1830;border:1px solid var(--line);color:var(--dim)}
+  .rank.g1{background:#3a2d08;border-color:#5b4708;color:#fde68a}
+  .rank.g2{background:#25303f;border-color:#3a4a5f;color:#dbeafe}
+  .rank.g3{background:#2c1c10;border-color:#4a2f18;color:#fed7aa}
+  .who{flex:1;min-width:0}
+  .who .nm{font-weight:600}
+  .who .grp{font-size:12px;color:#cbd5e1;margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+  .who .grp .path{font-weight:600}
+  .who .grp .sep{color:var(--dim2)}
+  .who .grp .ico{opacity:.8}
+  .amt{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;text-align:right}
+  .done{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;color:#bbf7d0;border:1px solid #14532d;background:#0c2417}
+  .togo{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;color:var(--dim2);border:1px solid var(--line);background:transparent}
+  .bar{height:10px;border-radius:999px;background:#0c1526;border:1px solid var(--line);overflow:hidden;margin-top:8px}
+  .bar > i{display:block;height:100%;border-radius:999px}
+  .stepbox{display:flex;flex-wrap:wrap;gap:10px}
+  .step{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:var(--card2)}
+  .step .n{font-size:11px;color:var(--dim2);font-weight:700}
+  .step .t{font-weight:700;margin-top:3px}
+  .step .d{color:var(--dim);font-size:12px;margin-top:4px}
+  .chip{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:#cbd5e1;background:#0e1830;margin:2px 4px 2px 0}
+  .rec{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+  .rec:first-of-type{border-top:0}
+  .medal{font-size:18px;width:24px;text-align:center}
+  .foot{color:var(--dim2);font-size:12px;margin-top:26px;text-align:center;line-height:1.7}
+  .legend{color:var(--dim);font-size:12.5px;margin:-6px 0 0}
+  code{background:#0e1830;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px;color:#cbd5e1}
+  .switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 4px}
+  .switch a{font-size:12px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:#0e1830;color:var(--dim)}
+  .switch a.active{color:#bbf7d0;border-color:#14532d;background:#0c2417}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="switch">
+    <a class="active">📋 Base project (no teams) — this file</a>
+    <a>📐 Hierarchical (subtree) — campaign_demo_subtree_preview.html</a>
+    <a>🎽 Ad hoc team — campaign_demo_preview.html</a>
+  </div>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div>
+      <h1>Q3 Outreach Drive</h1>
+      <p class="sub">Greater Accra Region · a group <b>project</b> · Win + Build + Send</p>
+      <div>
+        <span class="pill on">Individual‑first</span>
+        <span class="pill">metric: count (activities)</span>
+        <span class="pill">award mode: single</span>
+        <span class="pill">target: 40</span>
+        <span class="pill">no team challenge</span>
+      </div>
+    </div>
+    <div class="kv">
+      <div><b>6</b>members</div>
+      <div><b>199</b>activities so far</div>
+      <div><b>2</b>reached target</div>
+      <div><b>Active</b>status</div>
+    </div>
+  </div>
+
+  <p class="legend" style="margin-top:16px">
+    This is the <b>base</b> group project — exactly what a project is at its core: <b>bundle some Win‑Build‑Send
+    activities, give them a target, and set start/close dates.</b> No teams involved. Every member individually
+    makes progress toward the target and earns the award when they hit it. The team challenge is a separate,
+    opt‑in overlay (see the other two previews).
+  </p>
+
+  <!-- What was configured -->
+  <div class="card">
+    <h2>What was configured at creation</h2>
+    <div class="stepbox">
+      <div class="step">
+        <div class="n">THE BUNDLE</div>
+        <div class="t">activity_scope</div>
+        <div class="d">Which activities count toward progress:</div>
+        <div style="margin-top:6px">
+          <span class="chip">🏆 event.attended</span>
+          <span class="chip">💙 contribution.verified</span>
+          <span class="chip">📗 course.completed</span>
+        </div>
+        <div class="d" style="margin-top:6px">(empty = all activities)</div>
+      </div>
+      <div class="step">
+        <div class="n">THE TARGET</div>
+        <div class="t">40 activities</div>
+        <div class="d"><code>metric = count</code>, <code>award_mode = single</code></div>
+        <div class="d" style="margin-top:6px">Reach 40 → earn the <b>Outreach Champion</b> badge (+300 pts).</div>
+      </div>
+      <div class="step">
+        <div class="n">THE WINDOW</div>
+        <div class="t">Jul 1 → Sep 30</div>
+        <div class="d">Runs for one quarter, then auto‑closes.</div>
+        <div class="d" style="margin-top:6px">Status: draft → <b>active</b> → completed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Individual leaderboard -->
+  <div class="card">
+    <h2>Individual leaderboard — progress toward the target</h2>
+
+    <div class="row">
+      <div class="rank g1">1</div>
+      <div class="who"><div class="nm">Ama Mensah</div>
+        <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--accra)">Accra Metro District</span></div>
+        <div class="bar"><i style="width:100%;background:linear-gradient(90deg,#22c55e,#4ade80)"></i></div></div>
+      <div><div class="amt">52 / 40</div><span class="done">✔ target reached</span></div>
+    </div>
+
+    <div class="row">
+      <div class="rank g2">2</div>
+      <div class="who"><div class="nm">Yaw Darko</div>
+        <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--tema)">Tema District</span></div>
+        <div class="bar"><i style="width:85%;background:linear-gradient(90deg,#22c55e,#4ade80)"></i></div></div>
+      <div><div class="amt">44 / 40</div><span class="done">✔ target reached</span></div>
+    </div>
+
+    <div class="row">
+      <div class="rank g3">3</div>
+      <div class="who"><div class="nm">Kofi Boateng</div>
+        <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--tema)">Tema District</span></div>
+        <div class="bar"><i style="width:73%;background:linear-gradient(90deg,#38bdf8,#7dd3fc)"></i></div></div>
+      <div><div class="amt">38 / 40</div><span class="togo">2 to go</span></div>
+    </div>
+
+    <div class="row">
+      <div class="rank">4</div>
+      <div class="who"><div class="nm">Abena Asante</div>
+        <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--accra)">Accra Metro District</span></div>
+        <div class="bar"><i style="width:60%;background:linear-gradient(90deg,#38bdf8,#7dd3fc)"></i></div></div>
+      <div><div class="amt">31 / 40</div><span class="togo">9 to go</span></div>
+    </div>
+
+    <div class="row">
+      <div class="rank">5</div>
+      <div class="who"><div class="nm">Kwame Osei</div>
+        <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--tema)">Tema District</span></div>
+        <div class="bar"><i style="width:42%;background:linear-gradient(90deg,#64748b,#94a3b8)"></i></div></div>
+      <div><div class="amt">22 / 40</div><span class="togo">18 to go</span></div>
+    </div>
+
+    <div class="row">
+      <div class="rank">6</div>
+      <div class="who"><div class="nm">Esi Owusu</div>
+        <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--accra)">Accra Metro District</span></div>
+        <div class="bar"><i style="width:23%;background:linear-gradient(90deg,#64748b,#94a3b8)"></i></div></div>
+      <div><div class="amt">12 / 40</div><span class="togo">28 to go</span></div>
+    </div>
+
+    <p class="legend" style="margin-top:14px">Bars show each member's progress toward the target (40). Members who reach it earn the badge; there are no teams — the member's group is shown for context only.</p>
+  </div>
+
+  <!-- Recognition -->
+  <div class="card">
+    <h2>At close — recognition snapshot</h2>
+    <div style="color:var(--dim);font-size:12.5px;margin:-6px 0 8px">Top 3 individuals (<code>recognize_top_n = 3</code>)</div>
+    <div class="rec"><div class="medal">🥇</div><div class="who"><div class="nm">Ama Mensah</div></div><div class="amt">52 activities</div></div>
+    <div class="rec"><div class="medal">🥈</div><div class="who"><div class="nm">Yaw Darko</div></div><div class="amt">44 activities</div></div>
+    <div class="rec"><div class="medal">🥉</div><div class="who"><div class="nm">Kofi Boateng</div></div><div class="amt">38 activities</div></div>
+  </div>
+
+  <p class="foot">
+    Base project: <code>team_challenge = 0</code> (omitted). Just <code>activity_scope</code> + <code>metric</code>/<code>target_value</code> + <code>starts_at</code>/<code>ends_at</code>.<br>
+    Lifecycle: <code>POST campaigns</code> → <code>activate</code> → progress accrues per individual → <code>close</code>. No teams, no rosters, no subgroup standings.<br>
+    Companions: <code>campaign_demo_subtree_preview.html</code> (subgroups compete) and <code>campaign_demo_preview.html</code> (ad hoc Red vs Blue) add the optional team overlay.
+  </p>
+
+</div>
+</body>
+</html>

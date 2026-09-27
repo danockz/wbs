@@ -1,0 +1,30 @@
+<?php
+
+/** Service failure messages for the contact book / outreach flows (family key lang('contact.*')). Rendered human-readable at flash time via Shared\Support\Messages::humanize(). */
+return [
+    'attendance_bad_type' => 'Le type de participation doit être un événement ou un cours.',
+    'attendance_target_required' => 'Choisissez l\'événement ou le cours.',
+    'decision_date_future' => 'La date de décision ne peut pas être dans le futur.',
+    'decision_date_required' => 'Une date de décision est obligatoire.',
+    'decision_type_invalid' => 'Type de décision inconnu.',
+    'decision_type_required' => 'Choisissez un type de décision.',
+    'group_out_of_scope' => 'Ce groupe est hors de votre périmètre de responsabilité.',
+    'group_required' => 'Choisissez un groupe.',
+    'name_required' => 'Le nom complet est obligatoire.',
+    'not_found' => 'Contact introuvable.',
+    'not_found_or_forbidden' => 'Contact introuvable ou non accessible pour vous.',
+    'owner_required' => 'Un propriétaire est obligatoire.',
+    'rows_required' => 'Aucune ligne à importer.',
+    'teardown_bad_input' => 'Demande de réinitialisation invalide.',
+    'transfer_already_pending' => 'Un transfert est déjà en attente de révision.',
+    'transfer_bad_input' => 'Demande de transfert invalide.',
+    'transfer_bad_state' => 'Ce contact ne peut pas être transféré pour le moment.',
+    'transfer_failed' => 'Le transfert n\'a pas pu être appliqué.',
+    'transfer_no_group' => 'Le contact n\'a pas de groupe à partir duquel transférer.',
+    'transfer_no_longer_eligible' => 'Le contact n\'est plus éligible au transfert.',
+    'transfer_not_due' => 'Le délai d\'inactivité n\'est pas encore écoulé.',
+    'transfer_reason_required' => 'Un motif de transfert est obligatoire.',
+    'transfer_request_not_found' => 'Demande de transfert introuvable.',
+    'transfer_self_approval' => 'Vous ne pouvez pas approuver votre propre transfert.',
+    'transfer_submit_failed' => 'Le transfert n\'a pas pu être mis en file pour révision.',
+];

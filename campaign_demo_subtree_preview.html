@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q3 Regional Giving — hierarchical (subtree) project</title>
+<style>
+  :root{
+    --bg:#0b1120; --card:#111a2e; --card2:#0f172a; --line:#1e293b;
+    --ink:#e2e8f0; --dim:#94a3b8; --dim2:#64748b;
+    --silver:#94a3b8; --gold:#f59e0b; --diamond:#38bdf8;
+    --accra:#a855f7; --tema:#14b8a6; --green:#22c55e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0b1120,#0d1426 60%,#0b1120);
+    color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    padding:28px 18px 60px}
+  .wrap{max-width:1040px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 2px;letter-spacing:.2px}
+  .sub{color:var(--dim);margin:0 0 4px}
+  .pill{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;
+    border:1px solid var(--line);color:var(--dim);background:#0e1830;margin:2px 6px 2px 0}
+  .pill.on{color:#bbf7d0;border-color:#14532d;background:#0c2417}
+  .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:22px}
+  @media(min-width:860px){.grid.two{grid-template-columns:1.35fr 1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 20px;
+    box-shadow:0 1px 0 rgba(255,255,255,.02) inset}
+  .card h2{font-size:14px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);margin:0 0 14px;font-weight:700}
+  .banner{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    background:linear-gradient(120deg,#12203c,#0e1830);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
+  .kv{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px}
+  .kv div{font-size:13px;color:var(--dim)}
+  .kv b{display:block;color:var(--ink);font-size:18px;font-weight:700}
+  .row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+  .row:first-of-type{border-top:0}
+  .rank{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;
+    font-weight:700;font-size:13px;background:#0e1830;border:1px solid var(--line);color:var(--dim)}
+  .rank.g1{background:#3a2d08;border-color:#5b4708;color:#fde68a}
+  .rank.g2{background:#25303f;border-color:#3a4a5f;color:#dbeafe}
+  .rank.g3{background:#2c1c10;border-color:#4a2f18;color:#fed7aa}
+  .who{flex:1;min-width:0}
+  .who .nm{font-weight:600}
+  .who .grp{font-size:12px;color:#cbd5e1;margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+  .who .grp .path{font-weight:600}
+  .who .grp .sep{color:var(--dim2)}
+  .who .grp .ico{opacity:.8}
+  .tree{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+    font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--dim);white-space:pre;overflow-x:auto}
+  .tree b{color:var(--ink);font-weight:700}
+  .amt{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+  .tierbadge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid}
+  .t-silver{color:var(--silver);border-color:#3b4757;background:#141c2b}
+  .t-gold{color:var(--gold);border-color:#5b4708;background:#221a06}
+  .t-diamond{color:var(--diamond);border-color:#0e4c66;background:#07222e}
+  .bar{height:10px;border-radius:999px;background:#0c1526;border:1px solid var(--line);overflow:hidden;margin-top:8px}
+  .bar > i{display:block;height:100%;border-radius:999px}
+  .team-card{border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-bottom:12px;background:var(--card2)}
+  .team-card:last-child{margin-bottom:0}
+  .team-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:-1px}
+  .team-name{font-weight:700}
+  .team-sub{font-size:12px;color:var(--dim2)}
+  .win{font-size:11px;font-weight:700;color:#bbf7d0;background:#0c2417;border:1px solid #14532d;border-radius:999px;padding:2px 9px}
+  .ladder{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
+  .step{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:var(--card2)}
+  .step .lab{font-weight:700;display:flex;align-items:center;gap:8px}
+  .step .thr{color:var(--dim);font-size:12px;margin-top:3px}
+  .step .rew{color:var(--dim);font-size:12px;margin-top:8px}
+  .chip{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--dim);background:#0e1830}
+  .rec{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+  .rec:first-of-type{border-top:0}
+  .medal{font-size:18px;width:24px;text-align:center}
+  .foot{color:var(--dim2);font-size:12px;margin-top:26px;text-align:center;line-height:1.7}
+  .legend{color:var(--dim);font-size:12.5px;margin:-6px 0 0}
+  code{background:#0e1830;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px;color:#cbd5e1}
+  .switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 4px}
+  .switch a{font-size:12px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:#0e1830;color:var(--dim)}
+  .switch a.active{color:#bbf7d0;border-color:#14532d;background:#0c2417}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="switch">
+    <a>📋 Base project (no teams) — campaign_demo_base_preview.html</a>
+    <a class="active">📐 Hierarchical (subtree) project — this file</a>
+    <a>🎽 Ad hoc team project — campaign_demo_preview.html</a>
+  </div>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div>
+      <h1>Q3 Regional Giving</h1>
+      <p class="sub">Greater Accra Region · a group <b>project</b> · Send</p>
+      <div>
+        <span class="pill on">Individual‑first</span>
+        <span class="pill">metric: amount (GHS)</span>
+        <span class="pill">award mode: tiered</span>
+        <span class="pill on">Team challenge: team_mode = subtree</span>
+        <span class="pill">teams = subgroups (auto)</span>
+      </div>
+    </div>
+    <div class="kv">
+      <div><b>6</b>members giving</div>
+      <div><b>GHS&nbsp;3,850</b>raised so far</div>
+      <div><b>2</b>subgroup teams</div>
+      <div><b>Active</b>status</div>
+    </div>
+  </div>
+
+  <p class="legend" style="margin-top:16px">
+    This is the <b>hierarchical (subtree)</b> flavour of a group project. It is still <b>individual‑first</b> — every
+    member competes for their own tier badge. The team challenge’s teams are the region’s <b>immediate subgroups</b>
+    (the districts) and membership is <b>derived from the hierarchy</b> — there are <b>no hand‑picked rosters</b>. A gift
+    is credited to the subgroup the member belongs to (<code>team_kind = 'group'</code>). Compare with the ad hoc
+    version, where teams are arbitrary rosters cutting across the tree.
+  </p>
+
+  <!-- Group hierarchy -->
+  <div class="card" style="margin-top:18px">
+    <h2>Group hierarchy — the subgroups ARE the teams</h2>
+    <div class="tree"><b>Greater Accra Region</b>   ← campaign owner
+├─ <b>Accra Metro District</b>   ← competing team  → Ama · Abena · Esi
+└─ <b>Tema District</b>          ← competing team  → Yaw · Kofi · Kwame</div>
+    <p class="legend" style="margin-top:12px">Teams are resolved by <code>resolveTeams()</code> → <code>attributedTeams()</code>: each member rolls up to whichever immediate child of the owner sits on their group’s ancestor path (via <code>group_closure</code>). No roster tables involved.</p>
+  </div>
+
+  <!-- Tier ladder -->
+  <div class="card" style="margin-top:18px">
+    <h2>Individual tier ladder — each tier grants its own badge</h2>
+    <div class="ladder">
+      <div class="step" style="border-color:#3b4757">
+        <div class="lab"><span class="dot" style="background:var(--silver)"></span>Silver</div>
+        <div class="thr">Reach <b>GHS&nbsp;100</b> given</div>
+        <div class="rew"><span class="chip">🥈 badge: Silver Giver</span> <span class="chip">+50 pts</span></div>
+      </div>
+      <div class="step" style="border-color:#5b4708">
+        <div class="lab"><span class="dot" style="background:var(--gold)"></span>Gold</div>
+        <div class="thr">Reach <b>GHS&nbsp;500</b> given</div>
+        <div class="rew"><span class="chip">🥇 badge: Gold Giver</span> <span class="chip">+150 pts</span></div>
+      </div>
+      <div class="step" style="border-color:#0e4c66">
+        <div class="lab"><span class="dot" style="background:var(--diamond)"></span>Diamond</div>
+        <div class="thr">Reach <b>GHS&nbsp;1,000</b> given</div>
+        <div class="rew"><span class="chip">💎 badge: Diamond Giver</span> <span class="chip">+400 pts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid two">
+
+    <!-- Individual leaderboard -->
+    <div class="card">
+      <h2>Individual leaderboard — the main event</h2>
+
+      <!-- Ama -->
+      <div class="row">
+        <div class="rank g1">1</div>
+        <div class="who"><div class="nm">Ama Mensah</div>
+          <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--accra)">Accra Metro District</span></div>
+          <div class="bar"><i style="width:100%;background:linear-gradient(90deg,#38bdf8,#7dd3fc)"></i></div></div>
+        <div style="text-align:right"><div class="amt">GHS 1,200</div><span class="tierbadge t-diamond">💎 Diamond</span></div>
+      </div>
+      <!-- Yaw -->
+      <div class="row">
+        <div class="rank g2">2</div>
+        <div class="who"><div class="nm">Yaw Darko</div>
+          <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--tema)">Tema District</span></div>
+          <div class="bar"><i style="width:90%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></i></div></div>
+        <div style="text-align:right"><div class="amt">GHS 900</div><span class="tierbadge t-gold">🥇 Gold</span></div>
+      </div>
+      <!-- Kofi -->
+      <div class="row">
+        <div class="rank g3">3</div>
+        <div class="who"><div class="nm">Kofi Boateng</div>
+          <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--tema)">Tema District</span></div>
+          <div class="bar"><i style="width:60%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></i></div></div>
+        <div style="text-align:right"><div class="amt">GHS 600</div><span class="tierbadge t-gold">🥇 Gold</span></div>
+      </div>
+      <!-- Abena -->
+      <div class="row">
+        <div class="rank">4</div>
+        <div class="who"><div class="nm">Abena Asante</div>
+          <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--accra)">Accra Metro District</span></div>
+          <div class="bar"><i style="width:55%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></i></div></div>
+        <div style="text-align:right"><div class="amt">GHS 550</div><span class="tierbadge t-gold">🥇 Gold</span></div>
+      </div>
+      <!-- Kwame -->
+      <div class="row">
+        <div class="rank">5</div>
+        <div class="who"><div class="nm">Kwame Osei</div>
+          <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--tema)">Tema District</span></div>
+          <div class="bar"><i style="width:40%;background:linear-gradient(90deg,#94a3b8,#cbd5e1)"></i></div></div>
+        <div style="text-align:right"><div class="amt">GHS 400</div><span class="tierbadge t-silver">🥈 Silver</span></div>
+      </div>
+      <!-- Esi -->
+      <div class="row">
+        <div class="rank">6</div>
+        <div class="who"><div class="nm">Esi Owusu</div>
+          <div class="grp"><span class="ico">🏢</span><span class="path">Greater Accra Region</span><span class="sep">›</span><span class="path" style="color:var(--accra)">Accra Metro District</span></div>
+          <div class="bar"><i style="width:20%;background:linear-gradient(90deg,#94a3b8,#cbd5e1)"></i></div></div>
+        <div style="text-align:right"><div class="amt">GHS 200</div><span class="tierbadge t-silver">🥈 Silver</span></div>
+      </div>
+
+      <p class="legend" style="margin-top:14px">Each member shows their <b>hierarchical group</b> (Region › District), which — in subtree mode — is also the team they contribute to. Bars are progress toward Diamond (GHS&nbsp;1,000); every member earns their tier independently.</p>
+    </div>
+
+    <div>
+      <!-- Subgroup standings -->
+      <div class="card">
+        <h2>Subgroup standings — each district has its own milestone</h2>
+
+        <div class="team-card" style="border-color:#3b1d5b">
+          <div class="team-head">
+            <div><span class="dot" style="background:var(--accra)"></span><span class="team-name">Accra Metro District</span>
+              <span class="win">Leading</span></div>
+            <div class="amt">GHS 1,950</div>
+          </div>
+          <div class="team-sub">3 members · Ama, Abena, Esi</div>
+          <div class="bar"><i style="width:100%;background:linear-gradient(90deg,#a855f7,#c084fc)"></i></div>
+          <div class="team-sub" style="margin-top:8px;color:#bbf7d0">🏆 Milestone reached (GHS&nbsp;1,920) — earns <b>District Champion</b> badge</div>
+        </div>
+
+        <div class="team-card" style="border-color:#134e4a">
+          <div class="team-head">
+            <div><span class="dot" style="background:var(--tema)"></span><span class="team-name">Tema District</span></div>
+            <div class="amt">GHS 1,900</div>
+          </div>
+          <div class="team-sub">3 members · Yaw, Kofi, Kwame</div>
+          <div class="bar"><i style="width:97.4%;background:linear-gradient(90deg,#14b8a6,#2dd4bf)"></i></div>
+          <div class="team-sub" style="margin-top:8px">Milestone at GHS&nbsp;1,920 — GHS&nbsp;20 short (no district badge yet)</div>
+        </div>
+
+        <p class="legend" style="margin-top:12px">Teams and their rosters are the <b>subgroups themselves</b> — nothing is hand‑assigned. A member’s district is derived from <code>group_members</code> + <code>group_closure</code>; their gift rolls up to that district automatically.</p>
+      </div>
+
+      <!-- Recognition -->
+      <div class="card" style="margin-top:18px">
+        <h2>At close — recognition snapshot</h2>
+        <div style="color:var(--dim);font-size:12.5px;margin:-6px 0 8px">Top 3 individuals</div>
+        <div class="rec"><div class="medal">🥇</div><div class="who"><div class="nm">Ama Mensah</div></div><div class="amt">GHS 1,200</div></div>
+        <div class="rec"><div class="medal">🥈</div><div class="who"><div class="nm">Yaw Darko</div></div><div class="amt">GHS 900</div></div>
+        <div class="rec"><div class="medal">🥉</div><div class="who"><div class="nm">Kofi Boateng</div></div><div class="amt">GHS 600</div></div>
+
+        <div style="color:var(--dim);font-size:12.5px;margin:16px 0 8px">Top 2 subgroups</div>
+        <div class="rec"><div class="medal">🥇</div><div class="who"><div class="nm"><span class="dot" style="background:var(--accra)"></span>Accra Metro District</div></div><div class="amt">GHS 1,950</div></div>
+        <div class="rec"><div class="medal">🥈</div><div class="who"><div class="nm"><span class="dot" style="background:var(--tema)"></span>Tema District</div></div><div class="amt">GHS 1,900</div></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">
+    Subtree project: <code>team_challenge = 1</code>, <code>team_mode = 'subtree'</code>. Teams = owner’s immediate subgroups; <code>team_ref</code> = a <b>group id</b>, <code>team_kind = 'group'</code>.<br>
+    Amounts are pesewas internally (GHS&nbsp;1,200 = 120000). Individual tiers: Silver GHS&nbsp;100 · Gold GHS&nbsp;500 · Diamond GHS&nbsp;1,000. Subgroup milestone: GHS&nbsp;1,920 → District Champion badge.<br>
+    Companion file <code>campaign_demo_preview.html</code> shows the <b>ad hoc</b> variant (Red vs Blue rosters cutting across the tree).
+  </p>
+
+</div>
+</body>
+</html>

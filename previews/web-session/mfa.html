@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verify it's you — Win–Build–Send</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1000px 500px at 50% -10%, #22d3ee22, transparent), #0b1120; color:#e2e8f0;
+            display:grid; place-items:center; min-height:100vh; padding:20px; }
+        .card { width:100%; max-width:400px; background:#0f172aee; border:1px solid #1e293b; border-radius:16px; padding:30px 28px; text-align:center; }
+        .mark { font-size:2.6rem; }
+        h1 { font-size:1.4rem; margin:.2em 0; }
+        .sub { color:#94a3b8; font-size:.9rem; margin-bottom:20px; }
+        input.code { width:100%; padding:14px; border-radius:10px; border:1px solid #334155; background:#0b1120; color:#e2e8f0;
+            font-size:1.6rem; letter-spacing:.4em; text-align:center; }
+        input.code:focus { outline:none; border-color:#22d3ee; }
+        .btn { width:100%; margin-top:20px; padding:13px; border:none; border-radius:10px; background:#22d3ee; color:#00121a; font-weight:700; font-size:1rem; cursor:pointer; }
+        .err { background:#7f1d1d33; border:1px solid #ef444455; color:#fecaca; border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:.9rem; }
+        a { color:#94a3b8; text-decoration:none; font-size:.85rem; }
+        .alt { margin-top:16px; }
+    </style>
+</head>
+<body>
+    <form class="card" method="post" action="/mfa">
+        <div class="mark">🔐</div>
+        <h1>Verify it's you</h1>
+        <div class="sub">This sign-in looked higher-risk, so a strong second factor is required.</div>
+
+                    <div class="err">That code was not valid. Try again.</div>
+        
+        <input type="hidden" name="_csrf" value="demo-csrf">
+        <input type="hidden" name="return" value="/me">
+
+        <input class="code" name="code" autocomplete="one-time-code"
+               maxlength="14" required autofocus placeholder="••••••">
+
+        <button class="btn" type="submit">Verify</button>
+
+        <div class="hint" style="margin-top:14px;color:#64748b;font-size:.8rem;">
+            Lost your device? Enter one of your recovery codes instead.
+        </div>
+
+        <div class="alt"><a href="/login">← Back to sign in</a></div>
+    </form>
+</body>
+</html>

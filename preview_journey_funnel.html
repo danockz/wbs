@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Discipleship funnel — progression report</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #7c3aed22, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 940px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.6rem,3.5vw,2.2rem); margin:0 0 4px; }
+        .sub { color:#94a3b8; margin-bottom:20px; }
+        .scope { display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+            color:#c4b5fd; border:1px solid #7c3aed55; border-radius:999px; padding:4px 12px; margin-bottom:6px; }
+        a.scope { text-decoration:none; }
+        a.scope:hover { color:#e9d5ff; border-color:#a78bfa; }
+        .kpis { display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 26px; }
+        .kpi { flex:1 1 150px; background:#0f172aee; border:1px solid #1e293b; border-radius:12px; padding:14px 18px; }
+        .kpi .n { font-size:1.9rem; font-weight:800; font-variant-numeric:tabular-nums; }
+        .kpi .k { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; }
+        .stage { background:#0f172aee; border:1px solid #1e293b; border-radius:14px; padding:14px 16px; margin-bottom:12px;
+            border-inline-start-width:4px; }
+        .stagehd { display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:9px; }
+        .stagename { font-size:1.05rem; font-weight:700; }
+        .stagecode { font-size:.66rem; color:#64748b; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; margin-inline-start:8px; }
+        .chip { font-size:.64rem; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:999px; border:1px solid #334155; }
+        .reachbar { height:22px; border-radius:7px; background:#1e293b; overflow:hidden; position:relative; }
+        .reachbar > i { display:block; height:100%; border-radius:7px 0 0 7px; }
+        .reachbar > b { position:absolute; inset-block:0; inset-inline-end:9px; display:flex; align-items:center;
+            font-size:.72rem; font-weight:700; font-variant-numeric:tabular-nums; color:#e2e8f0; }
+        .metrics { display:flex; gap:10px; flex-wrap:wrap; margin-top:11px; }
+        .metric { flex:1 1 120px; border:1px solid #1e293b; border-radius:10px; padding:8px 11px; }
+        .metric .n { font-size:1.15rem; font-weight:800; font-variant-numeric:tabular-nums; }
+        .metric .k { font-size:.62rem; text-transform:uppercase; letter-spacing:.05em; color:#94a3b8; }
+        .metric .k abbr { text-decoration:none; border-bottom:1px dotted #475569; cursor:help; }
+        .metric.warnz .n { color:#fbbf24; }
+        .metric.good .n { color:#34d399; }
+        .metric.flow .n { color:#38bdf8; }
+        .arrow { text-align:center; color:#475569; font-size:1rem; line-height:1; margin:-4px 0 8px; }
+        .empty { background:#0f172aee; border:1px dashed #334155; border-radius:12px; padding:24px; color:#94a3b8; text-align:center; }
+        .legend { margin-top:20px; font-size:.74rem; color:#94a3b8; line-height:1.7; }
+        .legend b { color:#cbd5e1; font-weight:700; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Discipleship funnel</h1>
+        <p class="sub">How far members progress along the ladder, and where the body thins out.</p>
+
+        <div>
+            <span class="scope">
+                Group grpA            </span>
+            <span class="scope" style="color:#94a3b8;border-color:#33415555">Momentum window: last 90 days</span>
+            <a class="scope" href="/journey/pipeline?group_id=grpA">Back to pipeline</a>
+        </div>
+
+        <div class="kpis">
+            <div class="kpi">
+                <div class="n">20</div>
+                <div class="k">Active members</div>
+            </div>
+            <div class="kpi">
+                <div class="n" style="color:#38bdf8">4</div>
+                <div class="k">Stage moves in window</div>
+            </div>
+        </div>
+
+                                                                    <section class="stage" style="border-inline-start-color:#22d3ee">
+                    <div class="stagehd">
+                        <div>
+                            <span class="stagename">Seeker</span>
+                            <span class="stagecode">seeker</span>
+                        </div>
+                        <span class="chip" style="color:#22d3ee;border-color:#22d3ee55">Win</span>
+                    </div>
+
+                    <div class="reachbar" role="img" aria-label="Reach 100%">
+                        <i style="width:100%;background:#22d3ee"></i>
+                        <b>20 · 100%</b>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="n">20</div>
+                            <div class="k"><abbr title="The share of all active members who have reached this stage or gone beyond it.">At or beyond</abbr></div>
+                        </div>
+                        <div class="metric warnz">
+                            <div class="n">10<span style="font-size:.7rem;color:#94a3b8">&nbsp;·&nbsp;50%</span></div>
+                            <div class="k"><abbr title="The share of this stage’s cohort still sitting at exactly this stage.">Stalled here</abbr></div>
+                        </div>
+                                                    <div class="metric good">
+                                <div class="n">50%</div>
+                                <div class="k"><abbr title="The share of this stage’s cohort who progressed past it.">Advanced past</abbr></div>
+                            </div>
+                                                <div class="metric flow">
+                            <div class="n">0</div>
+                            <div class="k"><abbr title="Members who arrived at this stage within the momentum window.">Recent arrivals</abbr></div>
+                        </div>
+                    </div>
+                </section>
+                                            <div class="arrow" aria-hidden="true">&#9662;</div>                <section class="stage" style="border-inline-start-color:#a78bfa">
+                    <div class="stagehd">
+                        <div>
+                            <span class="stagename">Growing</span>
+                            <span class="stagecode">growing</span>
+                        </div>
+                        <span class="chip" style="color:#a78bfa;border-color:#a78bfa55">Build</span>
+                    </div>
+
+                    <div class="reachbar" role="img" aria-label="Reach 50%">
+                        <i style="width:50%;background:#a78bfa"></i>
+                        <b>10 · 50%</b>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="n">10</div>
+                            <div class="k"><abbr title="The share of all active members who have reached this stage or gone beyond it.">At or beyond</abbr></div>
+                        </div>
+                        <div class="metric warnz">
+                            <div class="n">6<span style="font-size:.7rem;color:#94a3b8">&nbsp;·&nbsp;60%</span></div>
+                            <div class="k"><abbr title="The share of this stage’s cohort still sitting at exactly this stage.">Stalled here</abbr></div>
+                        </div>
+                                                    <div class="metric good">
+                                <div class="n">40%</div>
+                                <div class="k"><abbr title="The share of this stage’s cohort who progressed past it.">Advanced past</abbr></div>
+                            </div>
+                                                <div class="metric flow">
+                            <div class="n">3<span style="font-size:.7rem;color:#94a3b8">&nbsp;·&nbsp;2</span></div>
+                            <div class="k"><abbr title="Members who arrived at this stage within the momentum window.">Recent arrivals</abbr></div>
+                        </div>
+                    </div>
+                </section>
+                                            <div class="arrow" aria-hidden="true">&#9662;</div>                <section class="stage" style="border-inline-start-color:#a78bfa">
+                    <div class="stagehd">
+                        <div>
+                            <span class="stagename">Worker</span>
+                            <span class="stagecode">worker</span>
+                        </div>
+                        <span class="chip" style="color:#a78bfa;border-color:#a78bfa55">Build</span>
+                    </div>
+
+                    <div class="reachbar" role="img" aria-label="Reach 20%">
+                        <i style="width:20%;background:#a78bfa"></i>
+                        <b>4 · 20%</b>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="n">4</div>
+                            <div class="k"><abbr title="The share of all active members who have reached this stage or gone beyond it.">At or beyond</abbr></div>
+                        </div>
+                        <div class="metric warnz">
+                            <div class="n">3<span style="font-size:.7rem;color:#94a3b8">&nbsp;·&nbsp;75%</span></div>
+                            <div class="k"><abbr title="The share of this stage’s cohort still sitting at exactly this stage.">Stalled here</abbr></div>
+                        </div>
+                                                    <div class="metric good">
+                                <div class="n">25%</div>
+                                <div class="k"><abbr title="The share of this stage’s cohort who progressed past it.">Advanced past</abbr></div>
+                            </div>
+                                                <div class="metric flow">
+                            <div class="n">1</div>
+                            <div class="k"><abbr title="Members who arrived at this stage within the momentum window.">Recent arrivals</abbr></div>
+                        </div>
+                    </div>
+                </section>
+                                            <div class="arrow" aria-hidden="true">&#9662;</div>                <section class="stage" style="border-inline-start-color:#f59e0b">
+                    <div class="stagehd">
+                        <div>
+                            <span class="stagename">Sender</span>
+                            <span class="stagecode">sender</span>
+                        </div>
+                        <span class="chip" style="color:#f59e0b;border-color:#f59e0b55">Send</span>
+                    </div>
+
+                    <div class="reachbar" role="img" aria-label="Reach 5%">
+                        <i style="width:5%;background:#f59e0b"></i>
+                        <b>1 · 5%</b>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="n">1</div>
+                            <div class="k"><abbr title="The share of all active members who have reached this stage or gone beyond it.">At or beyond</abbr></div>
+                        </div>
+                        <div class="metric warnz">
+                            <div class="n">1<span style="font-size:.7rem;color:#94a3b8">&nbsp;·&nbsp;100%</span></div>
+                            <div class="k"><abbr title="The share of this stage’s cohort still sitting at exactly this stage.">Stalled here</abbr></div>
+                        </div>
+                                                    <div class="metric">
+                                <div class="n" style="color:#64748b">—</div>
+                                <div class="k">Final stage — no further stage to advance to.</div>
+                            </div>
+                                                <div class="metric flow">
+                            <div class="n">0</div>
+                            <div class="k"><abbr title="Members who arrived at this stage within the momentum window.">Recent arrivals</abbr></div>
+                        </div>
+                    </div>
+                </section>
+            
+            <div class="legend">
+                <div><b>At or beyond:</b> The share of all active members who have reached this stage or gone beyond it.</div>
+                <div><b>Advanced past:</b> The share of this stage’s cohort who progressed past it.</div>
+                <div><b>Stalled here:</b> The share of this stage’s cohort still sitting at exactly this stage.</div>
+                <div><b>Recent arrivals:</b> Members who arrived at this stage within the momentum window.</div>
+            </div>
+            </main>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Organization settings</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #22d3ee22, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 1040px; margin: 0 auto; padding: 5vh 20px 60px; }
+        h1 { font-size: clamp(1.6rem,3.5vw,2.2rem); margin:0 0 4px; }
+        h2 { font-size:1.1rem; margin:28px 0 10px; }
+        .sub { color:#94a3b8; margin-bottom:8px; }
+        .count { color:#22d3ee; font-weight:700; font-size:.85rem; }
+        table { width:100%; border-collapse:collapse; margin-top:6px; }
+        th, td { text-align:start; padding:10px 12px; border-bottom:1px solid #1e293b; font-size:.88rem; vertical-align:top; }
+        th { font-size:.66rem; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; }
+        code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.8rem; color:#7dd3fc; word-break:break-all; }
+        .key { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.82rem; color:#a5b4fc; }
+        .muted { color:#64748b; }
+        .when { font-variant-numeric:tabular-nums; white-space:nowrap; color:#cbd5e1; }
+        .pill { font-size:.66rem; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:999px; border:1px solid #334155; white-space:nowrap; }
+        .empty { background:#0f172aee; border:1px dashed #334155; border-radius:12px; padding:20px; color:#94a3b8; text-align:center; }
+        .flash { border-radius:10px; padding:11px 14px; margin:0 0 18px; font-size:.86rem; }
+        .flash.ok { background:#052e1b; border:1px solid #22c55e; color:#bbf7d0; }
+        .flash.err { background:#3f1d1d; border:1px solid #ef4444; color:#fecaca; }
+        details.panel { background:#0f172aee; border:1px solid #1e293b; border-radius:12px; margin:6px 0 6px; }
+        details.panel > summary { cursor:pointer; padding:11px 14px; font-size:.82rem; font-weight:700; color:#a5b4fc; list-style:none; }
+        details.panel > summary::-webkit-details-marker { display:none; }
+        details.panel > summary::before { content:'\FF0B'; color:#22d3ee; margin-inline-end:8px; font-weight:700; }
+        details.panel[open] > summary::before { content:'\FF0D'; }
+        .aform { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; align-items:end; padding:4px 14px 16px; }
+        .aform .full { grid-column:1/-1; }
+        .aform label { display:block; font-size:.66rem; text-transform:uppercase; letter-spacing:.05em; color:#94a3b8; margin-bottom:5px; }
+        .aform input, .aform select { width:100%; background:#0b1120; border:1px solid #334155; border-radius:9px; color:#e2e8f0; padding:9px 10px; font-size:.86rem; font-family:inherit; }
+        .aform input:focus, .aform select:focus { outline:none; border-color:#22d3ee; }
+        .chk { display:flex; align-items:center; gap:8px; }
+        .chk input { width:auto; }
+        .btn { border:0; border-radius:9px; cursor:pointer; font-weight:700; font-size:.85rem; font-family:inherit; padding:10px 18px; background:#4f46e5; color:#fff; }
+        .btn:hover { background:#4338ca; }
+        .rowedit { padding-top:6px; }
+        details.rowedit > summary { cursor:pointer; font-size:.72rem; color:#a5b4fc; list-style:none; }
+        details.rowedit > summary::-webkit-details-marker { display:none; }
+        td .miniform { display:flex; flex-wrap:wrap; gap:8px; align-items:end; margin-top:8px; }
+        td .miniform label { display:block; font-size:.6rem; text-transform:uppercase; color:#64748b; margin-bottom:3px; }
+        td .miniform input, td .miniform select { background:#0b1120; border:1px solid #334155; border-radius:8px; color:#e2e8f0; padding:6px 8px; font-size:.8rem; font-family:inherit; }
+        td .miniform .btn { padding:6px 12px; font-size:.78rem; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Organization settings</h1>
+        <p class="sub">Platform configuration and feature flags for your organization.</p>
+
+                
+        <h2>Settings            <span class="count">2 settings</span>
+        </h2>
+
+        <details class="panel">
+            <summary>New setting</summary>
+            <form class="aform" method="post" action="/admin/settings">
+                <input type="hidden" name="_csrf" value="TOK">
+                <div>
+                    <label for="ns_key">Key</label>
+                    <input id="ns_key" name="key" required maxlength="160" placeholder="e.g. branding.primary_color">
+                </div>
+                <div>
+                    <label for="ns_type">Type</label>
+                    <select id="ns_type" name="type">
+                                                    <option value="string">Text</option>
+                                                    <option value="integer">Integer</option>
+                                                    <option value="number">Number</option>
+                                                    <option value="boolean">Boolean</option>
+                                                    <option value="json">JSON</option>
+                                            </select>
+                </div>
+                <div>
+                    <label for="ns_value">Value</label>
+                    <input id="ns_value" name="value" placeholder="value">
+                </div>
+                <div>
+                    <button type="submit" class="btn">Save</button>
+                </div>
+                <p class="full sub" style="margin:0">Values are stored with their type; JSON accepts objects and arrays.</p>
+            </form>
+        </details>
+                    <table>
+                <thead><tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>Version</th>
+                    <th>Updated</th>
+                    <th>Edit</th>
+                </tr></thead>
+                <tbody>
+                                                                    <tr>
+                            <td><span class="key">branding.primary_color</span></td>
+                            <td>#123456</td>
+                            <td>3</td>
+                            <td class="when">2026-05-01 10:00</td>
+                            <td>
+                                <details class="rowedit">
+                                    <summary>Edit</summary>
+                                    <form class="miniform" method="post" action="/admin/settings/branding.primary_color">
+                                        <input type="hidden" name="_csrf" value="TOK">
+                                        <div>
+                                            <label>Type</label>
+                                            <select name="type">
+                                                                                                    <option value="string" selected>Text</option>
+                                                                                                    <option value="integer">Integer</option>
+                                                                                                    <option value="number">Number</option>
+                                                                                                    <option value="boolean">Boolean</option>
+                                                                                                    <option value="json">JSON</option>
+                                                                                            </select>
+                                        </div>
+                                        <div>
+                                            <label>Value</label>
+                                            <input name="value" value="#123456">
+                                        </div>
+                                        <button type="submit" class="btn">Save</button>
+                                    </form>
+                                </details>
+                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td><span class="key">payments.enabled</span></td>
+                            <td>On</td>
+                            <td>1</td>
+                            <td class="when">2026-05-02 11:00</td>
+                            <td>
+                                <details class="rowedit">
+                                    <summary>Edit</summary>
+                                    <form class="miniform" method="post" action="/admin/settings/payments.enabled">
+                                        <input type="hidden" name="_csrf" value="TOK">
+                                        <div>
+                                            <label>Type</label>
+                                            <select name="type">
+                                                                                                    <option value="string">Text</option>
+                                                                                                    <option value="integer">Integer</option>
+                                                                                                    <option value="number">Number</option>
+                                                                                                    <option value="boolean" selected>Boolean</option>
+                                                                                                    <option value="json">JSON</option>
+                                                                                            </select>
+                                        </div>
+                                        <div>
+                                            <label>Value</label>
+                                            <input name="value" value="true">
+                                        </div>
+                                        <button type="submit" class="btn">Save</button>
+                                    </form>
+                                </details>
+                            </td>
+                        </tr>
+                                    </tbody>
+            </table>
+        
+        <h2>Feature flags            <span class="count">1 flag</span>
+        </h2>
+
+        <details class="panel">
+            <summary>New feature flag</summary>
+            <form class="aform" method="post" action="/admin/flags">
+                <input type="hidden" name="_csrf" value="TOK">
+                <div>
+                    <label for="nf_key">Flag key</label>
+                    <input id="nf_key" name="flag_key" required maxlength="160" placeholder="e.g. beta.new_dashboard">
+                </div>
+                <div>
+                    <label for="nf_scope">Scope</label>
+                    <select id="nf_scope" name="group_id">
+                        <option value="">Organization-wide</option>
+                                                    <option value="g1">National</option>
+                                                    <option value="g2">— Region</option>
+                                            </select>
+                </div>
+                <div class="chk">
+                    <input type="checkbox" id="nf_enabled" name="enabled" value="1">
+                    <label for="nf_enabled" style="margin:0">Enabled</label>
+                </div>
+                <div class="full">
+                    <label for="nf_desc">Description</label>
+                    <input id="nf_desc" name="description" maxlength="255">
+                </div>
+                <div>
+                    <button type="submit" class="btn">Save</button>
+                </div>
+            </form>
+        </details>
+                    <table>
+                <thead><tr>
+                    <th>Flag</th>
+                    <th>Scope</th>
+                    <th>State</th>
+                    <th>Updated</th>
+                    <th>Edit</th>
+                </tr></thead>
+                <tbody>
+                                                                    <tr>
+                            <td><span class="key">beta.newui</span></td>
+                            <td>Organization-wide</td>
+                            <td><span class="pill" style="color:#22c55e;border-color:#22c55e55">On</span></td>
+                            <td class="when">2026-05-03 09:00</td>
+                            <td>
+                                                                <form class="miniform" method="post" action="/admin/flags/beta.newui">
+                                    <input type="hidden" name="_csrf" value="TOK">
+                                    <input type="hidden" name="group_id" value="">
+                                    <input type="hidden" name="enabled" value="0">
+                                    <button type="submit" class="btn">Turn off</button>
+                                </form>
+                            </td>
+                        </tr>
+                                    </tbody>
+            </table>
+            </main>
+</body>
+</html>

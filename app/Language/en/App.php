@@ -1,0 +1,183 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Shared UI strings (layout, menu categories, language switcher). English is the
+ * guaranteed fallback: every key here MUST exist so a missing translation in
+ * another locale degrades to English rather than showing the raw key.
+ *
+ * Access with lang('App.<key>'). Menu categories are keyed by MenuCategory::* ids.
+ */
+
+return [
+    'brand'          => 'Win–Build–Send',
+
+    // Menu category labels (keys match WBS\Shared\Navigation\MenuCategory ids).
+    'menu' => [
+        'overview'       => 'Overview',
+        'people'         => 'People',
+        'groups'         => 'Groups',
+        'events'         => 'Events',
+        'learning'       => 'Learning',
+        'giving'         => 'Giving',
+        'communications' => 'Communications',
+        'streaming'      => 'Streaming',
+        'reports'        => 'Reports',
+        'access'         => 'Access & Security',
+        'admin'          => 'Administration',
+        'openMenu'       => 'Open menu',
+        'primaryNav'     => 'Primary navigation',
+    ],
+
+    // Menu ITEM labels — keyed by MenuItem id with dots collapsed to underscores
+    // (e.g. 'overview.dashboard' => 'overview_dashboard'), resolved by
+    // MenuItem::displayLabel() via lang('App.menuItems.<id>'). English here is the
+    // guaranteed fallback and MUST stay in sync with CoreMenuProvider labels; the
+    // menu anti-drift test enforces one key per catalog item.
+    'menuItems' => [
+        'overview_dashboard'      => 'Dashboard',
+        'overview_contacts'       => 'My contacts & follow-ups',
+        'overview_integration'   => 'My integration',
+        'overview_followups'      => 'My follow-ups due',
+        'overview_approvals'      => 'Approvals awaiting me',
+        'overview_sessions'       => 'My sessions',
+        'overview_profile'       => 'Edit my profile',
+        'people_members'          => 'Members',
+        'people_bulk'             => 'Bulk sign-up',
+        'people_pipeline'         => 'Disciple-making pipeline',
+        'people_funnel'          => 'Discipleship funnel',
+        'people_stages'           => 'Journey stages',
+        'people_proposals'        => 'Journey proposals',
+        'people_disciplers'       => 'Discipler leaderboard',
+        'people_conflicts'        => 'Membership conflicts',
+        'people_merges'           => 'Pending account merges',
+        'people_policies'         => 'Identity policies',
+        'people_sponsors'         => 'Sponsor reassignments',
+        'people_transfers'        => 'Prospect transfers',
+        'groups_hierarchy'        => 'Group hierarchy',
+        'groups_directory'        => 'Groups by location',
+        'groups_kinds'            => 'Group kinds',
+        'groups_create'           => 'Create group',
+        'groups_move'             => 'Move / restructure',
+        'groups_venues'           => 'Venues',
+        'groups_venue_stats'      => 'Venue stats',
+        'events_browse'           => 'Events',
+        'events_calendar'         => 'Events calendar',
+        'events_calendar_settings' => 'Calendar settings',
+        'events_mine'             => 'My events',
+        'events_analytics'        => 'Events analytics',
+        'events_create'           => 'Create event',
+        'events_checkin'          => 'Check-in',
+        'events_expenses'         => 'Expense approvals',
+        'events_committees'      => 'Event committees',
+        'events_refunds'         => 'Ticket refunds',
+        'events_meetings'         => 'Meeting schedule',
+        'events_certificate_templates' => 'Certificate templates',
+        'learning_courses'        => 'Courses',
+        'learning_create'         => 'Create course',
+        'giving_causes'           => 'Causes',
+        'giving_partnership'      => 'Partnership tiers',
+        'giving_partnership_admin' => 'Manage partnership tiers',
+        'giving_manual'           => 'Manual contributions review',
+        'giving_refunds'          => 'Refund approvals',
+        'comms_feed'              => 'Community feed',
+        'comms_campaigns'         => 'Broadcast campaigns',
+        'comms_announcements'     => 'Announcements',
+        'comms_announcements_inbox' => 'Announcement inbox',
+        'comms_credentials'      => 'Group credentials',
+        'comms_templates'         => 'Notification templates',
+        'streaming_console'       => 'Live streams',
+        'reports_leaderboard'     => 'Leaderboards',
+        'reports_individuals'     => 'Top individuals',
+        'reports_groups'          => 'Top groups',
+        'reports_ranks'           => 'Ranks',
+        'reports_achievements'    => 'Achievements',
+        'reports_funnel'          => 'Funnel dashboard',
+        'reports_export'          => 'Exports',
+        'access_roles'            => 'Roles',
+        'access_rules'            => 'Rules',
+        'access_policies'         => 'ABAC policies',
+        'access_breakglass'       => 'Break-glass reviews',
+        'admin_settings'          => 'Organization settings',
+        'admin_providers'         => 'Providers',
+        'admin_gam_config'        => 'Points & rewards settings',
+        'admin_gam_activities'    => 'Activity catalog',
+        'admin_gam_badges'        => 'Badges',
+        'admin_gam_rules'         => 'Gamification rules',
+        'admin_gam_activity_cats' => 'Activity categories',
+        'admin_gam_fu_types'      => 'Follow-up types',
+        'admin_gam_fu_methods'    => 'Follow-up methods',
+        'admin_gam_ranks'         => 'Rank definitions',
+        'admin_gam_streaks'       => 'Streak definitions',
+        'admin_gam_achievements' => 'Achievements',
+        'admin_gam_pending'       => 'Pending point awards',
+        'admin_integrations'      => 'Integrations',
+    ],
+
+    // Language switcher.
+    'language'       => 'Language',
+    'chooseLanguage' => 'Choose language',
+    'languageNames'  => [
+        'en' => 'English',
+        'fr' => 'Français',
+        'es' => 'Español',
+        'pt' => 'Português',
+        'zh' => '中文',
+        'ar' => 'العربية',
+    ],
+
+    // Common actions/labels reused across pages.
+    'save'    => 'Save',
+    'cancel'  => 'Cancel',
+    'back'    => 'Go back',
+    'empty'   => 'Nothing to show yet.',
+    'signIn'  => 'Member login',
+    'signOut' => 'Log out',
+    'navDashboard' => 'My dashboard',
+    'navStatus'    => 'Status',
+
+    // Shared chrome: universal menu + generic data-page fallback.
+    'menuLoading' => 'Loading menu…',
+    'menuOpen' => 'Open menu',
+    'menuTitle' => 'Menu',
+    'dpResult' => 'Result',
+    'dpError' => 'Error',
+    'dpRequestFailed' => 'Request could not be completed.',
+    'dpDetails' => 'Details',
+    'dpServerResponse' => 'Server response · rendered for the browser',
+    'dpSuccessNoData' => 'Success — no data returned.',
+    'dpMeta' => 'Meta',
+    'dpGenericNote' => 'Generic view · this page has no bespoke template yet.',
+    // HTTP problem pages: what a BROWSER sees when a request dies in a filter
+    // (expired session, refused permission, stale CSRF token, rate limit). API
+    // clients keep the problem+json envelope; see WBS\Shared\Http\ProblemResponder.
+    'err' => [
+        'generic' => 'This request could not be completed',
+        'statusLabel' => 'HTTP status',
+        'retryLabel' => 'Retry after',
+        'reference' => 'Reference',
+        'helpNote' => 'If this keeps happening, quote the reference above to your group leader or an administrator.',
+        'signInRequired' => 'Sign in to continue',
+        'signInRequiredBody' => 'This page is for signed-in members. Sign in and we will bring you straight back to it.',
+        'sessionExpired' => 'Your session has expired',
+        'sessionExpiredBody' => 'For your security we signed you out after a period of inactivity. Nothing was lost — sign in again and we will return you to the page you were on.',
+        'signInAction' => 'Sign in again',
+        'denied' => 'You do not have access to this page',
+        'deniedBody' => 'Your role does not include the permission this page needs. If you believe you should have it, ask your group leader or an administrator to grant it.',
+        'dashboardAction' => 'Go to my dashboard',
+        'csrf' => 'That submission was blocked',
+        'csrfBody' => 'The security token in the page you submitted had expired or did not match — usually a tab left open too long. Go back, refresh the page and submit again.',
+        'retryAction' => 'Go back and try again',
+        'rateLimited' => 'Too many requests',
+        'rateLimitedBody' => 'Please wait {0} seconds and try again. This limit protects the platform and your community from automated abuse.',
+        'notFound' => 'We couldn’t find that page',
+        'notFoundBody' => 'The link may be out of date, or the page may have moved. Use the menu to find what you need — nothing has been lost.',
+        'badRequest' => 'That request could not be understood',
+        'badRequestBody' => 'Something in the request was malformed or incomplete. Go back, refresh the page and try again; if it keeps happening, tell your administrator.',
+        'serverError' => 'Something went wrong on our side',
+        'serverErrorBody' => 'The problem has been logged and nothing you did caused it. Please try again in a moment — and tell your administrator if it keeps happening.',
+        'signInShort' => 'Sign in',
+        'homeAction' => 'Go to the home page',
+    ],
+];

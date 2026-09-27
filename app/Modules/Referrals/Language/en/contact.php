@@ -1,0 +1,30 @@
+<?php
+
+/** Service failure messages for the contact book / outreach flows (family key lang('contact.*')). Rendered human-readable at flash time via Shared\Support\Messages::humanize(). */
+return [
+    'attendance_bad_type' => 'Attendance type must be event or course.',
+    'attendance_target_required' => 'Choose the event or course.',
+    'decision_date_future' => 'Decision date cannot be in the future.',
+    'decision_date_required' => 'A decision date is required.',
+    'decision_type_invalid' => 'Unknown decision type.',
+    'decision_type_required' => 'Choose a decision type.',
+    'group_out_of_scope' => 'That group is outside your leadership scope.',
+    'group_required' => 'Choose a group.',
+    'name_required' => 'A full name is required.',
+    'not_found' => 'Contact not found.',
+    'not_found_or_forbidden' => 'Contact not found or not accessible to you.',
+    'owner_required' => 'An owner is required.',
+    'rows_required' => 'No rows to import.',
+    'teardown_bad_input' => 'Invalid teardown request.',
+    'transfer_already_pending' => 'A transfer is already awaiting review.',
+    'transfer_bad_input' => 'Invalid transfer request.',
+    'transfer_bad_state' => 'This contact cannot be transferred right now.',
+    'transfer_failed' => 'The transfer could not be applied.',
+    'transfer_no_group' => 'The contact has no group to transfer from.',
+    'transfer_no_longer_eligible' => 'The contact is no longer eligible for transfer.',
+    'transfer_not_due' => 'The quiet period has not elapsed yet.',
+    'transfer_reason_required' => 'A transfer reason is required.',
+    'transfer_request_not_found' => 'Transfer request not found.',
+    'transfer_self_approval' => 'You cannot approve your own transfer.',
+    'transfer_submit_failed' => 'The transfer could not be queued for review.',
+];

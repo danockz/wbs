@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notification Preferences — Win–Build–Send</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(1200px 600px at 50% -10%, #0e766e22, transparent), #0b1120; color:#e2e8f0; }
+        .wrap { max-width: 880px; margin: 5vh auto; padding: 0 20px; }
+        h1 { font-size: 1.6rem; margin-bottom: 4px; }
+        .sub { color:#94a3b8; margin-bottom: 28px; }
+        .panel { background:#0f172aee; border:1px solid #1e293b; border-radius:16px; padding:24px 28px; margin-bottom:22px; }
+        h2 { font-size:1.05rem; margin:0 0 16px; color:#cbd5e1; }
+        table { width:100%; border-collapse: collapse; }
+        th, td { text-align:left; padding:10px 8px; border-bottom:1px solid #1e293b; font-size:.92rem; }
+        th { color:#94a3b8; font-weight:600; text-transform:capitalize; }
+        td.cat { color:#e2e8f0; }
+        .badge { font-size:.68rem; padding:2px 7px; border-radius:999px; margin-left:8px; vertical-align:middle; }
+        .ess { background:#7c2d12; color:#fed7aa; }
+        .dot { display:inline-block; width:12px; height:12px; border-radius:50%; }
+        .on { background:#22c55e; } .off { background:#475569; } .lock { color:#fb923c; }
+        .row { display:flex; gap:18px; flex-wrap:wrap; }
+        .kv { background:#111c30; border:1px solid #1e293b; border-radius:10px; padding:12px 16px; min-width:150px; }
+        .kv .k { color:#64748b; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
+        .kv .v { font-size:1.05rem; font-weight:600; margin-top:3px; }
+        .note { color:#64748b; font-size:.8rem; margin-top:14px; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Notification Preferences</h1>
+    <div class="sub">Control how and when we contact you. Security, service, payment-receipt and legal notices are always delivered.</div>
+
+    <div class="panel">
+        <h2>Delivery settings</h2>
+        <div class="row">
+            <div class="kv"><div class="k">Time zone</div><div class="v">Africa/Accra</div></div>
+            <div class="kv"><div class="k">Language</div><div class="v">en</div></div>
+            <div class="kv"><div class="k">Digest</div><div class="v">daily</div></div>
+            <div class="kv"><div class="k">Quiet hours</div><div class="v">
+                22:00–07:00            </div></div>
+            <div class="kv"><div class="k">Global STOP</div><div class="v">Off</div></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Per-category channels</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>email</th><th>sms</th><th>in-app</th><th>push</th>                </tr>
+            </thead>
+            <tbody>
+                                    <tr>
+                        <td class="cat">
+                            Security                            <span class="badge ess">essential</span>                        </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Service                            <span class="badge ess">essential</span>                        </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Payment Receipt                            <span class="badge ess">essential</span>                        </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Legal                            <span class="badge ess">essential</span>                        </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="lock" title="Always on">&#128274;</span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Event Reminder                                                    </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot off"
+                                          title="Opted out"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Course Reminder                                                    </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Group Operational                                                    </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Community                                                    </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Recognition                                                    </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Recruitment                                                    </td>
+                                                    <td>
+                                                                    <span class="dot off"
+                                          title="Opted out"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                            </tr>
+                                    <tr>
+                        <td class="cat">
+                            Marketing                                                    </td>
+                                                    <td>
+                                                                    <span class="dot off"
+                                          title="Opted out"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                                    <td>
+                                                                    <span class="dot on"
+                                          title="Opted in"></span>
+                                                            </td>
+                                            </tr>
+                            </tbody>
+        </table>
+        <div class="note">Essential categories carry a separately disclosed lawful basis and cannot be turned off.
+            Changes are consent- and audit-logged.</div>
+    </div>
+</div>
+</body>
+</html>
