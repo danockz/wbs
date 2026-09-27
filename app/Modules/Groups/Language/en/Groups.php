@@ -481,8 +481,10 @@ return [
         'requiresCapability' => 'Requires config: {0}',
         'permissionBadge' => 'Permission',
         'configBadge' => 'Config',
-        'groupId' => 'Group: {0}',
-        'scope' => [
+        'widgetEmpty' => 'No data available',
+        'gated' => 'Gated',
+        'noGroupsHint' => 'Join a group to see group-related widgets.',
+        'noWidgetsHint' => 'Widgets will appear as features are enabled for your groups.',
             'self' => 'Personal',
             'membership' => 'My Groups',
             'membership_desc' => 'My Groups + Descendants',

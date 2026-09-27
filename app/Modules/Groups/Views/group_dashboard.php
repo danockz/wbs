@@ -17,17 +17,16 @@ $currentGroupId = $result['current_group_id'] ?? null;
 $widgetCount = $result['widget_count'] ?? 0;
 $asOf = $result['as_of'] ?? '';
 $csrf = $csrf ?? '';
+$renderedWidgets = $result['rendered_widgets'] ?? [];
 
 // Helper to escape output
 $e = fn ($v) => esc($v);
 
 // Find current group name
 $currentGroupName = '';
-$currentGroupPath = [];
 foreach ($userGroups as $g) {
     if (($g['id'] ?? '') === $currentGroupId) {
         $currentGroupName = $g['name'] ?? '';
-        $currentGroupPath = $g['path'] ?? [];
         break;
     }
 }
@@ -130,50 +129,19 @@ foreach (array_keys($sections) as $sectionKey) {
                             <?php foreach ($sectionWidgets as $widget): ?>
                                 <?php
                                 $widgetId = $widget->id();
-                                $widgetLabel = lang($widget->labelKey) !== $widget->labelKey 
-                                    ? lang($widget->labelKey) 
-                                    : $widget->labelKey;
+                                $rendered = $renderedWidgets[$widgetId] ?? null;
                                 
-                                // Check visibility (should already be filtered, but double-check)
-                                $isVisible = $widget->visible(
-                                    $scope['org_id'] ?? '',
-                                    $scope['user_id'] ?? '',
-                                    [], // permissions - would come from auth in real use
-                                    []  // configs
-                                );
-                                
-                                if (! $isVisible) {
+                                // Skip if widget was filtered out
+                                if ($rendered === null) {
                                     continue;
                                 }
                                 
-                                // For now, render a placeholder card since we don't have
-                                // the actual renderer integration set up in the controller yet
-                                $widgetHtml = '<p class="widget-placeholder">' . 
-                                    $e(lang('Groups.dashboard.widgetComingSoon', [$widgetLabel])) . '</p>';
-                                
-                                // If we have a renderer, try to use it
-                                if ($widget->rendererClass !== '' && class_exists($widget->rendererClass)) {
-                                    try {
-                                        $renderer = $widget->rendererClass::create();
-                                        $scopeData = [
-                                            'org_id' => $scope['org_id'] ?? '',
-                                            'user_id' => $scope['user_id'] ?? '',
-                                            'group_id' => $scope['group_id'] ?? null,
-                                            'group_ids' => [], // Would be resolved by service
-                                            'options' => [],
-                                        ];
-                                        $widgetHtml = $renderer->render(
-                                            $scope['org_id'] ?? '',
-                                            $scope['user_id'] ?? '',
-                                            $scopeData,
-                                            []
-                                        );
-                                    } catch (\Throwable $e) {
-                                        // Render error state
-                                        $widgetHtml = '<p class="widget-error">' . 
-                                            $e(lang('Groups.dashboard.widgetError')) . '</p>';
-                                    }
-                                }
+                                $widgetLabel = lang($widget->labelKey) !== $widget->labelKey 
+                                    ? lang($widget->labelKey) 
+                                    : $widget->labelKey;
+                                $widgetHtml = $rendered['html'] ?? '';
+                                $scopeData = $rendered['scopeData'] ?? [];
+                                $isEmpty = trim(strip_tags($widgetHtml)) === '';
                                 ?>
                                 
                                 <article 
@@ -207,16 +175,25 @@ foreach (array_keys($sections) as $sectionKey) {
                                     </header>
                                     
                                     <div class="widget-body">
-                                        <?= $widgetHtml ?>
+                                        <?php if ($isEmpty): ?>
+                                            <p class="widget-empty">
+                                                <?= $e(lang('Groups.dashboard.widgetEmpty')) ?>
+                                            </p>
+                                        <?php else: ?>
+                                            <?= $widgetHtml ?>
+                                        <?php endif; ?>
                                     </div>
                                     
-                                    <?php if ($widgetHtml === '<p class="widget-placeholder">' . $e(lang('Groups.dashboard.widgetComingSoon', [$widgetLabel])) . '</p>'): ?>
-                                        <footer class="widget-footer">
-                                            <span class="widget-scope">
-                                                <?= $e(lang('Groups.dashboard.scope.' . $widget->scope, [], $widget->scope)) ?>
+                                    <footer class="widget-footer">
+                                        <span class="widget-scope">
+                                            <?= $e(lang('Groups.dashboard.scope.' . $widget->scope, [], $widget->scope)) ?>
+                                        </span>
+                                        <?php if ($widget->permission !== null || $widget->capability !== null): ?>
+                                            <span class="widget-gated">
+                                                <?= $e(lang('Groups.dashboard.gated')) ?>
                                             </span>
-                                        </footer>
-                                    <?php endif; ?>
+                                        <?php endif; ?>
+                                    </footer>
                                 </article>
                             <?php endforeach; ?>
                         </div>
@@ -237,7 +214,7 @@ foreach (array_keys($sections) as $sectionKey) {
             <?php endif; ?>
             <?php if ($currentGroupId): ?>
                 <span class="meta-item">
-                    &middot; <?= $e(lang('Groups.dashboard.groupId', [$currentGroupId])) ?>
+                    &middot; <?= $e(lang('Groups.dashboard.groupId', [substr($currentGroupId, 0, 8) . '...'])) ?>
                 </span>
             <?php endif; ?>
         </footer>
@@ -458,6 +435,12 @@ foreach (array_keys($sections) as $sectionKey) {
             line-height: 1.5;
         }
         
+        .widget-empty {
+            color: #9ca3af;
+            font-style: italic;
+            margin: 0;
+        }
+        
         .widget-placeholder {
             color: #9ca3af;
             font-style: italic;
@@ -474,6 +457,9 @@ foreach (array_keys($sections) as $sectionKey) {
             border-top: 1px solid #f3f4f6;
             font-size: 0.75rem;
             color: #9ca3af;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
         
         .widget-scope {
@@ -482,6 +468,264 @@ foreach (array_keys($sections) as $sectionKey) {
             background: #e5e7eb;
             border-radius: 0.25rem;
             font-size: 0.75rem;
+        }
+        
+        .widget-gated {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: #fbbf24;
+            color: #92400e;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        /* ===== Lists (used by many renderers) ===== */
+        .widget-list,
+        .feed-list,
+        .posts-list,
+        .announcements-list,
+        .notifications-list,
+        .courses-list,
+        .events-list,
+        .meetings-list,
+        .schedule-list,
+        .streams-list,
+        .referrals-list,
+        .requests-list,
+        .approvals-list,
+        .commitments-list,
+        .causes-list,
+        .disciples-list,
+        .progress-list,
+        .achievements-list,
+        .completion-list,
+        .leaderboard-list,
+        .memberships-list,
+        .pipeline-widget,
+        .funnel-summary,
+        .giving-summary,
+        .group-giving-summary,
+        .standing-widget,
+        .stage-widget,
+        .profile-summary,
+        .badges-grid,
+        .points-list,
+        .streaks-list,
+        .analytics-summary,
+        .outreach-summary,
+        .completion-rates,
+        .group-courses {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .widget-list > li,
+        .feed-list > li,
+        .posts-list > li,
+        .announcements-list > li,
+        .notifications-list > li,
+        .courses-list > li,
+        .events-list > li,
+        .meetings-list > li,
+        .schedule-list > li,
+        .streams-list > li,
+        .referrals-list > li,
+        .requests-list > li,
+        .approvals-list > li,
+        .commitments-list > li,
+        .causes-list > li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .widget-list > li:last-child,
+        .feed-list > li:last-child,
+        .posts-list > li:last-child,
+        .announcements-list > li:last-child,
+        .notifications-list > li:last-child,
+        .courses-list > li:last-child,
+        .events-list > li:last-child,
+        .meetings-list > li:last-child,
+        .schedule-list > li:last-child,
+        .streams-list > li:last-child,
+        .referrals-list > li:last-child,
+        .requests-list > li:last-child,
+        .approvals-list > li:last-child,
+        .commitments-list > li:last-child,
+        .causes-list > li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        /* List item styles */
+        .post-title,
+        .event-title,
+        .course-title,
+        .announcement-title,
+        .notification-title,
+        .meeting-title,
+        .stream-title,
+        .prospect-name,
+        .request-type,
+        .requester-name,
+        .campaign-name,
+        .user-name,
+        .disciple-name,
+        .achievement-name,
+        .milestone-name,
+        .member-name,
+        .commitment-cause,
+        .cause-name,
+        .group-name,
+        .stage-name,
+        .rank,
+        .name {
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .post-meta,
+        .post-date,
+        .event-time,
+        .event-when,
+        .event-mode,
+        .course-category,
+        .course-status,
+        .announcement-date,
+        .notification-date,
+        .meeting-when,
+        .meeting-loc,
+        .stream-when,
+        .stream-status,
+        .prospect-state,
+        .prospect-date,
+        .request-date,
+        .request-status,
+        .discipling-since,
+        .achievement-category,
+        .achievement-date,
+        .member-email,
+        .member-role,
+        .member-date,
+        .campaign-status,
+        .campaign-count,
+        .campaign-date,
+        .commitment-amount,
+        .commitment-frequency,
+        .cause-amount,
+        .reg-status,
+        .reg-date,
+        .stage-started,
+        .stage-description,
+        .milestone-desc,
+        .milestone-date,
+        .member-count,
+        .completion-count {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+        
+        /* Status badges */
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-unread {
+            font-weight: 600;
+        }
+        
+        .status-read {
+            color: #6b7280;
+        }
+        
+        /* Progress bars */
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+        
+        /* Badges */
+        .badge-item {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            margin: 0.25rem;
+            background: #f3f4f6;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+        
+        .badge-icon {
+            margin-right: 0.25rem;
+        }
+        
+        /* Pipeline stages */
+        .pipeline-stage {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            margin: 0.25rem;
+            background: #f3f4f6;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+        
+        /* Leaderboard */
+        .leaderboard-list > li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0;
+        }
+        
+        .rank {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #3b82f6;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Points */
+        .points.positive {
+            color: #10b981;
+        }
+        
+        .points.negative {
+            color: #ef4444;
         }
         
         /* ===== Metadata ===== */

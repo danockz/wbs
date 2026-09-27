@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use WBS\Groups\Config\Services as GroupServices;
 use WBS\Groups\Services\GroupDashboardService;
 use WBS\Groups\Support\GroupDashboardScope;
+use WBS\Groups\Support\GroupDashboardWidget;
 use WBS\Shared\Http\BaseController;
 use WBS\Shared\Support\Result;
 
@@ -22,8 +23,6 @@ final class GroupDashboardController extends BaseController
     public function __construct()
     {
         parent::__construct();
-        // Ensure the dashboard service is available
-        GroupServices::groupDashboard();
     }
 
     /**
@@ -57,11 +56,12 @@ final class GroupDashboardController extends BaseController
             groupConfigs: $this->loadGroupConfigs($orgId, $userGroups),
         );
 
-        // Get effective permissions for the user
+        // Get effective permissions and configs for the user
         $effectivePermissions = $this->getEffectivePermissions($orgId, $userId);
+        $effectiveConfigs = $this->loadEffectiveConfigs($orgId, $userGroups);
 
-        // Build dashboard
-        $result = $dashboardService->buildDashboard($scope, $effectivePermissions, []);
+        // Build dashboard - get visible widgets
+        $result = $dashboardService->buildDashboard($scope, $effectivePermissions, $effectiveConfigs);
 
         if (! $result->ok) {
             return $this->respondWith($result);
@@ -70,6 +70,42 @@ final class GroupDashboardController extends BaseController
         $payload = $result->data;
         $payload['user_groups'] = $userGroups;
         $payload['current_group_id'] = $groupId;
+
+        // Collect all widgets and render their HTML
+        $allWidgets = $dashboardService->collectWidgets();
+        $sections = $payload['sections'] ?? [];
+        
+        // Resolve scope data for each widget based on its scope setting
+        $resolvedScopes = [];
+        foreach ($allWidgets as $widget) {
+            $resolvedScopes[$widget->id()] = $dashboardService->resolveWidgetScope(
+                $widget->scope,
+                $orgId,
+                $userId,
+                $groupId,
+            );
+        }
+
+        // Render each widget's HTML
+        $renderedWidgets = [];
+        foreach ($sections as $sectionKey => $sectionWidgets) {
+            foreach ($sectionWidgets as $widget) {
+                $widgetId = $widget->id();
+                $scopeData = $resolvedScopes[$widgetId] ?? [];
+                
+                // Add options if any
+                $scopeData['options'] = [];
+                
+                $html = $this->renderWidget($dashboardService, $widget, $scopeData);
+                $renderedWidgets[$widgetId] = [
+                    'widget' => $widget,
+                    'html' => $html,
+                    'scopeData' => $scopeData,
+                ];
+            }
+        }
+
+        $payload['rendered_widgets'] = $renderedWidgets;
 
         return $this->respondWith(
             Result::ok($payload),
@@ -80,6 +116,36 @@ final class GroupDashboardController extends BaseController
                 'csrf' => (string) ($this->request->wbsCsrf ?? ''),
             ],
         );
+    }
+
+    /**
+     * Render a widget's HTML.
+     */
+    private function renderWidget(
+        GroupDashboardService $service,
+        GroupDashboardWidget $widget,
+        array $scopeData,
+    ): string {
+        // If widget has a renderer, use it
+        if ($widget->rendererClass !== '' && class_exists($widget->rendererClass)) {
+            try {
+                $renderer = $widget->rendererClass::create();
+                return $renderer->render(
+                    $scopeData['org_id'] ?? '',
+                    $scopeData['user_id'] ?? '',
+                    $scopeData,
+                    $scopeData['options'] ?? [],
+                );
+            } catch (\Throwable $e) {
+                // Log error but don't crash the dashboard
+                log_message('error', 'Dashboard widget render error: ' . $e->getMessage());
+                return '<p class="widget-error">' . esc(lang('Groups.dashboard.widgetError')) . '</p>';
+            }
+        }
+
+        // Fallback placeholder
+        $label = lang($widget->labelKey) !== $widget->labelKey ? lang($widget->labelKey) : $widget->labelKey;
+        return '<p class="widget-placeholder">' . esc(lang('Groups.dashboard.widgetComingSoon', [$label])) . '</p>';
     }
 
     /**
@@ -112,6 +178,35 @@ final class GroupDashboardController extends BaseController
     }
 
     /**
+     * Load effective configs flattened for visibility checks.
+     *
+     * @return array<string,array<string,mixed>> capability -> config
+     */
+    private function loadEffectiveConfigs(string $orgId, array $userGroups): array
+    {
+        $groupIds = array_map(fn (array $g) => $g['id'], $userGroups);
+        if ($groupIds === []) {
+            return [];
+        }
+
+        $configs = GroupServices::effectiveConfig()->forGroups($orgId, $groupIds);
+        $result = [];
+        foreach ($configs as $config) {
+            $capability = $config['capability'] ?? '';
+            if ($capability === '') {
+                continue;
+            }
+            // For now, use the first group's config for each capability
+            // In practice, widgets would check their specific group's config
+            if (! isset($result[$capability])) {
+                $result[$capability] = $config['resolved'] ?? [];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Get the user's effective permissions.
      *
      * This is a simplified version that checks the user's direct permissions
@@ -122,8 +217,6 @@ final class GroupDashboardController extends BaseController
      */
     private function getEffectivePermissions(string $orgId, string $userId): array
     {
-        // For now, return a conservative set based on the user's memberships
-        // The actual implementation should query the authorization service
         $permissions = [];
 
         // Check for admin permissions
@@ -138,6 +231,14 @@ final class GroupDashboardController extends BaseController
             $permissions['admin.manage'] = true;
             $permissions['report.view'] = true;
             $permissions['report.export'] = true;
+            $permissions['identity.manage'] = true;
+            $permissions['contribution.manage'] = true;
+            $permissions['course.create'] = true;
+            $permissions['event.create'] = true;
+            $permissions['meeting.manage'] = true;
+            $permissions['notification.send'] = true;
+            $permissions['stream.moderate'] = true;
+            $permissions['access.request.approve'] = true;
         }
 
         // Check for specific permissions
