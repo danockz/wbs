@@ -122,10 +122,16 @@ HTML;
      Same single component: the drawer stays open, the launcher/backdrop hide, and
      the page makes room with a left inset. Still one location — it just docks. */
   @media (min-width:1024px){
-    body{padding-left:260px}
+    body{padding-left:260px;transition:padding-left .2s ease}
+    body.wbs-shell--menu-collapsed{padding-left:72px}
     .wbs-menu-fab,.wbs-menu-backdrop{display:none}
 
-    .wbs-menu--drawer{transform:none;box-shadow:none;padding-top:16px}
+    .wbs-menu--drawer{transform:none;box-shadow:none;padding-top:16px;transition:width .2s ease}
+    body.wbs-shell--menu-collapsed .wbs-menu--drawer{width:72px;padding-top:56px}
+    body.wbs-shell--menu-collapsed .wbs-menu__cat{display:none}
+    body.wbs-shell--menu-collapsed .wbs-menu__link{justify-content:center;gap:0;padding-inline:8px}
+    body.wbs-shell--menu-collapsed .wbs-menu__link span:not(.wbs-menu__icon){display:none}
+    body.wbs-shell--menu-collapsed .wbs-menu__badge{display:none !important}
 
     /* On desktop the toggle is irrelevant; keep the drawer open regardless. */
     .wbs-menu-toggle:checked ~ .wbs-menu--drawer{box-shadow:none}

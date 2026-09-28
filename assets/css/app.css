@@ -78,10 +78,26 @@ a { color: #7dd3fc; text-decoration: none; }
   top: 0;
   backdrop-filter: blur(6px);
 }
+.wbs-shell-menu-toggle {
+  display: none;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--wbs-border);
+  background: var(--wbs-surface);
+  color: var(--wbs-text);
+  cursor: pointer;
+}
+.wbs-shell-menu-toggle:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 .brand { font-weight: 800; letter-spacing: -0.01em; }
 .brand span { color: #22d3ee; }
 .nav { display: flex; gap: 14px; font-size: 0.85rem; color: var(--wbs-muted); }
 .wrap { max-width: 1040px; margin: 0 auto; padding: 5vh 20px 60px; }
+@media (max-width: 1023.98px) {
+  .wbs-shell-menu-toggle { display: inline-flex; }
+}
 h1 { font-size: 1.6rem; margin: 0 0 4px; }
 .sub { color: var(--wbs-faint); font-size: 0.9rem; margin-bottom: 22px; }
 h2 {
