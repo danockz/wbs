@@ -20,6 +20,7 @@ declare(strict_types=1);
 $root    = dirname(__DIR__, 5);
 $langDir = $root . '/app/Language';
 $layout  = $root . '/app/Views/layouts/app.php';
+$layoutUniversal = $root . '/app/Views/layouts/universal.php';
 
 $pass = 0;
 $fail = 0;
@@ -48,7 +49,9 @@ foreach (['fr', 'es', 'pt', 'zh', 'ar'] as $loc) {
 // ── 2. Layout uses lang(), not bare text ─────────────────────────────────────
 echo "layout localizes the top nav\n";
 $src = (string) file_get_contents($layout)
-    . (string) file_get_contents($root . '/app/Modules/Shared/Views/_shell_open.php');
+    . (string) file_get_contents($layoutUniversal)
+    . (string) file_get_contents($root . '/app/Modules/Shared/Views/shell/topbar.php')
+    . (string) file_get_contents($root . '/app/Modules/Shared/Views/shell/context.php');
 chk('references App.navDashboard', str_contains($src, 'App.navDashboard'));
 chk('references App.navStatus', str_contains($src, 'App.navStatus'));
 chk('no bare >My dashboard< nav text', ! str_contains($src, '>My dashboard</a>'));

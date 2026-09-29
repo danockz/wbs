@@ -12,6 +12,6 @@ use CodeIgniter\Config\BaseConfig;
  */
 class Assets extends BaseConfig
 {
-    public string $css = 'app.00e841ae66a0.css';
-    public string $js  = 'app.7f7fafd26730.js';
+    public string $css = 'app.759fac08c9bf.css';
+    public string $js  = 'app.17a1569c8d96.js';
 }

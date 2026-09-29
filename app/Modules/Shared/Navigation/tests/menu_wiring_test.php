@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 $root   = dirname(__DIR__, 5);            // tests->Navigation->Shared->Modules->app->ROOT
 $layout = (string) @file_get_contents($root . '/app/Views/layouts/app.php');
+$universal = (string) @file_get_contents($root . '/app/Views/layouts/universal.php');
 $js     = (string) @file_get_contents($root . '/public/assets/js/menu.js');
 
 require_once $root . '/app/Modules/Shared/Navigation/MenuFragment.php';
@@ -31,11 +32,13 @@ function chk(string $label, bool $ok): void
 echo "menu wiring\n";
 
 chk('layout view exists', $layout !== '');
+chk('universal layout exists', $universal !== '');
 chk('client renderer exists', $js !== '');
 
-// -- SINGLE LOCATION: the layout renders the ONE canonical fragment, not its own
-//    bespoke sidebar. Both layout and filter go through MenuFragment. --
-chk('layout delegates to MenuFragment (single source)', str_contains($layout, 'MenuFragment::html('));
+// -- SINGLE LOCATION: app layout delegates to the universal layout; the shell menu
+//    still comes from MenuFragment (used by universal and by injection filter). --
+chk('compat layout delegates to universal', str_contains($layout, "include __DIR__ . '/universal.php'"));
+chk('universal layout composes shell close partial', str_contains($universal, 'shell/close.php'));
 chk('layout no longer has a bespoke inline sidebar (.shell)', ! str_contains($layout, 'class="shell"'));
 chk('layout does not hardcode its own #wbs-menu mount', ! str_contains($layout, 'id="wbs-menu"'));
 
